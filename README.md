@@ -48,6 +48,6 @@ To connect with the iRODS server on can do the following:
     # check if bobby is removed
     rils(tk)
 
-# To stop your local iRODS server
+## Stop your local iRODS server
 
     docker-compose down

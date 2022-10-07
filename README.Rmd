@@ -63,7 +63,7 @@ riadmin(token = tk, action = "remove", target = "user", arg2 = "bobby")
 rils(tk)
 ```
 
-# To stop your local iRODS server
+## Stop your local iRODS server
 
 ```
 docker-compose down
