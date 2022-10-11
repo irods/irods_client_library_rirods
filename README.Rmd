@@ -54,6 +54,12 @@ auth()
 # add user bobby
 iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
 
+# modify pass word bobby
+iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", arg4  = "passWORD")
+
+# make new resource
+# iadmin(action = "add", target = "resource", arg2 = "newResc", arg3 = "unixfilesystem", arg4 = "/var/lib/irods/new_vault")
+
 # check if bobby is added
 ils()
 
@@ -62,6 +68,19 @@ iadmin(action = "remove", target = "user", arg2 = "bobby")
 
 # check if bobby is removed
 ils()
+```
+
+## File management
+
+```{r put, eval=FALSE}
+# some data
+foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+
+# store
+iput(file = foo, path = "/tempZone/home/rods")
+
+# retrieve in native R format
+iget(file = "/tempZone/home/rods/foo")
 ```
 
 ## Stop your local iRODS server
