@@ -12,22 +12,29 @@
 #'
 #' @examples
 #'
-#' # get token
-#' tk <- get_token()
+#' # authenticate
+#' auth()
 #'
 #' # add user bobby
-#' riadmin(token = tk, action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
+#' iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
 #'
 #' # check if bobby is added
-#' rils(tk)
+#' ils()
 #'
 #' # remove user bobby
-#' riadmin(token = tk, action = "remove", target = "user", arg2 = "bobby")
+#' iadmin(action = "remove", target = "user", arg2 = "bobby")
 #'
 #' # check if bobby is removed
-#' rils(tk)
+#' ils()
 #'
-riadmin <- function(host = "http://localhost/irods-rest/0.9.2", token, action, target, ...) {
+iadmin <- function(
+    host = "http://localhost/irods-rest/0.9.2",
+    action,
+    target,
+    ...
+  ) {
+
+  token <- local(token, envir = .rirods2)
 
   # check dots
   ellipsis::check_dots_used()

@@ -1,15 +1,31 @@
 #' Authentication service for the iRODS zone
 #'
-#' @inheritParams riadmin
+#' @inheritParams iadmin
 #'
 #' @return String
 #' @export
 #'
 #' @examples
 #'
-#' # get token
-#' get_token()
+#' # authenticate
+#' auth()
 #'
+auth <- function(token = get_token()) {
+
+  assign("token", token, envir = .rirods2)
+
+  invisible(NULL)
+}
+
+rirods_env <- function(var) {
+
+  if(!exists(var, envir = .rirods2)) {
+    stop(var, " was not found! Try `iinit()` to start irods session.")
+  }
+
+  local(var, envir = .rirods2)
+}
+
 get_token <- function(host = "http://localhost/irods-rest/0.9.2") {
 
   secret <- system("echo -n rods:rods | base64", intern = TRUE)

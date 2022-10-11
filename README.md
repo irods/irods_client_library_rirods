@@ -20,7 +20,8 @@ devtools::install_github("MartinSchobben/rirods2")
 ## Example
 
 This is a basic example which shows you how to quickly launch a local
-iRODS. For more information check <https://github.com/irods/irods_demo>.
+iRODS server. For more information check
+<https://github.com/irods/irods_demo>.
 
 ``` bash
 # clone the repo
@@ -37,21 +38,20 @@ To connect with the iRODS server on can do the following:
 ``` r
 library(rirods2)
 
-# get token
-tk <- get_token()
+# authenticate
+auth()
 
 # add user bobby
-riadmin(token = tk, action = "add", target = "user", arg2 = "bobby", 
-        arg3 = "rodsuser")
+iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
 
 # check if bobby is added
-rils(token = tk)
+ils()
 
 # remove user bobby
-riadmin(token = tk, action = "remove", target = "user", arg2 = "bobby")
+iadmin(action = "remove", target = "user", arg2 = "bobby")
 
 # check if bobby is removed
-rils(token = tk)
+ils()
 ```
 
 ## Stop your local iRODS server
