@@ -6,7 +6,7 @@
 \usage{
 ils(
   host = "http://localhost/irods-rest/0.9.2",
-  path = "/tempZone/home",
+  path = ".",
   stat = FALSE,
   permissions = FALSE,
   metadata = FALSE,
@@ -39,5 +39,5 @@ information for a given data object.
 \examples{
 
 # list home directory
-ils(token = get_token())
+ils()
 }

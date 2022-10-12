@@ -6,7 +6,7 @@
 \usage{
 irm(
   host = "http://localhost/irods-rest/0.9.2",
-  file = "/tempZone/home",
+  data,
   trash = TRUE,
   recursive = FALSE,
   unregister = FALSE
@@ -15,7 +15,7 @@ irm(
 \arguments{
 \item{host}{Url of host}
 
-\item{file}{R object stored on iRODS server.}
+\item{data}{R object stored on iRODS server.}
 
 \item{trash}{Send to trash or delete permanently (default = TRUE).}
 
@@ -25,6 +25,36 @@ irm(
 \item{unregister}{Unregister data objects instead of deleting them
 (default = FALSE).}
 }
+\value{
+Invisible object to be removed
+}
 \description{
 Delete an object from iRODS
+}
+\examples{
+
+# authentication
+auth()
+
+# some data
+foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+
+# set working directory to rods
+icd("/tempZone/home/rods")
+
+# store
+iput(data = foo)
+
+# check if file is stored
+ils()
+
+# retrieve in native R format
+iget(data = "foo")
+
+# delete object
+
+irm(data = "foo", trash = FALSE)
+
+# check if file is delete
+ils()
 }

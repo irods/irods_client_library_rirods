@@ -8,33 +8,48 @@
 #'
 #' @examples
 #'
-#' # authenticate
+#' # authentication
 #' auth()
 #'
 #' # some data
 #' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 #'
+#' # set working directory to rods
+#' icd("/tempZone/home/rods")
+#'
 #' # store
-#' iput(file = foo, path = "/tempZone/home/rods")
+#' iput(data = foo)
+#'
+#' # check if file is stored
+#' ils()
 #'
 #' # retrieve in native R format
-#' iget(file = "/tempZone/home/rods/foo")
+#' iget(data = "foo")
 #'
 iget  <- function(
     host = "http://localhost/irods-rest/0.9.2",
-    file = "/tempZone/home",
-    path = ".",
+    data,
     offset = 0,
     count = 1000
 ) {
 
+  # filename creates a local copy (caching with)
+
   token <- local(token, envir = .rirods2)
+
+  # logical path
+  if (!grepl("/", data)) {
+    lpath <- paste0(.rirods2$current_dir, "/", data)
+  } else {
+    lpath <- data
+  }
+
 
   req <- httr2::request(host) |>
     httr2::req_url_path_append("stream") |> httr2::req_verbose() |>
     httr2::req_headers(Authorization = token) |>
     httr2::req_url_query(
-      `logical-path` = file,
+      `logical-path` = lpath,
       offset = offset,
       count = count
     )

@@ -6,8 +6,7 @@
 \usage{
 iget(
   host = "http://localhost/irods-rest/0.9.2",
-  file = "/tempZone/home",
-  path = ".",
+  data,
   offset = 0,
   count = 1000
 )
@@ -15,7 +14,7 @@ iget(
 \arguments{
 \item{host}{Url of host}
 
-\item{file}{R object stored on iRODS server.}
+\item{data}{R object stored on iRODS server.}
 
 \item{offset}{Offset in bytes into the data object (Defaults to 0)}
 
@@ -29,16 +28,22 @@ Retrieve an object from iRODS
 }
 \examples{
 
-# authenticate
+# authentication
 auth()
 
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
+# set working directory to rods
+icd("/tempZone/home/rods")
+
 # store
-iput(file = foo, path = "/tempZone/home/rods")
+iput(data = foo)
+
+# check if file is stored
+ils()
 
 # retrieve in native R format
-iget(file = "/tempZone/home/rods/foo")
+iget(data = "foo")
 
 }

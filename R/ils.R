@@ -17,10 +17,10 @@
 #' @examples
 #'
 #' # list home directory
-#' ils(token = get_token())
+#' ils()
 ils <- function(
     host = "http://localhost/irods-rest/0.9.2",
-    path = "/tempZone/home",
+    path = ".",
     stat = FALSE,
     permissions = FALSE,
     metadata = FALSE,
@@ -34,7 +34,7 @@ ils <- function(
     httr2::req_url_path_append("list") |>
     httr2::req_headers(Authorization = token) |>
     httr2::req_url_query(
-      `logical-path` = path,
+      `logical-path` = if (path == ".") .rirods2$current_dir else path,
       stat = as.integer(stat),
       permissions = as.integer(permissions),
       metadata = as.integer(metadata),

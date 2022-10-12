@@ -45,7 +45,7 @@ docker-compose up
 
 To connect with the iRODS server on can do the following:
 
-```{r, eval=FALSE}
+```{r bobby}
 library(rirods2)
 
 # authenticate
@@ -59,7 +59,9 @@ iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", ar
 
 # check if bobby is added
 ils()
+```
 
+```{r rmbobby}
 # remove user bobby
 iadmin(action = "remove", target = "user", arg2 = "bobby")
 
@@ -67,26 +69,38 @@ iadmin(action = "remove", target = "user", arg2 = "bobby")
 ils()
 ```
 
+## Navigate
+
+```{r cd}
+
+```
+
 ## File management
 
-```{r put, eval=FALSE}
+```{r put}
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
+# set working directory to rods
+icd("/tempZone/home/rods")
+
 # store
-iput(file = foo, path = "/tempZone/home/rods")
+iput(data = foo)
 
 # check if file is stored
-ils(path = "/tempZone/home/rods")
+ils()
+```
 
+
+```{r get}
 # retrieve in native R format
-iget(file = "/tempZone/home/rods/foo")
+iget(data = "foo")
 
 # delete object
-irm(file = "/tempZone/home/rods/foo", trash = FALSE)
+irm(data = "foo", trash = FALSE)
 
 # check if file is delete
-ils(path = "/tempZone/home/rods")
+ils()
 ```
 
 ## Stop your local iRODS server

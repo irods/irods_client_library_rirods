@@ -4,17 +4,14 @@
 \alias{iput}
 \title{Store an object into iRODS}
 \usage{
-iput(
-  host = "http://localhost/irods-rest/0.9.2",
-  path = "/tempZone/home",
-  file,
-  offset = 0
-)
+iput(host = "http://localhost/irods-rest/0.9.2", path = ".", data, offset = 0)
 }
 \arguments{
 \item{host}{Url of host}
 
-\item{file}{R object stored on iRODS server.}
+\item{path}{Logical path (defaults to working directory)}
+
+\item{data}{R object stored on iRODS server.}
 
 \item{offset}{Offset in bytes into the data object (Defaults to 0)}
 }
@@ -26,13 +23,15 @@ Store an object into iRODS
 }
 \examples{
 
-# authenticate
+# authentication
 auth()
 
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
-# store
-iput(file = foo, path = "/tempZone/home/rods")
+# set working directory to rods
+icd("/tempZone/home/rods")
 
+# store
+iput(data = foo)
 }
