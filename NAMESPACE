@@ -2,4 +2,7 @@
 
 export(auth)
 export(iadmin)
+export(iget)
 export(ils)
+export(iput)
+export(irm)

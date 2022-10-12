@@ -4,7 +4,10 @@
 \alias{auth}
 \title{Authentication service for the iRODS zone}
 \usage{
-auth(toke = get_token())
+auth(token = get_token())
+}
+\arguments{
+\item{token}{Token for authentication}
 }
 \value{
 String
