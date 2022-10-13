@@ -52,7 +52,7 @@ iadmin <- function(
     httr2::req_error(is_error = function(resp) FALSE) |>
     httr2::req_perform()
 
-  if (httr2::resp_status(resp) >= 400) 0 else resp
+  if (httr2::resp_status(resp) >= 400) 0 else invisible(resp)
 }
 
 add_args <- function(arg2 = character(1), arg3 = character(1), arg4 = character(1), arg5 = character(1), arg6 = character(1), arg7 = character(1)) {

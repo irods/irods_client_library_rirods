@@ -1,10 +1,11 @@
 test_that("compare shell with R solution", {
 
+  skip(TRUE)
+
+  auth()
+
   # curl in shell
   system(system.file(package = "rirods2", "bash", "iput.sh"))
-
-  # curl in R
-  auth()
 
   shell <- utils::object.size(iget(data = "/tempZone/home/rods/foo"))
 
@@ -17,3 +18,4 @@ test_that("compare shell with R solution", {
 
   expect_equal(shell, R)
 })
+

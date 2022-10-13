@@ -45,12 +45,16 @@ docker-compose up
 
 To connect with the iRODS server on can do the following:
 
-```{r bobby}
+```{r authenticate}
 library(rirods2)
 
 # authenticate
 auth()
+```
 
+In order to add a new user named Bobby one can do the following
+
+```{r bobby}
 # add user bobby
 iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
 
@@ -58,24 +62,14 @@ iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
 iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", arg4  = "passWORD")
 
 # check if bobby is added
+icd("/tempZone/home")
 ils()
 ```
 
-```{r rmbobby}
-# remove user bobby
-iadmin(action = "remove", target = "user", arg2 = "bobby")
 
-# check if bobby is removed
-ils()
-```
+## Data object management
 
-## Navigate
-
-```{r cd}
-
-```
-
-## File management
+Suppose Bobby would like to upload an R ocject from a current R session to an iRODS collection. For this, use the iput command:
 
 ```{r put}
 # some data
@@ -84,6 +78,9 @@ foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 # set working directory to rods
 icd("/tempZone/home/rods")
 
+# check where we are
+ipwd()
+
 # store
 iput(data = foo)
 
@@ -91,6 +88,8 @@ iput(data = foo)
 ils()
 ```
 
+If Bobby wanted to copy the foo R object from an iRODS collection to his local directory, he would use
+iget:
 
 ```{r get}
 # retrieve in native R format
@@ -100,6 +99,17 @@ iget(data = "foo")
 irm(data = "foo", trash = FALSE)
 
 # check if file is delete
+ils()
+```
+
+The user Bobby can also be removed again.
+
+```{r rmbobby}
+# remove user bobby
+iadmin(action = "remove", target = "user", arg2 = "bobby")
+
+# check if bobby is removed
+icd("/tempZone/home")
 ils()
 ```
 

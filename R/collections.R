@@ -41,7 +41,8 @@ irm <- function(
     data,
     trash = TRUE,
     recursive = FALSE,
-    unregister = FALSE
+    unregister = FALSE,
+    verbose = FALSE
   ) {
 
   token <- local(token, envir = .rirods2)
@@ -53,6 +54,7 @@ irm <- function(
     lpath <- data
   }
 
+  # request
   req <- httr2::request(host) |>
     httr2::req_url_path_append("logicalpath") |>
     httr2::req_headers(Authorization = token) |>
@@ -63,7 +65,10 @@ irm <- function(
     ) |>
     httr2::req_method("DELETE")
 
+  # verbose request response status
+  if (isTRUE(verbose)) req <- httr2::req_verbose(req)
+
   # response
-  httr2::req_perform(req)
+  invisible(httr2::req_perform(req))
 }
 

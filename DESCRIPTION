@@ -2,11 +2,15 @@ Package: rirods2
 Title: R Client for iRODS
 Version: 0.0.0.9000
 Authors@R: 
-    person("Martin", "Schobben", , "schobbenmartin@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-8560-0037"))
+    person(
+     "Martin", 
+     "Schobben", 
+     email = "schobbenmartin@gmail.com", 
+     role = c("aut", "cre"),
+     comment = c(ORCID = "0000-0001-8560-0037")
+    )
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
@@ -14,6 +18,7 @@ Imports:
     httr2 (>= 0.2.2),
     rlang
 Suggests: 
+    httptest2,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Depends: 
