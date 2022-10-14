@@ -1,7 +1,7 @@
 with_mock_dir("navigation", {
   test_that("navigation works", {
 
-    auth()
+    iauth()
 
     # default dir
     expect_snapshot(icd("."))
@@ -23,7 +23,7 @@ with_mock_dir("navigation", {
 
 test_that("compare shell with R solution", {
 
-  auth()
+  iauth()
 
   # curl in shell
   shell <- system(system.file(package = "rirods2", "bash", "ils.sh"), intern = TRUE) |>

@@ -1,8 +1,7 @@
 #' Working with data objects
 #'
-#' @inheritParams iadmin
-#' @param path Logical path (defaults to working directory).
-#' @param data R object stored on iRODS server.
+#' @param x R object stored on iRODS server.
+#' @param path Destination path.
 #' @param offset Offset in bytes into the data object (Defaults to 0).
 #' @param count Maximum number of bytes to read or write.
 #' @param verbose Show information about the http request and response.
@@ -13,100 +12,95 @@
 #' @examples
 #'
 #' # authentication
-#' auth()
+#' iauth("bobby", "passWORD")
 #'
 #' # some data
 #' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 #'
-#' # set working directory to rods
-#' icd("/tempZone/home/rods")
-#'
 #' # store
-#' iput(data = foo)
+#' iput(foo)
 #'
 #' # check if file is stored
 #' ils()
 #'
 #' # retrieve in native R format
-#' iget(data = "foo")
+#' iget("foo")
 #'
 iput <- function(
-    host = "http://localhost/irods-rest/0.9.2",
+    x,
     path = ".",
-    data,
     offset = 0,
-    verbose = FALSE
-) {
+    verbose = FALSE,
+    overwrite = FALSE
+  ) {
 
-  # overwrite argument which defaults to FALSE and associated error
-  token <- local(token, envir = .rirods2)
-  name <- deparse(substitute(data))
+  # what type of object are we dealing with
+  if (is.character(x) && file.exists(x)) {
+    name <- x
+  } else {
+    # object name
+    name <- deparse(substitute(x))
+    # serialize object to raw data
+    x <- serialize(x, NULL)
+  }
 
-  # serialize object to raw data
-  raw <- serialize(data, NULL)
+  # logical path
   if (path == ".") {
     lpath <- paste0(.rirods2$current_dir, "/", name)
   } else {
     lpath <- paste0(path, "/", name)
   }
 
-  # request
-  req <- httr2::request(host) |>
-    httr2::req_url_path_append("stream") |>
-    httr2::req_headers(Authorization = token) |>
-    httr2::req_body_raw(raw) |>
-    httr2::req_url_query(
-      `logical-path` = lpath,
-      offset = offset
-    ) |>
-    httr2::req_method("PUT")
+  # flags to curl call
+  args <- list(`logical-path` = lpath, offset = offset)
 
-  # verbose request response status
-  if (isTRUE(verbose)) req <- httr2::req_verbose(req)
+  # http call
+  out <- irods_rest_call("stream", "PUT", args, verbose, x)
 
   # response
-  invisible(httr2::req_perform(req))
+  invisible(out)
 }
 #' @rdname iput
 #'
 #' @export
 iget  <- function(
-    host = "http://localhost/irods-rest/0.9.2",
-    data,
+    x,
+    path = x,
     offset = 0,
     count = 1000,
-    verbose = FALSE
-) {
+    verbose = FALSE,
+    overwrite = FALSE
+  ) {
 
-  # filename creates a local copy (caching with)
+  # make a local copy
+  if (x != path) pt <- file.path(path, x) else pt <- x
 
-  token <- local(token, envir = .rirods2)
+  # check for local file
+  if (isFALSE(overwrite) && is.character(x) && file.exists(pt))
+    stop("File exists already. Set the argument `overwrite` to TRUE to",
+         "overwrite the file.")
 
   # logical path
-  if (!grepl("/", data)) {
-    lpath <- paste0(.rirods2$current_dir, "/", data)
+  if (!grepl("/", x)) {
+    lpath <- paste0(.rirods2$current_dir, "/", x)
   } else {
-    lpath <- data
+    lpath <- x
   }
 
-  # request
-  req <- httr2::request(host) |>
-    httr2::req_url_path_append("stream") |>
-    httr2::req_headers(Authorization = token) |>
-    httr2::req_url_query(
-      `logical-path` = lpath,
-      offset = offset,
-      count = count
-    )
+  # flags to curl call
+  args <- list(`logical-path` = lpath, offset = offset, count = count)
 
-  # verbose request response status
-  if (isTRUE(verbose)) req <- httr2::req_verbose(req)
+  # http call
+  out <- irods_rest_call("stream", "GET", args, verbose)
 
-  # response
-  resp <- httr2::req_perform(req) |>
-    httr2::resp_body_raw()
+  # parse response
+  resp <- httr2::resp_body_raw(out)
 
-  # convert to R object
-  con <- rawConnection(resp)
-  readRDS(gzcon(con))
+  # convert to file or R object
+  if (is.character(x) && tools::file_ext(x) %in% c("csv", "tsv")) {
+    writeBin(resp, x)
+  } else {
+    con <- rawConnection(resp)
+    readRDS(gzcon(con))
+  }
 }

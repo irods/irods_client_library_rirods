@@ -19,6 +19,7 @@ Imports:
     rlang
 Suggests: 
     httptest2,
+    readr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Depends: 

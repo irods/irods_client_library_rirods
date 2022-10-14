@@ -4,19 +4,10 @@
 \alias{irm}
 \title{Delete an object from iRODS}
 \usage{
-irm(
-  host = "http://localhost/irods-rest/0.9.2",
-  data,
-  trash = TRUE,
-  recursive = FALSE,
-  unregister = FALSE,
-  verbose = FALSE
-)
+irm(x, trash = TRUE, recursive = FALSE, unregister = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{host}{Url of host}
-
-\item{data}{R object stored on iRODS server.}
+\item{x}{R object stored on iRODS server.}
 
 \item{trash}{Send to trash or delete permanently (default = TRUE).}
 
@@ -37,26 +28,19 @@ Delete an object from iRODS
 \examples{
 
 # authentication
-auth()
+iauth("bobby", "passWORD")
 
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
-# set working directory to rods
-icd("/tempZone/home/rods")
-
 # store
-iput(data = foo)
+iput(x = foo)
 
 # check if file is stored
 ils()
 
-# retrieve in native R format
-iget(data = "foo")
-
 # delete object
-
-irm(data = "foo", trash = FALSE)
+irm(x = "foo", trash = FALSE)
 
 # check if file is delete
 ils()

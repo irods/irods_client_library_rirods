@@ -13,62 +13,39 @@
 #' @examples
 #'
 #' # authentication
-#' auth()
+#' iauth("bobby", "passWORD")
 #'
 #' # some data
 #' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 #'
-#' # set working directory to rods
-#' icd("/tempZone/home/rods")
-#'
 #' # store
-#' iput(data = foo)
+#' iput(foo)
 #'
 #' # check if file is stored
 #' ils()
 #'
-#' # retrieve in native R format
-#' iget(data = "foo")
-#'
 #' # delete object
-#'
-#' irm(data = "foo", trash = FALSE)
+#' irm("foo", trash = FALSE)
 #'
 #' # check if file is delete
 #' ils()
-irm <- function(
-    host = "http://localhost/irods-rest/0.9.2",
-    data,
-    trash = TRUE,
-    recursive = FALSE,
-    unregister = FALSE,
-    verbose = FALSE
-  ) {
-
-  token <- local(token, envir = .rirods2)
+irm <- function(x, trash = TRUE, recursive = FALSE, unregister = FALSE,
+                verbose = FALSE) {
 
   # logical path
-  if (!grepl("/", data)) {
-    lpath <- paste0(.rirods2$current_dir, "/", data)
+  if (!grepl("/", x)) {
+    lpath <- paste0(.rirods2$current_dir, "/", x)
   } else {
-    lpath <- data
+    lpath <- x
   }
 
-  # request
-  req <- httr2::request(host) |>
-    httr2::req_url_path_append("logicalpath") |>
-    httr2::req_headers(Authorization = token) |>
-    httr2::req_url_query(
-      `logical-path` = lpath,
-      `no-trash` = as.integer(trash),
-      recursive = as.integer(recursive)
-    ) |>
-    httr2::req_method("DELETE")
+  # flags to curl call
+  args <- list(`logical-path` = lpath, `no-trash` = as.integer(trash), recursive = as.integer(recursive))
 
-  # verbose request response status
-  if (isTRUE(verbose)) req <- httr2::req_verbose(req)
+  # http call
+  out <- irods_rest_call("logicalpath", "DELETE", args, verbose)
 
   # response
-  invisible(httr2::req_perform(req))
+  invisible(out)
 }
 

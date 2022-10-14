@@ -22,7 +22,7 @@ Retrieve an object from iRODS
 \examples{
 
 # authenticate
-auth()
+iauth()
 
 # default dir
 icd(".")

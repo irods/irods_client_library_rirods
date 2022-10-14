@@ -43,46 +43,22 @@ cd ../irods_demo
 docker-compose up
 ```
 
-To connect with the iRODS server on can do the following:
-
-```{r authenticate}
-library(rirods2)
-
-# authenticate
-auth()
-```
-
-In order to add a new user named Bobby one can do the following
-
-```{r bobby}
-# add user bobby
-iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
-
-# modify pass word bobby
-iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", arg4  = "passWORD")
-
-# check if bobby is added
-icd("/tempZone/home")
-ils()
-```
-
-
-## Data object management
-
-Suppose Bobby would like to upload an R ocject from a current R session to an iRODS collection. For this, use the iput command:
+Suppose Bobby would like to upload an R object from his current R session to an iRODS collection. For this, use the iput command:
 
 ```{r put}
+library(rirods2)
+
+# login as bobby
+iauth("bobby", "passWORD")
+
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
-
-# set working directory to rods
-icd("/tempZone/home/rods")
 
 # check where we are
 ipwd()
 
 # store
-iput(data = foo)
+iput(foo)
 
 # check if file is stored
 ils()
@@ -93,23 +69,61 @@ iget:
 
 ```{r get}
 # retrieve in native R format
-iget(data = "foo")
+iget("foo")
 
 # delete object
-irm(data = "foo", trash = FALSE)
+irm("foo", trash = FALSE)
 
-# check if file is delete
+# check if object is removed
 ils()
 ```
 
-The user Bobby can also be removed again.
+Possibly Bobby does not want a native R object to be stored on iRODS but a file type that can be accessed by other programs.
 
-```{r rmbobby}
+```{r filetypes}
+library(readr)
+
+# creates a csv file of foo
+write_csv(foo, "foo.csv")
+
+# send file
+iput("foo.csv")
+
+# check whether it is stored
+ils()
+```
+
+```{r rmfile1, include= FALSE}
+file.remove("foo.csv")
+```
+
+Later on somebody else might want to download this file again and store it locally.
+
+```{r csv}
+# retrieve it again later
+iget("foo.csv")
+read_csv("foo.csv")
+
+# delete object
+irm("foo.csv", trash = FALSE)
+```
+
+```{r rmfile2, include= FALSE}
+file.remove("foo.csv")
+```
+
+
+
+<!-- The user Bobby can also be removed again. -->
+
+```{r rmbobby, include=FALSE}
+# authenticate
+iauth()
+
 # remove user bobby
 iadmin(action = "remove", target = "user", arg2 = "bobby")
 
 # check if bobby is removed
-icd("/tempZone/home")
 ils()
 ```
 

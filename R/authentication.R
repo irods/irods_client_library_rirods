@@ -8,11 +8,19 @@
 #' @examples
 #'
 #' # authenticate
-#' auth()
+#' iauth() # i
 #'
-auth <- function(token = get_token()) {
+iauth <- function(user = "rods", password = "rods") {
 
+  # get token
+  token <- get_token(paste(user, password, sep =":"))
+
+  # store token
   assign("token", token, envir = .rirods2)
+
+  # starting dir
+  if (user == "rods") start_rirods <- "/tempZone/home" else start_rirods <- paste0("/tempZone/home/", user)
+  .rirods2$current_dir <- start_rirods
 
   invisible(NULL)
 }
@@ -26,9 +34,9 @@ rirods_env <- function(var) {
   local(var, envir = .rirods2)
 }
 
-get_token <- function(host = "http://localhost/irods-rest/0.9.2") {
+get_token <- function(details, host = "http://localhost/irods-rest/0.9.2") {
 
-  secret <- system("echo -n rods:rods | base64", intern = TRUE)
+  secret <- system(paste("echo -n", details, "| base64"), intern = TRUE) # password and user as variables
 
   req <- httr2::request(host) |>
     httr2::req_url_path_append("auth") |>

@@ -4,7 +4,13 @@
 \alias{iadmin}
 \title{The administration interface to the iRODS}
 \usage{
-iadmin(host = "http://localhost/irods-rest/0.9.2", action, target, ...)
+iadmin(
+  host = "http://localhost/irods-rest/0.9.2",
+  action,
+  target,
+  ...,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{host}{Url of host}

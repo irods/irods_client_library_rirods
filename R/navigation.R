@@ -9,7 +9,7 @@
 #' @examples
 #'
 #' # authenticate
-#' auth()
+#' iauth()
 #'
 #' # default dir
 #' icd(".")
@@ -54,7 +54,7 @@ icd  <- function(dir) {
 
     # check if exist
     idir <- try(ils(path = current_dir, message = FALSE), silent = TRUE)
-    if (inherits(idir, "try-error")) stop("Dir does not exist.")
+    if (inherits(idir, "try-error")) stop("No such directory (collection).", call. = FALSE)
 
     current_dir
   }

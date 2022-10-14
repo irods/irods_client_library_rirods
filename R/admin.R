@@ -31,7 +31,8 @@ iadmin <- function(
     host = "http://localhost/irods-rest/0.9.2",
     action,
     target,
-    ...
+    ...,
+    verbose = FALSE
   ) {
 
   token <- local(token, envir = .rirods2)
@@ -46,6 +47,9 @@ iadmin <- function(
     httr2::req_url_path_append("admin") |>
     httr2::req_url_query(action = action, target = target, rlang::splice(add_args)) |>
     httr2::req_method("POST")
+
+  # verbose request response status
+  if (isTRUE(verbose)) req <- httr2::req_verbose(req)
 
   # response
   resp <- req |>

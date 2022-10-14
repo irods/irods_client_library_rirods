@@ -33,57 +33,30 @@ cd ../irods_demo
 docker-compose up
 ```
 
-To connect with the iRODS server on can do the following:
+Suppose Bobby would like to upload an R object from his current R
+session to an iRODS collection. For this, use the iput command:
 
 ``` r
 library(rirods2)
 #> Start iRODS session.
 
-# authenticate
-auth()
-```
+# login as bobby
+iauth("bobby", "passWORD")
 
-In order to add a new user named Bobby one can do the following
-
-``` r
-# add user bobby
-iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
-
-# modify pass word bobby
-iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", arg4  = "passWORD")
-
-# check if bobby is added
-icd("/tempZone/home")
-ils()
-#>            logical_path       type
-#> 1  /tempZone/home/bobby collection
-#> 2 /tempZone/home/public collection
-#> 3   /tempZone/home/rods collection
-```
-
-## Data object management
-
-Suppose Bobby would like to upload an R ocject from a current R session
-to an iRODS collection. For this, use the iput command:
-
-``` r
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
-# set working directory to rods
-icd("/tempZone/home/rods")
-
 # check where we are
 ipwd()
-#> [1] "/tempZone/home/rods"
+#> [1] "/tempZone/home/bobby"
 
 # store
-iput(data = foo)
+iput(foo)
 
 # check if file is stored
 ils()
-#>              logical_path        type
-#> 1 /tempZone/home/rods/foo data_object
+#>               logical_path        type
+#> 1 /tempZone/home/bobby/foo data_object
 ```
 
 If Bobby wanted to copy the foo R object from an iRODS collection to his
@@ -91,33 +64,65 @@ local directory, he would use iget:
 
 ``` r
 # retrieve in native R format
-iget(data = "foo")
+iget("foo")
 #>   x y
 #> 1 1 x
 #> 2 8 y
 #> 3 9 z
 
 # delete object
-irm(data = "foo", trash = FALSE)
+irm("foo", trash = FALSE)
 
-# check if file is delete
+# check if object is removed
 ils()
 #> This collection does not contain any objects or collections.
 ```
 
-The user Bobby can also be removed again.
+Possibly Bobby does not want a native R object to be stored on iRODS but
+a file type that can be accessed by other programs.
 
 ``` r
-# remove user bobby
-iadmin(action = "remove", target = "user", arg2 = "bobby")
+library(readr)
 
-# check if bobby is removed
-icd("/tempZone/home")
+# creates a csv file of foo
+write_csv(foo, "foo.csv")
+
+# send file
+iput("foo.csv")
+
+# check whether it is stored
 ils()
-#>            logical_path       type
-#> 1 /tempZone/home/public collection
-#> 2   /tempZone/home/rods collection
+#>                   logical_path        type
+#> 1 /tempZone/home/bobby/foo.csv data_object
 ```
+
+Later on somebody else might want to download this file again and store
+it locally.
+
+``` r
+# retrieve it again later
+iget("foo.csv")
+read_csv("foo.csv")
+#> Rows: 3 Columns: 2
+#> ── Column specification ────────────────────────────────────────────────────────
+#> Delimiter: ","
+#> chr (1): y
+#> dbl (1): x
+#> 
+#> ℹ Use `spec()` to retrieve the full column specification for this data.
+#> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+#> # A tibble: 3 × 2
+#>       x y    
+#>   <dbl> <chr>
+#> 1     1 x    
+#> 2     8 y    
+#> 3     9 z
+
+# delete object
+irm("foo.csv", trash = FALSE)
+```
+
+<!-- The user Bobby can also be removed again. -->
 
 ## Stop your local iRODS server
 
