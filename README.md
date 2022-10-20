@@ -90,13 +90,6 @@ iget("foo")
 #> 1 1 x
 #> 2 8 y
 #> 3 9 z
-
-# delete object
-irm("foo", trash = FALSE)
-
-# check if object is removed
-ils()
-#> This collection does not contain any objects or collections.
 ```
 
 Possibly Bobby does not want a native R object to be stored on iRODS but
@@ -114,7 +107,8 @@ iput("foo.csv")
 # check whether it is stored
 ils()
 #>                   logical_path        type
-#> 1 /tempZone/home/bobby/foo.csv data_object
+#> 1     /tempZone/home/bobby/foo data_object
+#> 2 /tempZone/home/bobby/foo.csv data_object
 ```
 
 Later on somebody else might want to download this file again and store
@@ -138,9 +132,56 @@ read_csv("foo.csv")
 #> 1     1 x    
 #> 2     8 y    
 #> 3     9 z
+```
 
+Objects can also be discovered by using General Queries and `iquery()`:
+
+``` r
+# look for objects in the home directory with a wildcard `%`
+iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
+#>             collection data_object
+#> 1 /tempZone/home/bobby         foo
+#> 2 /tempZone/home/bobby     foo.csv
+```
+
+``` r
+# or where data objects named "foo" can be found
+iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
+#>                    collection        data_object
+#> 1        /tempZone/home/bobby                foo
+#> 2        /tempZone/home/bobby            foo.csv
+#> 3  /tempZone/trash/home/bobby                foo
+#> 4  /tempZone/trash/home/bobby     foo.1243538807
+#> 5  /tempZone/trash/home/bobby     foo.1397457722
+#> 6  /tempZone/trash/home/bobby     foo.1897832140
+#> 7  /tempZone/trash/home/bobby     foo.2139999920
+#> 8  /tempZone/trash/home/bobby     foo.3407179898
+#> 9  /tempZone/trash/home/bobby     foo.3674208461
+#> 10 /tempZone/trash/home/bobby     foo.3875447246
+#> 11 /tempZone/trash/home/bobby      foo.432847936
+#> 12 /tempZone/trash/home/bobby      foo.799865305
+#> 13 /tempZone/trash/home/bobby            foo.csv
+#> 14 /tempZone/trash/home/bobby foo.csv.1034183041
+#> 15 /tempZone/trash/home/bobby foo.csv.1638565932
+#> 16 /tempZone/trash/home/bobby foo.csv.1846147999
+#> 17 /tempZone/trash/home/bobby foo.csv.2183868033
+#> 18 /tempZone/trash/home/bobby foo.csv.2279356880
+#> 19 /tempZone/trash/home/bobby foo.csv.3275042440
+#> 20 /tempZone/trash/home/bobby  foo.csv.342948025
+#> 21 /tempZone/trash/home/bobby foo.csv.3503481366
+#> 22 /tempZone/trash/home/bobby  foo.csv.809666106
+```
+
+Finally, we can clean up Bobby’s home directory:
+
+``` r
 # delete object
+irm("foo", trash = FALSE)
 irm("foo.csv", trash = FALSE)
+
+# check if object is removed
+ils()
+#> This collection does not contain any objects or collections.
 ```
 
 <!-- The user Bobby can also be removed again. -->

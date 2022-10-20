@@ -2,6 +2,7 @@
 % Please edit documentation in R/metadata.R
 \name{imeta}
 \alias{imeta}
+\alias{iquery}
 \title{Title}
 \usage{
 imeta(
@@ -9,6 +10,16 @@ imeta(
   entity_type,
   operations = list(operation = "add", attribute = NULL, value = NULL, units = NULL),
   path = ".",
+  verbose = FALSE
+)
+
+iquery(
+  query,
+  limit = 100,
+  offset = 0,
+  type = "general",
+  casesensitive = TRUE,
+  distinct = TRUE,
   verbose = FALSE
 )
 }
@@ -30,4 +41,8 @@ Invisibly returns the response.
 }
 \description{
 Title
+}
+\examples{
+
+iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/\%'")
 }

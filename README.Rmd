@@ -89,12 +89,6 @@ iget:
 ```{r get}
 # retrieve in native R format
 iget("foo")
-
-# delete object
-irm("foo", trash = FALSE)
-
-# check if object is removed
-ils()
 ```
 
 Possibly Bobby does not want a native R object to be stored on iRODS but a file type that can be accessed by other programs.
@@ -122,15 +116,35 @@ Later on somebody else might want to download this file again and store it local
 # retrieve it again later
 iget("foo.csv")
 read_csv("foo.csv")
-
-# delete object
-irm("foo.csv", trash = FALSE)
 ```
+
+Objects can also be discovered by using General Queries and `iquery()`:
+
+```{r query, options}
+# look for objects in the home directory with a wildcard `%`
+iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
+```
+
+```{r query2}
+# or where data objects named "foo" can be found
+iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
+```
+
+Finally, we can clean up Bobby's home directory:
+
+```{r clean}
+# delete object
+irm("foo", trash = FALSE)
+irm("foo.csv", trash = FALSE)
+
+# check if object is removed
+ils()
+```
+
 
 ```{r rmfile2, include= FALSE}
 file.remove("foo.csv")
 ```
-
 
 
 <!-- The user Bobby can also be removed again. -->

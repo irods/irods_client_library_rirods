@@ -12,6 +12,8 @@
 #' @export
 #'
 #' @examples
+#'
+#' iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 imeta <- function(
     x,
     entity_type,
@@ -43,6 +45,7 @@ imeta <- function(
     operations = operations
     )
 
+  # http call
   resp <- irods_rest_call("metadata", "POST", args = list(), verbose, json)
 
   invisible(resp)
@@ -81,4 +84,41 @@ list_depth <- function(this, thisdepth = 0) {
   } else {
     max(unlist(lapply(this, list_depth, thisdepth = thisdepth + 1)))
   }
+}
+
+#' @rdname imeta
+#'
+#' @export
+iquery <- function(
+    query,
+    limit = 100,
+    offset = 0,
+    type = 'general',
+    casesensitive = TRUE,
+    distinct = TRUE,
+    verbose = FALSE
+  ) {
+
+  # flags to curl call
+  args <- list(
+    limit = limit,
+    offset = offset,
+    type = type,
+    `case-sensitive` = as.integer(casesensitive),
+    distinct = as.integer(distinct),
+    query = query
+  )
+
+  # http call
+  resp <- irods_rest_call("query", "GET", args, verbose)
+
+  out <- httr2::resp_body_json(
+    resp,
+    check_type = FALSE,
+    simplifyVector = TRUE
+  )$`_embedded` |>
+    as.data.frame()
+
+  if (nrow(out) > 0 ) colnames(out) <- c("collection", "data_object")
+  out
 }

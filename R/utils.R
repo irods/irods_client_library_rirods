@@ -51,3 +51,5 @@ data_switch <- function(type, req, object) {
     json = httr2::req_body_json(req, object, auto_unbox = TRUE, digits = NA, null = "null")
   )
 }
+
+ifile.exists <- function(){}

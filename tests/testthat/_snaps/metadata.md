@@ -1,4 +1,4 @@
-# multiplication works
+# metadata works
 
     Code
       ils(metadata = TRUE)
