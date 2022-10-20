@@ -1,9 +1,6 @@
 with_mock_dir("metadata", {
   test_that("metadata works", {
 
-    # create local
-    local_create_irods()
-
     # single
     imeta(
       "rods",

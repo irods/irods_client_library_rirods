@@ -1,7 +1,8 @@
 test_that("compare shell with R solution", {
 
-  # create test fixture
-  local_create_irods()
+  # this can not be accommodated by httptest2
+  skip_if_offline()
+  skip_if(inherits(tk, "try-error"))
 
   # curl in shell
   system(system.file(package = "rirods2", "bash", "iput.sh"))

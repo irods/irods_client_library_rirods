@@ -1,9 +1,6 @@
 with_mock_dir("navigation", {
   test_that("navigation works", {
 
-    # create test fixture
-    local_create_irods()
-
     # default dir
     expect_invisible(icd("."))
     expect_snapshot(ipwd())
@@ -24,8 +21,9 @@ with_mock_dir("navigation", {
 
 test_that("compare shell with R solution", {
 
-  # create test fixture
-  local_create_irods()
+  # this can not be accommodated by httptest2
+  skip_if_offline()
+  skip_if(inherits(tk, "try-error"))
 
   # curl in shell
   shell <- system(system.file(package = "rirods2", "bash", "ils.sh"), intern = TRUE) |>

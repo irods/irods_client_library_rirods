@@ -1,6 +1,9 @@
 test_that("compare shell with R solution", {
 
-  skip(TRUE)
+  # this can not be accommodated by httptest2
+  skip_if_offline()
+  skip_if(inherits(tk, "try-error"))
+
   # curl in shell
   shell <- system(system.file(package = "rirods2", "bash", "iadmin.sh"))
   # curl in R
