@@ -1,6 +1,9 @@
 find_host <- function() {
 
-  x <- readLines("rirods2.irods")
+  # find irods file
+  irods <- list.files(".", "\\.irods$")
+  # read irods file
+  x <- readLines(irods)
   sub("host: ", "", x)
 }
 
@@ -20,8 +23,12 @@ irods_rest_call <- function(endpoint, verb, args, verbose, object = NULL) {
 
   # the file to be send along
   if (!is.null(object)) {
-    # get type of object to be stored
-    type <- tools::file_ext(object) |> unique()
+    if (is.character(object) && file.exists(object)) {
+      # get type of object to be stored
+      type <- tools::file_ext(object) |> unique()
+    } else {
+      type <- deparse(substitute(object))
+    }
     req <- data_switch(type, req, object)
   }
 
@@ -40,6 +47,7 @@ data_switch <- function(type, req, object) {
     type,
     httr2::req_body_raw(req, object),
     tsv = ,
-    csv = httr2::req_body_file(req, object)
+    csv = httr2::req_body_file(req, object),
+    json = httr2::req_body_json(req, object, auto_unbox = TRUE, digits = NA, null = "null")
   )
 }

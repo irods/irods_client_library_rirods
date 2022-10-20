@@ -5,24 +5,18 @@
 \alias{iget}
 \title{Working with data objects}
 \usage{
-iput(x, path = ".", offset = 0, verbose = FALSE)
+iput(x, path = ".", offset = 0, verbose = FALSE, overwrite = FALSE)
 
-iget(
-  host = "http://localhost/irods-rest/0.9.2",
-  data,
-  offset = 0,
-  count = 1000,
-  verbose = FALSE
-)
+iget(x, path = x, offset = 0, count = 1000, verbose = FALSE, overwrite = FALSE)
 }
 \arguments{
 \item{x}{R object stored on iRODS server.}
 
+\item{path}{Destination path.}
+
 \item{offset}{Offset in bytes into the data object (Defaults to 0).}
 
 \item{verbose}{Show information about the http request and response.}
-
-\item{host}{Url of host}
 
 \item{count}{Maximum number of bytes to read or write.}
 }

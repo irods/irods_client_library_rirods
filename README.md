@@ -20,7 +20,8 @@ devtools::install_github("MartinSchobben/rirods2")
 ## Example
 
 This is a basic example which shows you how to quickly launch a local
-iRODS server. For more information check
+iRODS server, connect with R, and perform some actions. For more
+information on the iRODS demo server check
 <https://github.com/irods/irods_demo>.
 
 ``` bash
@@ -33,16 +34,28 @@ cd ../irods_demo
 docker-compose up
 ```
 
+Then to connect a project from R with the iRODS server you have to
+provide the host name of the server, like so:
+
+``` r
+library(rirods2)
+
+# connect project to server
+create_irods("http://localhost/irods-rest/0.9.2")
+```
+
+In this example Bobby is a user of iRODS and he can authenticate
+himself, like so:
+
+``` r
+# login as bobby
+iauth("bobby", "passWORD")
+```
+
 Suppose Bobby would like to upload an R object from his current R
 session to an iRODS collection. For this, use the iput command:
 
 ``` r
-library(rirods2)
-#> Start iRODS session.
-
-# login as bobby
-iauth("bobby", "passWORD")
-
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
@@ -53,10 +66,18 @@ ipwd()
 # store
 iput(foo)
 
-# check if file is stored
-ils()
-#>               logical_path        type
-#> 1 /tempZone/home/bobby/foo data_object
+# add some metadata
+imeta(
+  "foo", 
+  "data_object", 
+  operations = 
+    list(operation = "add", attribute = "foo", value = "bar", units = "baz")
+)
+
+# check if file is stored with associated metadata
+ils(metadata = TRUE)
+#>               logical_path      metadata        type
+#> 1 /tempZone/home/bobby/foo foo, bar, baz data_object
 ```
 
 If Bobby wanted to copy the foo R object from an iRODS collection to his

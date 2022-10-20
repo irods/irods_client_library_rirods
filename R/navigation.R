@@ -97,49 +97,57 @@ ipwd <- function() .rirods2$current_dir
 #' # list home directory
 #' ils()
 ils <- function(
-    host = "http://localhost/irods-rest/0.9.2",
     path = ".",
     stat = FALSE,
     permissions = FALSE,
     metadata = FALSE,
     offset = 0,
     limit = 100,
-    message = TRUE
+    message = TRUE,
+    verbose = FALSE
 ) {
 
-  # why does path  == "/" fail???
-
-  token <- local(token, envir = .rirods2)
+  # logical path
   if (path == ".") lpath <- .rirods2$current_dir else lpath <- path
 
-  # request
-  req <- httr2::request(host) |>
-    httr2::req_url_path_append("list") |>
-    httr2::req_headers(Authorization = token) |>
-    httr2::req_url_query(
-      `logical-path` = lpath,
-      stat = as.integer(stat),
-      permissions = as.integer(permissions),
-      metadata = as.integer(metadata),
-      offset = offset,
-      limit = limit
-    )
+  # flags to curl call
+  args <- list(
+    `logical-path` = lpath,
+    stat = as.integer(stat),
+    permissions = as.integer(permissions),
+    metadata = as.integer(metadata),
+    offset = offset,
+    limit = limit
+  )
 
-  # response
-  resp <- httr2::req_perform(req)
+  # http call
+  out <- irods_rest_call("list", "GET", args, verbose)
 
   # parse
   out <- httr2::resp_body_json(
-    resp,
+    out,
     check_type = FALSE,
     simplifyVector = TRUE
   )$`_embedded` |>
     as.data.frame()
 
+  # metadata reordering
+  if (isTRUE(metadata)) {
+    try(out <- metadata_reorder(out), silent = TRUE)
+  }
+
+  # output
   if (nrow(out) == 0) {
-    if (isTRUE(message)) message("This collection does not contain any objects or collections.")
+    if (isTRUE(message))
+      message("This collection does not contain any objects or collections.")
     invisible(out)
   } else {
     out
   }
+}
+
+# reorder metadata if it exists
+metadata_reorder <- function(x) {
+  x$metadata <- Map(function(x) {x <- x[ ,c("attribute", "value", "units")]; x}, x$metadata)
+  x
 }

@@ -8,7 +8,6 @@
 #' @param ... Addition arguments (arg1 up to arg7)
 #'
 #' @return Invisible on success (200) otherwise http status.
-#' @export
 #'
 #' @examples
 #'

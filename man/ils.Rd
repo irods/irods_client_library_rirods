@@ -5,19 +5,17 @@
 \title{Listing iRODS data objects and collections}
 \usage{
 ils(
-  host = "http://localhost/irods-rest/0.9.2",
   path = ".",
   stat = FALSE,
   permissions = FALSE,
   metadata = FALSE,
   offset = 0,
   limit = 100,
-  message = TRUE
+  message = TRUE,
+  verbose = FALSE
 )
 }
 \arguments{
-\item{host}{Url of host}
-
 \item{path}{Directory to be listed.}
 
 \item{stat}{Boolean flag to indicate stat information is desired.}

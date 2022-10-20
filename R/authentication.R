@@ -18,8 +18,13 @@ iauth <- function(user = "rods", password = "rods") {
   # store token
   assign("token", token, envir = .rirods2)
 
-  # starting dir
-  if (user == "rods") start_rirods <- "/tempZone/home" else start_rirods <- paste0("/tempZone/home/", user)
+  # starting dir as admin or user
+  if (user == "rods") {
+    start_rirods <- "/tempZone/home"
+  } else {
+    start_rirods <- paste0("/tempZone/home/", user)
+  }
+
   .rirods2$current_dir <- start_rirods
 
   invisible(NULL)

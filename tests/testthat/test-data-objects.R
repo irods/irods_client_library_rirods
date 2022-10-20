@@ -1,6 +1,7 @@
 test_that("compare shell with R solution", {
 
-  iauth()
+  # create test fixture
+  local_create_irods()
 
   # curl in shell
   system(system.file(package = "rirods2", "bash", "iput.sh"))
@@ -9,6 +10,7 @@ test_that("compare shell with R solution", {
 
   # some data
   foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+
   # store
   iput(foo, path = "/tempZone/home/rods")
 

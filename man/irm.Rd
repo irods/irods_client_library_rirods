@@ -34,13 +34,13 @@ iauth("bobby", "passWORD")
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
 # store
-iput(x = foo)
+iput(foo)
 
 # check if file is stored
 ils()
 
 # delete object
-irm(x = "foo", trash = FALSE)
+irm("foo", trash = FALSE)
 
 # check if file is delete
 ils()
