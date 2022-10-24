@@ -10,7 +10,7 @@ coverage](https://codecov.io/gh/MartinSchobben/rirods2/branch/master/graph/badge
 [![R-CMD-check](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The rirods2 package is a pure R client for iRODS.
+The rirods2 package is an R client for iRODS.
 
 ## Installation
 
@@ -81,9 +81,8 @@ imeta(
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
-#>                logical_path      metadata        type
-#> 1  /tempZone/home/bobby/foo foo, baz, bar data_object
-#> 2 /tempZone/home/bobby/test          NULL data_object
+#>               logical_path      metadata        type
+#> 1 /tempZone/home/bobby/foo foo, bar, baz data_object
 ```
 
 If Bobby wanted to copy the foo R object from an iRODS collection to his
@@ -115,7 +114,6 @@ ils()
 #>                   logical_path        type
 #> 1     /tempZone/home/bobby/foo data_object
 #> 2 /tempZone/home/bobby/foo.csv data_object
-#> 3    /tempZone/home/bobby/test data_object
 ```
 
 Later on somebody else might want to download this file again and store
@@ -149,25 +147,16 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 #>             collection data_object
 #> 1 /tempZone/home/bobby         foo
 #> 2 /tempZone/home/bobby     foo.csv
-#> 3 /tempZone/home/bobby        test
 ```
 
 ``` r
 # or where data objects named "foo" can be found
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#>                    collection        data_object
-#> 1        /tempZone/home/bobby                foo
-#> 2        /tempZone/home/bobby            foo.csv
-#> 3  /tempZone/trash/home/bobby                foo
-#> 4  /tempZone/trash/home/bobby     foo.1432137334
-#> 5  /tempZone/trash/home/bobby     foo.1670263047
-#> 6  /tempZone/trash/home/bobby     foo.4177869540
-#> 7  /tempZone/trash/home/bobby      foo.664475021
-#> 8  /tempZone/trash/home/bobby            foo.csv
-#> 9  /tempZone/trash/home/bobby foo.csv.1711649745
-#> 10 /tempZone/trash/home/bobby foo.csv.1941255562
-#> 11 /tempZone/trash/home/bobby foo.csv.2977888736
-#> 12 /tempZone/trash/home/bobby foo.csv.3435420221
+#>                   collection data_object
+#> 1       /tempZone/home/bobby         foo
+#> 2       /tempZone/home/bobby     foo.csv
+#> 3 /tempZone/trash/home/bobby         foo
+#> 4 /tempZone/trash/home/bobby     foo.csv
 ```
 
 Finally, we can clean up Bobby’s home directory:
@@ -179,8 +168,7 @@ irm("foo.csv", trash = FALSE)
 
 # check if object is removed
 ils()
-#>                logical_path        type
-#> 1 /tempZone/home/bobby/test data_object
+#> This collection does not contain any objects or collections.
 ```
 
 <!-- The user Bobby can also be removed again. -->

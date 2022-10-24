@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The rirods2 package is a pure R client for iRODS.
+The rirods2 package is an R client for iRODS.
 
 ## Installation
 
