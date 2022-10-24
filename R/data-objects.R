@@ -2,17 +2,19 @@
 #'
 #' @param x R object stored on iRODS server.
 #' @param path Destination path.
-#' @param offset Offset in bytes into the data object (Defaults to 0).
+#' @param offset Offset in bytes into the data object (Defaults to FALSE).
+#' @param truncate Truncates the object on open (defaults to TRUE).
 #' @param count Maximum number of bytes to read or write.
 #' @param verbose Show information about the http request and response.
+#' @param overwrite Overwrite irods object or local file (defaults to FALSE).
 #'
 #' @return R object
 #' @export
 #'
 #' @examples
-#'
+#' if(interactive()) {
 #' # authentication
-#' iauth("bobby", "passWORD")
+#' iauth()
 #'
 #' # some data
 #' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
@@ -25,11 +27,12 @@
 #'
 #' # retrieve in native R format
 #' iget("foo")
-#'
+#' }
 iput <- function(
     x,
     path = ".",
     offset = 0,
+    truncate = TRUE,
     verbose = FALSE,
     overwrite = FALSE
   ) {
@@ -51,8 +54,23 @@ iput <- function(
     lpath <- paste0(path, "/", name)
   }
 
+  # check if irods object already exists and whether it should be overwritten
+  if (path_exists(lpath) && isFALSE(overwrite))
+    stop(
+      "Object [",
+      lpath,
+      "] already exists.",
+      "Set `overwrite = TRUE` to explicitely overwrite the object.",
+      call. = FALSE
+    )
+
   # flags to curl call
-  args <- list(`logical-path` = lpath, offset = offset)
+
+  args <- list(
+            `logical-path` = lpath,
+            offset = offset,
+            truncate = as.integer(truncate)
+          )
 
   # http call
   out <- irods_rest_call("stream", "PUT", args, verbose, x)
@@ -77,8 +95,11 @@ iget  <- function(
 
   # check for local file
   if (isFALSE(overwrite) && is.character(x) && file.exists(pt))
-    stop("File exists already. Set the argument `overwrite` to TRUE to",
-         "overwrite the file.")
+    stop(
+      "Local file aready exists.",
+      "Set `overwrite = TRUE` to explicitely overwrite the object.",
+      call. = FALSE
+    )
 
   # logical path
   if (!grepl("/", x)) {
@@ -96,11 +117,15 @@ iget  <- function(
   # parse response
   resp <- httr2::resp_body_raw(out)
 
+  on.exit(close(con)) # close connection
+
   # convert to file or R object
   if (is.character(x) && tools::file_ext(x) %in% c("csv", "tsv")) {
-    writeBin(resp, x)
+    con <- file(x, "wb")
+    writeBin(resp, con)
   } else {
     con <- rawConnection(resp)
     readRDS(gzcon(con))
   }
+
 }

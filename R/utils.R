@@ -7,7 +7,14 @@ find_host <- function() {
   sub("host: ", "", x)
 }
 
-irods_rest_call <- function(endpoint, verb, args, verbose, object = NULL) {
+irods_rest_call <- function(
+    endpoint,
+    verb,
+    args,
+    verbose,
+    object = NULL,
+    error = TRUE
+  ) {
 
   # get token from secret environment
   token <- local(token, envir = .rirods2)
@@ -20,6 +27,10 @@ irods_rest_call <- function(endpoint, verb, args, verbose, object = NULL) {
 
   # add further args to request
   req <- do.call(function(...) httr2::req_url_query(req, ...), args)
+
+  # error handling
+  if (isTRUE(error))
+    req <- httr2::req_error(req, body = irods_errors)
 
   # the file to be send along
   if (!is.null(object)) {
@@ -40,6 +51,11 @@ irods_rest_call <- function(endpoint, verb, args, verbose, object = NULL) {
   httr2::req_perform(req)
 }
 
+# irods rest api errors
+irods_errors <- function(resp) {
+  httr2::resp_body_json(resp, check_type = FALSE)$error_message
+}
+
 # figure out what type of data is to be send
 data_switch <- function(type, req, object) {
 
@@ -48,8 +64,40 @@ data_switch <- function(type, req, object) {
     httr2::req_body_raw(req, object),
     tsv = ,
     csv = httr2::req_body_file(req, object),
-    json = httr2::req_body_json(req, object, auto_unbox = TRUE, digits = NA, null = "null")
+    json = httr2::req_body_json(req, object, auto_unbox = TRUE, digits = NA,
+                                null = "null")
   )
 }
 
-ifile.exists <- function(){}
+# check if irods collection exists
+is_collection <- function(current_dir) {
+
+  # initial check
+  if (path_exists(current_dir))
+    lpath <- ils(path = current_dir, message = FALSE)
+  else
+    stop("Logical path [", current_dir,"] is not accessible.", call. = FALSE)
+
+  # this cannot be a collection
+  if (current_dir %in% lpath$logical_path && lpath$type == "data_object") {
+    FALSE
+  } else {
+    TRUE
+  }
+
+}
+
+# check if irods data object exists
+is_object <- function(current_dir) !is_collection(current_dir)
+
+# check if irods path exists
+path_exists <- function(current_dir) {
+
+  lpath <- try(ils(path = current_dir, message = FALSE), silent = TRUE)
+
+  if (inherits(lpath, "try-error")) {
+    FALSE
+  } else {
+    TRUE
+  }
+}

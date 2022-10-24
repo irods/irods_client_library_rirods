@@ -3,7 +3,7 @@
 \name{imeta}
 \alias{imeta}
 \alias{iquery}
-\title{Title}
+\title{Describe your data}
 \usage{
 imeta(
   x,
@@ -34,15 +34,54 @@ the metadata triplet attribute, value, units.}
 
 \item{path}{Path to object (defaults to \code{"."}).}
 
-\item{verbose}{Show information about the http request and response.}
+\item{verbose}{Show information about the http request and response.
+query}
+
+\item{query}{GeneralQuery for searching the iCAT database.}
+
+\item{limit}{The max number of rows to return (defaults to 100)}
+
+\item{offset}{Number of rows to skip for paging (defaults to 0).}
+
+\item{type}{Either 'general' or 'specific' (defaults to 'general').}
+
+\item{casesensitive}{Affects string matching (defaults to TRUE).}
+
+\item{distinct}{Only list distinct rows (defaults to TRUE).}
 }
 \value{
 Invisibly returns the response.
 }
 \description{
-Title
+Describe your data
 }
 \examples{
+if(interactive()) {
+# authentication
+iauth()
 
+# some data
+foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+
+# store
+iput(foo)
+
+# check if file is stored
+ils()
+
+# add some metadata
+# add some metadata
+imeta(
+ "foo",
+ "data_object",
+ operations =
+  list(operation = "add", attribute = "foo", value = "bar", units = "baz")
+)
+
+# check if file is stored with associated metadata
+ils(metadata = TRUE)
+
+# search for objects by metadata
 iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/\%'")
+}
 }

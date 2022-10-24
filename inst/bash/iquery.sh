@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # token
 SECRETS=$(echo -n bobby:passWORD | base64)
 TOKEN=$(curl -X POST -H "Authorization: Basic ${SECRETS}" http://localhost:80/irods-rest/0.9.2/auth)

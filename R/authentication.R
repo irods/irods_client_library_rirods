@@ -1,16 +1,26 @@
 #' Authentication service for the iRODS zone
 #'
-#' @inheritParams iadmin
+#' @param user iRODS user name.
+#' @param password iRODS password.
+
 #'
 #' @return String
 #' @export
 #'
 #' @examples
-#'
+#' if(interactive()) {
 #' # authenticate
-#' iauth() # i
-#'
-iauth <- function(user = "rods", password = "rods") {
+#' iauth()
+#' }
+iauth <- function(user = NULL, password = NULL) {
+
+  # ask for credentials
+  if (is.null(user)) {
+    user <- askpass::askpass("Please enter your username:")
+  }
+  if (is.null(password)) {
+    password <- askpass::askpass()
+  }
 
   # get token
   token <- get_token(paste(user, password, sep =":"))

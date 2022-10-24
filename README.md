@@ -4,9 +4,13 @@
 # rirods2
 
 <!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/MartinSchobben/rirods2/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/rirods2?branch=master)
+[![R-CMD-check](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of rirods2 is a pure R client for iRODS
+The rirods2 package is a pure R client for iRODS.
 
 ## Installation
 
@@ -44,12 +48,13 @@ library(rirods2)
 create_irods("http://localhost/irods-rest/0.9.2")
 ```
 
-In this example Bobby is a user of iRODS and he can authenticate
-himself, like so:
+In this example Bobby is a user of iRODS and he can authenticate himself
+with `iauth()`. This prompts a dialog where you can enter your username
+and password without hardcoding this information in your scripts.
 
 ``` r
 # login as bobby
-iauth("bobby", "passWORD")
+iauth()
 ```
 
 Suppose Bobby would like to upload an R object from his current R
@@ -76,8 +81,9 @@ imeta(
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
-#>               logical_path      metadata        type
-#> 1 /tempZone/home/bobby/foo foo, bar, baz data_object
+#>                logical_path      metadata        type
+#> 1  /tempZone/home/bobby/foo foo, baz, bar data_object
+#> 2 /tempZone/home/bobby/test          NULL data_object
 ```
 
 If Bobby wanted to copy the foo R object from an iRODS collection to his
@@ -109,6 +115,7 @@ ils()
 #>                   logical_path        type
 #> 1     /tempZone/home/bobby/foo data_object
 #> 2 /tempZone/home/bobby/foo.csv data_object
+#> 3    /tempZone/home/bobby/test data_object
 ```
 
 Later on somebody else might want to download this file again and store
@@ -142,6 +149,7 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 #>             collection data_object
 #> 1 /tempZone/home/bobby         foo
 #> 2 /tempZone/home/bobby     foo.csv
+#> 3 /tempZone/home/bobby        test
 ```
 
 ``` r
@@ -151,25 +159,15 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
 #> 1        /tempZone/home/bobby                foo
 #> 2        /tempZone/home/bobby            foo.csv
 #> 3  /tempZone/trash/home/bobby                foo
-#> 4  /tempZone/trash/home/bobby     foo.1243538807
-#> 5  /tempZone/trash/home/bobby     foo.1397457722
-#> 6  /tempZone/trash/home/bobby     foo.1897832140
-#> 7  /tempZone/trash/home/bobby     foo.2139999920
-#> 8  /tempZone/trash/home/bobby     foo.3407179898
-#> 9  /tempZone/trash/home/bobby     foo.3674208461
-#> 10 /tempZone/trash/home/bobby     foo.3875447246
-#> 11 /tempZone/trash/home/bobby      foo.432847936
-#> 12 /tempZone/trash/home/bobby      foo.799865305
-#> 13 /tempZone/trash/home/bobby            foo.csv
-#> 14 /tempZone/trash/home/bobby foo.csv.1034183041
-#> 15 /tempZone/trash/home/bobby foo.csv.1638565932
-#> 16 /tempZone/trash/home/bobby foo.csv.1846147999
-#> 17 /tempZone/trash/home/bobby foo.csv.2183868033
-#> 18 /tempZone/trash/home/bobby foo.csv.2279356880
-#> 19 /tempZone/trash/home/bobby foo.csv.3275042440
-#> 20 /tempZone/trash/home/bobby  foo.csv.342948025
-#> 21 /tempZone/trash/home/bobby foo.csv.3503481366
-#> 22 /tempZone/trash/home/bobby  foo.csv.809666106
+#> 4  /tempZone/trash/home/bobby     foo.1432137334
+#> 5  /tempZone/trash/home/bobby     foo.1670263047
+#> 6  /tempZone/trash/home/bobby     foo.4177869540
+#> 7  /tempZone/trash/home/bobby      foo.664475021
+#> 8  /tempZone/trash/home/bobby            foo.csv
+#> 9  /tempZone/trash/home/bobby foo.csv.1711649745
+#> 10 /tempZone/trash/home/bobby foo.csv.1941255562
+#> 11 /tempZone/trash/home/bobby foo.csv.2977888736
+#> 12 /tempZone/trash/home/bobby foo.csv.3435420221
 ```
 
 Finally, we can clean up Bobby’s home directory:
@@ -181,7 +179,8 @@ irm("foo.csv", trash = FALSE)
 
 # check if object is removed
 ils()
-#> This collection does not contain any objects or collections.
+#>                logical_path        type
+#> 1 /tempZone/home/bobby/test data_object
 ```
 
 <!-- The user Bobby can also be removed again. -->

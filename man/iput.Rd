@@ -5,7 +5,14 @@
 \alias{iget}
 \title{Working with data objects}
 \usage{
-iput(x, path = ".", offset = 0, verbose = FALSE, overwrite = FALSE)
+iput(
+  x,
+  path = ".",
+  offset = 0,
+  truncate = TRUE,
+  verbose = FALSE,
+  overwrite = FALSE
+)
 
 iget(x, path = x, offset = 0, count = 1000, verbose = FALSE, overwrite = FALSE)
 }
@@ -14,9 +21,13 @@ iget(x, path = x, offset = 0, count = 1000, verbose = FALSE, overwrite = FALSE)
 
 \item{path}{Destination path.}
 
-\item{offset}{Offset in bytes into the data object (Defaults to 0).}
+\item{offset}{Offset in bytes into the data object (Defaults to FALSE).}
+
+\item{truncate}{Truncates the object on open (defaults to TRUE).}
 
 \item{verbose}{Show information about the http request and response.}
+
+\item{overwrite}{Overwrite irods object or local file (defaults to FALSE).}
 
 \item{count}{Maximum number of bytes to read or write.}
 }
@@ -27,9 +38,9 @@ R object
 Working with data objects
 }
 \examples{
-
+if(interactive()) {
 # authentication
-iauth("bobby", "passWORD")
+iauth()
 
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
@@ -42,5 +53,5 @@ ils()
 
 # retrieve in native R format
 iget("foo")
-
+}
 }

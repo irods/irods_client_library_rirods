@@ -1,64 +1,55 @@
 #' The administration interface to the iRODS
 #'
-#' @param host Url of host
-#' @param token Token for authentication
 #' @param action The action: add, modify, or remove.
 #' @param target The subject of the action: user, zone, resource, childtoresc,
 #'  childfromresc, token, group, rebalance, unusedAVUs, specificQuery.
-#' @param ... Addition arguments (arg1 up to arg7)
+#' @param arg2 arg2
+#' @param arg3 arg3
+#' @param arg4 arg4
+#' @param arg5 arg5
+#' @param arg6 arg6
+#' @param arg7 arg7
+#' @param verbose Show information about the http request and response.
 #'
 #' @return Invisible on success (200) otherwise http status.
 #'
-#' @examples
-#'
-#' # authenticate
-#' auth()
-#'
-#' # add user bobby
-#' iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
-#'
-#' # check if bobby is added
-#' ils()
-#'
-#' # remove user bobby
-#' iadmin(action = "remove", target = "user", arg2 = "bobby")
-#'
-#' # check if bobby is removed
-#' ils()
-#'
 iadmin <- function(
-    host = "http://localhost/irods-rest/0.9.2",
     action,
     target,
-    ...,
+    arg2 = character(1),
+    arg3 = character(1),
+    arg4 = character(1),
+    arg5 = character(1),
+    arg6 = character(1),
+    arg7 = character(1),
     verbose = FALSE
   ) {
 
   token <- local(token, envir = .rirods2)
 
-  # check dots
-  ellipsis::check_dots_used()
-  add_args <- add_args(...)
-
   # request
-  req <- httr2::request(host) |>
+  req <- httr2::request(find_host()) |>
     httr2::req_headers(Authorization = token) |>
+    httr2::req_url_query(
+      action = action,
+      target = target,
+      arg2 = arg2,
+      arg3 = arg3,
+      arg4 = arg4,
+      arg5 = arg5,
+      arg6 = arg6,
+      arg7 = arg7
+    ) |>
     httr2::req_url_path_append("admin") |>
-    httr2::req_url_query(action = action, target = target, rlang::splice(add_args)) |>
-    httr2::req_method("POST")
+    httr2::req_method("POST") |>
+    httr2::req_error(body = irods_errors, is_error = function(resp) FALSE)
 
   # verbose request response status
   if (isTRUE(verbose)) req <- httr2::req_verbose(req)
 
   # response
-  resp <- req |>
-    httr2::req_error(is_error = function(resp) FALSE) |>
-    httr2::req_perform()
+  resp <- httr2::req_perform(req)
 
-  if (httr2::resp_status(resp) >= 400) 0 else invisible(resp)
+  if (httr2::resp_status(resp) >= 400) invisible(NULL) else invisible(resp)
 }
 
-add_args <- function(arg2 = character(1), arg3 = character(1), arg4 = character(1), arg5 = character(1), arg6 = character(1), arg7 = character(1)) {
-  list(arg2, arg3, arg4, arg5, arg6, arg7) |>
-    setNames(c("arg2", "arg3", "arg4", "arg5", "arg6", "arg7"))
-}

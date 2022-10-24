@@ -11,9 +11,10 @@
 #' @export
 #'
 #' @examples
-#'
+#' if(interactive()) {
 #' # connect project to server
 #' create_irods("http://localhost/irods-rest/0.9.2")
+#' }
 create_irods <- function(host, path = ".", overwrite = FALSE) {
   # project name
   name <- basename(getwd())

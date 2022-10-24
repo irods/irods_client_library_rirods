@@ -7,13 +7,22 @@ try({
   withr::defer(unlink("testthat.irods"), teardown_env())
 
   # authenticate
-  iauth()
+  iauth("rods", "rods")
 
   # add user bobby
   iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
 
   # modify pass word bobby
   iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", arg4  = "passWORD")
+
+  # test object
+  iauth("bobby", "passWORD")
+  test <- 1
+  iput(test, path = "/tempZone/home/bobby", overwrite = TRUE)
+
+  # authenticate
+  iauth("rods", "rods")
+
 },
 silent = TRUE
 )

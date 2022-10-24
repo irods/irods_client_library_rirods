@@ -5,46 +5,40 @@
 \title{The administration interface to the iRODS}
 \usage{
 iadmin(
-  host = "http://localhost/irods-rest/0.9.2",
   action,
   target,
-  ...,
+  arg2 = character(1),
+  arg3 = character(1),
+  arg4 = character(1),
+  arg5 = character(1),
+  arg6 = character(1),
+  arg7 = character(1),
   verbose = FALSE
 )
 }
 \arguments{
-\item{host}{Url of host}
-
 \item{action}{The action: add, modify, or remove.}
 
 \item{target}{The subject of the action: user, zone, resource, childtoresc,
 childfromresc, token, group, rebalance, unusedAVUs, specificQuery.}
 
-\item{...}{Addition arguments (arg1 up to arg7)}
+\item{arg2}{arg2}
 
-\item{token}{Token for authentication}
+\item{arg3}{arg3}
+
+\item{arg4}{arg4}
+
+\item{arg5}{arg5}
+
+\item{arg6}{arg6}
+
+\item{arg7}{arg7}
+
+\item{verbose}{Show information about the http request and response.}
 }
 \value{
 Invisible on success (200) otherwise http status.
 }
 \description{
 The administration interface to the iRODS
-}
-\examples{
-
-# authenticate
-auth()
-
-# add user bobby
-iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
-
-# check if bobby is added
-ils()
-
-# remove user bobby
-iadmin(action = "remove", target = "user", arg2 = "bobby")
-
-# check if bobby is removed
-ils()
-
 }

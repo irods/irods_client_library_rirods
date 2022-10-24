@@ -16,9 +16,11 @@ knitr::opts_chunk$set(
 # rirods2
 
 <!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/MartinSchobben/rirods2/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/rirods2?branch=master)
+[![R-CMD-check](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of rirods2 is a pure R client for iRODS
+The rirods2 package is a pure R client for iRODS.
 
 ## Installation
 
@@ -43,18 +45,39 @@ cd ../irods_demo
 docker-compose up
 ```
 
+```{r admin, include=FALSE}
+library(rirods2)
+# switch to new irods project
+create_irods("http://localhost/irods-rest/0.9.2", overwrite = TRUE)
+
+# authenticate
+iauth("rods", "rods")
+
+# add user bobby
+rirods2:::iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
+
+# modify pass word bobby
+rirods2:::iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", arg4  = "passWORD")
+```
+
 Then to connect a project from R with the iRODS server you have to provide the host name of the server, like so:
 
-```{r start}
+```{r start, eval=FALSE}
 library(rirods2)
 
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.2")
 ```
 
-In this example Bobby is a user of iRODS and he can authenticate himself, like so:
+In this example Bobby is a user of iRODS and he can authenticate himself with `iauth()`. This prompts a dialog where you can enter your username and password without hardcoding this information in your scripts.
 
-```{r, bobby}
+```{r, bobby, eval=FALSE}
+# login as bobby
+iauth()
+```
+
+
+```{r, secret, include=FALSE}
 # login as bobby
 iauth("bobby", "passWORD")
 ```
@@ -151,7 +174,7 @@ file.remove("foo.csv")
 
 ```{r rmbobby, include=FALSE}
 # authenticate
-iauth()
+iauth("rods", "rods")
 
 # remove user bobby
 rirods2:::iadmin(action = "remove", target = "user", arg2 = "bobby")

@@ -21,7 +21,8 @@ This will create an irods project file containing information about the
 iRODS server.
 }
 \examples{
-
+if(interactive()) {
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.2")
+}
 }

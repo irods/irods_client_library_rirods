@@ -4,7 +4,12 @@
 \alias{iauth}
 \title{Authentication service for the iRODS zone}
 \usage{
-iauth(user = "rods", password = "rods")
+iauth(user = NULL, password = NULL)
+}
+\arguments{
+\item{user}{iRODS user name.}
+
+\item{password}{iRODS password.}
 }
 \value{
 String
@@ -13,8 +18,8 @@ String
 Authentication service for the iRODS zone
 }
 \examples{
-
+if(interactive()) {
 # authenticate
-iauth() # i
-
+iauth()
+}
 }

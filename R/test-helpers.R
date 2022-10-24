@@ -5,7 +5,6 @@ local_create_irods <- function(
     env = parent.frame()
   ) {
 
-
   # to return to
   old_dir <- getwd()
 
@@ -17,13 +16,17 @@ local_create_irods <- function(
   create_irods(host, overwrite = TRUE)
 
   # authenticate
-  iauth()
+  iauth("rods", "rods")
 
   # add user bobby
   iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
 
   # modify pass word bobby
-  iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", arg4  = "passWORD")
+  iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password",
+         arg4  = "passWORD")
+
+  # login
+  iauth("bobby", "passWORD")
 
   invisible(dir)
 }

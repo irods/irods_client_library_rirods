@@ -1,3 +1,4 @@
+#!/bin/sh
 
 # token
 SECRETS=$(echo -n bobby:passWORD | base64)

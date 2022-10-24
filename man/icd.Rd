@@ -20,7 +20,7 @@ invisibly returns the path
 Retrieve an object from iRODS
 }
 \examples{
-
+if(interactive()) {
 # authenticate
 iauth()
 
@@ -40,5 +40,5 @@ ipwd()
 # relative paths work as well
 icd("../home/public")
 ipwd()
-
+}
 }

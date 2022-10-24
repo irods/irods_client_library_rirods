@@ -26,9 +26,9 @@ Invisible object to be removed
 Delete an object from iRODS
 }
 \examples{
-
+if(interactive()) {
 # authentication
-iauth("bobby", "passWORD")
+iauth()
 
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
@@ -44,4 +44,5 @@ irm("foo", trash = FALSE)
 
 # check if file is delete
 ils()
+}
 }

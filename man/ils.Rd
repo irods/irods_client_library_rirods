@@ -31,6 +31,8 @@ desired.}
 
 \item{message}{In case the collection is empty a message saying so is
 returned.}
+
+\item{verbose}{Show information about the http request and response.}
 }
 \value{
 tibble with logical paths
@@ -40,10 +42,11 @@ Recursive listing of a collection, or stat, metadata, and access control
 information for a given data object.
 }
 \examples{
-
+if(interactive()) {
 # authenticate
-auth()
+iauth()
 
 # list home directory
 ils()
+}
 }

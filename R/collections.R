@@ -11,9 +11,9 @@
 #' @export
 #'
 #' @examples
-#'
+#' if(interactive()) {
 #' # authentication
-#' iauth("bobby", "passWORD")
+#' iauth()
 #'
 #' # some data
 #' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
@@ -29,6 +29,7 @@
 #'
 #' # check if file is delete
 #' ils()
+#' }
 irm <- function(x, trash = TRUE, recursive = FALSE, unregister = FALSE,
                 verbose = FALSE) {
 

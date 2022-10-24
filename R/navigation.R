@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-#'
+#' if(interactive()) {
 #' # authenticate
 #' iauth()
 #'
@@ -27,7 +27,7 @@
 #' # relative paths work as well
 #' icd("../home/public")
 #' ipwd()
-#'
+#' }
 icd  <- function(dir) {
 
   # get current dir
@@ -39,7 +39,8 @@ icd  <- function(dir) {
   if (dir  == "..") {
     current_dir <- local(current_dir, envir = .rirods2)
     current_dir <- sub(paste0("/", basename(current_dir)), "", current_dir)
-    if (current_dir == character(1)) current_dir <- "/"
+    if (current_dir == character(1))
+      current_dir <- "/"
   }
 
   # get requested dir
@@ -49,12 +50,15 @@ icd  <- function(dir) {
       current_dir <- dir
     } else {
       base_dir <- icd(".")
-      current_dir <- paste0(base_dir, ifelse(base_dir == "/", "", "/"), sub("\\.\\./", "", dir))
+      current_dir <- paste0(
+        base_dir,
+        ifelse(base_dir == "/", "", "/"), sub("\\.\\./", "", dir)
+      )
     }
 
-    # check if exist
-    idir <- try(ils(path = current_dir, message = FALSE), silent = TRUE)
-    if (inherits(idir, "try-error")) stop("No such directory (collection).", call. = FALSE)
+    # check if irods collecion exists
+    if (!is_collection(current_dir))
+      stop("This is not a directory (collection).", call. = FALSE)
 
     current_dir
   }
@@ -75,7 +79,6 @@ ipwd <- function() .rirods2$current_dir
 #' Recursive listing of a collection, or stat, metadata, and access control
 #' information for a given data object.
 #'
-#' @inheritParams iadmin
 #' @param path Directory to be listed.
 #' @param stat Boolean flag to indicate stat information is desired.
 #' @param permissions  Boolean flag to indicate access control information is
@@ -85,17 +88,19 @@ ipwd <- function() .rirods2$current_dir
 #' @param limit Number of records desired per page.
 #' @param message In case the collection is empty a message saying so is
 #'  returned.
+#' @param verbose Show information about the http request and response.
 #'
 #' @return tibble with logical paths
 #' @export
 #'
 #' @examples
-#'
+#' if(interactive()) {
 #' # authenticate
-#' auth()
+#' iauth()
 #'
 #' # list home directory
 #' ils()
+#' }
 ils <- function(
     path = ".",
     stat = FALSE,
@@ -151,3 +156,4 @@ metadata_reorder <- function(x) {
   x$metadata <- Map(function(x) {x <- x[ ,c("attribute", "value", "units")]; x}, x$metadata)
   x
 }
+

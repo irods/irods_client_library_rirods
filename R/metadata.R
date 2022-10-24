@@ -1,4 +1,4 @@
-#' Title
+#' Describe your data
 #'
 #' @param x object, collection or user
 #' @param entity_type Type (object, collection or user)
@@ -7,13 +7,46 @@
 #'   the metadata triplet attribute, value, units.
 #' @param path Path to object (defaults to `"."`).
 #' @param verbose Show information about the http request and response.
+#'     query
+#' @param query GeneralQuery for searching the iCAT database.
+#' @param limit  The max number of rows to return (defaults to 100)
+#' @param offset Number of rows to skip for paging (defaults to 0).
+#' @param type Either 'general' or 'specific' (defaults to 'general').
+#' @param casesensitive Affects string matching (defaults to TRUE).
+#' @param distinct Only list distinct rows (defaults to TRUE).
 #'
 #' @return Invisibly returns the response.
 #' @export
 #'
 #' @examples
+#' if(interactive()) {
+#' # authentication
+#' iauth()
 #'
+#' # some data
+#' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+#'
+#' # store
+#' iput(foo)
+#'
+#' # check if file is stored
+#' ils()
+#'
+#' # add some metadata
+#'# add some metadata
+#' imeta(
+#'  "foo",
+#'  "data_object",
+#'  operations =
+#'   list(operation = "add", attribute = "foo", value = "bar", units = "baz")
+#' )
+#'
+#' # check if file is stored with associated metadata
+#' ils(metadata = TRUE)
+#'
+#' # search for objects by metadata
 #' iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
+#' }
 imeta <- function(
     x,
     entity_type,

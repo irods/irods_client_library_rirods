@@ -16,18 +16,29 @@ with_mock_dir("navigation", {
     # relative paths work as well
     expect_invisible(icd("../home/public"))
     expect_snapshot(ipwd())
+
+    # error when selecting file instead of collection
+    expect_error(icd("/tempZone/home/bobby/test"))
+    # or for typos and permissions errors
+    expect_error(icd("tempZone/home/frank"))
+
   })
 })
 
-test_that("compare shell with R solution", {
+test_that("shell equals R solution", {
 
   # this can not be accommodated by httptest2
   skip_if_offline()
   skip_if(inherits(tk, "try-error"))
 
   # curl in shell
-  shell <- system(system.file(package = "rirods2", "bash", "ils.sh"), intern = TRUE) |>
+  shell <- system(
+    system.file(package = "rirods2", "bash", "ils.sh"),
+    ignore.stderr = TRUE,
+    intern = TRUE
+  ) |>
     jsonlite::fromJSON()
+
   # curl in R
   R <- ils(path = "/tempZone/home")
   expect_equal(R, shell$`_embedded`)
