@@ -15,4 +15,6 @@ with_mock_dir("helpers", {
     expect_false(is_object("/tempZone/home/bobby")) # is a collection
     expect_error(is_object("/tempZone/home/frank/test")) # does not exist at all
   })
-})
+},
+simplify = FALSE
+)
