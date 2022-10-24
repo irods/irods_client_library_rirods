@@ -54,7 +54,7 @@
 <div class="page-header"><h1 id="rirods2">rirods2<a class="anchor" aria-label="anchor" href="#rirods2"></a>
 </h1></div>
 <!-- badges: start -->
-<p>The rirods2 package is a pure R client for iRODS.</p>
+<p>The rirods2 package is an R client for iRODS.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -106,9 +106,8 @@
 <span></span>
 <span><span class="co"># check if file is stored with associated metadata</span></span>
 <span><span class="fu"><a href="reference/ils.html">ils</a></span><span class="op">(</span>metadata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                logical_path      metadata        type</span></span>
-<span><span class="co">#&gt; 1  /tempZone/home/bobby/foo foo, baz, bar data_object</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/bobby/test          NULL data_object</span></span></code></pre></div>
+<span><span class="co">#&gt;               logical_path      metadata        type</span></span>
+<span><span class="co">#&gt; 1 /tempZone/home/bobby/foo foo, bar, baz data_object</span></span></code></pre></div>
 <p>If Bobby wanted to copy the foo R object from an iRODS collection to his local directory, he would use iget:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># retrieve in native R format</span></span>
@@ -131,8 +130,7 @@
 <span><span class="fu"><a href="reference/ils.html">ils</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                   logical_path        type</span></span>
 <span><span class="co">#&gt; 1     /tempZone/home/bobby/foo data_object</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/bobby/foo.csv data_object</span></span>
-<span><span class="co">#&gt; 3    /tempZone/home/bobby/test data_object</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 /tempZone/home/bobby/foo.csv data_object</span></span></code></pre></div>
 <p>Later on somebody else might want to download this file again and store it locally.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># retrieve it again later</span></span>
@@ -158,24 +156,15 @@
 <span><span class="fu"><a href="reference/imeta.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             collection data_object</span></span>
 <span><span class="co">#&gt; 1 /tempZone/home/bobby         foo</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/bobby     foo.csv</span></span>
-<span><span class="co">#&gt; 3 /tempZone/home/bobby        test</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 /tempZone/home/bobby     foo.csv</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># or where data objects named "foo" can be found</span></span>
 <span><span class="fu"><a href="reference/imeta.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                    collection        data_object</span></span>
-<span><span class="co">#&gt; 1        /tempZone/home/bobby                foo</span></span>
-<span><span class="co">#&gt; 2        /tempZone/home/bobby            foo.csv</span></span>
-<span><span class="co">#&gt; 3  /tempZone/trash/home/bobby                foo</span></span>
-<span><span class="co">#&gt; 4  /tempZone/trash/home/bobby     foo.1432137334</span></span>
-<span><span class="co">#&gt; 5  /tempZone/trash/home/bobby     foo.1670263047</span></span>
-<span><span class="co">#&gt; 6  /tempZone/trash/home/bobby     foo.4177869540</span></span>
-<span><span class="co">#&gt; 7  /tempZone/trash/home/bobby      foo.664475021</span></span>
-<span><span class="co">#&gt; 8  /tempZone/trash/home/bobby            foo.csv</span></span>
-<span><span class="co">#&gt; 9  /tempZone/trash/home/bobby foo.csv.1711649745</span></span>
-<span><span class="co">#&gt; 10 /tempZone/trash/home/bobby foo.csv.1941255562</span></span>
-<span><span class="co">#&gt; 11 /tempZone/trash/home/bobby foo.csv.2977888736</span></span>
-<span><span class="co">#&gt; 12 /tempZone/trash/home/bobby foo.csv.3435420221</span></span></code></pre></div>
+<span><span class="co">#&gt;                   collection data_object</span></span>
+<span><span class="co">#&gt; 1       /tempZone/home/bobby         foo</span></span>
+<span><span class="co">#&gt; 2       /tempZone/home/bobby     foo.csv</span></span>
+<span><span class="co">#&gt; 3 /tempZone/trash/home/bobby         foo</span></span>
+<span><span class="co">#&gt; 4 /tempZone/trash/home/bobby     foo.csv</span></span></code></pre></div>
 <p>Finally, we can clean up Bobby’s home directory:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># delete object</span></span>
@@ -184,8 +173,7 @@
 <span></span>
 <span><span class="co"># check if object is removed</span></span>
 <span><span class="fu"><a href="reference/ils.html">ils</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                logical_path        type</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/bobby/test data_object</span></span></code></pre></div>
+<span><span class="co">#&gt; This collection does not contain any objects or collections.</span></span></code></pre></div>
 <!-- The user Bobby can also be removed again. -->
 </div>
 <div class="section level2">
