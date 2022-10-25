@@ -69,7 +69,8 @@ imeta <- function(
   }
 
   # check list depth if 1 add another layer
-  if (list_depth(operations) == 1) operations <- list(operations)
+  if (list_depth(operations) == 1)
+    operations <- list(operations)
 
   # data to be converted to json for body (double operation list important for boxing)
   json <- list(
@@ -82,32 +83,6 @@ imeta <- function(
   resp <- irods_rest_call("metadata", "POST", args = list(), verbose, json)
 
   invisible(resp)
-}
-
-# cmds generator
-gen_cmds <- function(x, entity_type, operation, attribute, value, units) {
-
-  op <- gen_cmds_(operation, attribute, value, units)
-  paste0(
-    '{',
-      '"entity_name": "', x, '",',
-      '"entity_type": "', entity_type, '",',
-      '"operations": [',
-        op,
-      ']',
-    '}'
-  )
-}
-
-gen_cmds_ <- function(operation, attribute, value, units) {
-  paste0(
-    '{',
-      '"operation": "', operation, '",',
-      '"attribute": "', attribute, '",',
-      '"value": "', value, '",',
-      '"units": "', units, '"',
-    '}'
-  )
 }
 
 # measure depth of list (https://stackoverflow.com/questions/13432863/determine-level-of-nesting-in-r)

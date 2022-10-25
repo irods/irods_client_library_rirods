@@ -23,5 +23,25 @@ with_mock_dir("metadata", {
     )
 
     expect_snapshot(ils(metadata = TRUE))
+
+    # query
+    expect_snapshot(
+      iquery(
+        "SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'"
+      )
+    )
+
   })
+})
+
+test_that("list depth can be measured", {
+
+  # several varying depth lists
+  list1 <- list("x")
+  list2 <- list(list("x"))
+  list3 <- list(list(list("x")))
+
+  expect_equal(list_depth(list1), 1L)
+  expect_equal(list_depth(list2), 2L)
+  expect_equal(list_depth(list3), 3L)
 })

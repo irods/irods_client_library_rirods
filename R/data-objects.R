@@ -60,12 +60,11 @@ iput <- function(
       "Object [",
       lpath,
       "] already exists.",
-      "Set `overwrite = TRUE` to explicitely overwrite the object.",
+      " Set `overwrite = TRUE` to explicitely overwrite the object.",
       call. = FALSE
     )
 
   # flags to curl call
-
   args <- list(
             `logical-path` = lpath,
             offset = offset,
@@ -97,7 +96,7 @@ iget  <- function(
   if (isFALSE(overwrite) && is.character(x) && file.exists(pt))
     stop(
       "Local file aready exists.",
-      "Set `overwrite = TRUE` to explicitely overwrite the object.",
+      " Set `overwrite = TRUE` to explicitely overwrite the object.",
       call. = FALSE
     )
 
