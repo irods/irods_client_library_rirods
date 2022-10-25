@@ -2,8 +2,8 @@ pandoc: 2.14.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-10-25T09:10Z
+last_built: 2022-10-25T14:01Z
 urls:
-  reference: https://martinschobben.github.io/rirods2/reference
-  article: https://martinschobben.github.io/rirods2/articles
+  reference: https://martinschobben.github.io/rirods/reference
+  article: https://martinschobben.github.io/rirods/articles
 
