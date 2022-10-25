@@ -29,4 +29,4 @@ Config/testthat/edition: 3
 Depends: 
     R (>= 2.10)
 Language: en-US
-URL: https://martinschobben.github.io/rirods2/
+URL: https://martinschobben.github.io/rirods/
