@@ -1,4 +1,4 @@
-Package: rirods2
+Package: rirods
 Title: R Client for iRODS
 Version: 0.0.0.9000
 Authors@R: 

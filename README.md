@@ -1,24 +1,24 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rirods2
+# rirods
 
 <!-- badges: start -->
 
 [![Codecov test
-coverage](https://codecov.io/gh/MartinSchobben/rirods2/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/rirods2?branch=master)
-[![R-CMD-check](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/rirods2/actions/workflows/R-CMD-check.yaml)
+coverage](https://codecov.io/gh/MartinSchobben/rirods/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/rirods?branch=master)
+[![R-CMD-check](https://github.com/MartinSchobben/rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/rirods/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The rirods2 package is an R client for iRODS.
+The rirods package is an R client for iRODS.
 
 ## Installation
 
-You can install the development version of rirods2 like so:
+You can install the development version of rirods like so:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("MartinSchobben/rirods2")
+devtools::install_github("MartinSchobben/rirods")
 ```
 
 ## Example
@@ -42,7 +42,7 @@ Then to connect a project from R with the iRODS server you have to
 provide the host name of the server, like so:
 
 ``` r
-library(rirods2)
+library(rirods)
 
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.2")
@@ -152,11 +152,15 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 ``` r
 # or where data objects named "foo" can be found
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#>                   collection data_object
-#> 1       /tempZone/home/bobby         foo
-#> 2       /tempZone/home/bobby     foo.csv
-#> 3 /tempZone/trash/home/bobby         foo
-#> 4 /tempZone/trash/home/bobby     foo.csv
+#>                   collection        data_object
+#> 1       /tempZone/home/bobby                foo
+#> 2       /tempZone/home/bobby            foo.csv
+#> 3 /tempZone/trash/home/bobby                foo
+#> 4 /tempZone/trash/home/bobby     foo.1682976494
+#> 5 /tempZone/trash/home/bobby       foo.35790442
+#> 6 /tempZone/trash/home/bobby            foo.csv
+#> 7 /tempZone/trash/home/bobby foo.csv.1247785700
+#> 8 /tempZone/trash/home/bobby   foo.csv.66409892
 ```
 
 Finally, we can clean up Bobby’s home directory:
