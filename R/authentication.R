@@ -2,9 +2,8 @@
 #'
 #' @param user iRODS user name.
 #' @param password iRODS password.
-
 #'
-#' @return String
+#' @return Invisibly NULL
 #' @export
 #'
 #' @examples

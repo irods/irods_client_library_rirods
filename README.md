@@ -53,8 +53,8 @@ with `iauth()`. This prompts a dialog where you can enter your username
 and password without hardcoding this information in your scripts.
 
 ``` r
-# login as bobby
-iauth()
+# login as bobby with password "passWORD"
+iauth() # or iauth("bobby", "passWORD")
 ```
 
 Suppose Bobby would like to upload an R object from his current R
@@ -169,10 +169,14 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
 #> 4  /tempZone/trash/home/bobby     foo.1576729182
 #> 5  /tempZone/trash/home/bobby     foo.2405108537
 #> 6  /tempZone/trash/home/bobby     foo.2435297455
-#> 7  /tempZone/trash/home/bobby            foo.csv
-#> 8  /tempZone/trash/home/bobby foo.csv.1036575935
-#> 9  /tempZone/trash/home/bobby foo.csv.2236717404
-#> 10 /tempZone/trash/home/bobby foo.csv.4082161960
+#> 7  /tempZone/trash/home/bobby     foo.2560339278
+#> 8  /tempZone/trash/home/bobby      foo.826411162
+#> 9  /tempZone/trash/home/bobby            foo.csv
+#> 10 /tempZone/trash/home/bobby foo.csv.1036575935
+#> 11 /tempZone/trash/home/bobby foo.csv.1144265542
+#> 12 /tempZone/trash/home/bobby foo.csv.2236717404
+#> 13 /tempZone/trash/home/bobby foo.csv.3876715845
+#> 14 /tempZone/trash/home/bobby foo.csv.4082161960
 ```
 
 Finally, we can clean up Bobby’s home directory:

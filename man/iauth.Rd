@@ -12,7 +12,7 @@ iauth(user = NULL, password = NULL)
 \item{password}{iRODS password.}
 }
 \value{
-String
+Invisibly NULL
 }
 \description{
 Authentication service for the iRODS zone

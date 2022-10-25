@@ -72,8 +72,8 @@ create_irods("http://localhost/irods-rest/0.9.2")
 In this example Bobby is a user of iRODS and he can authenticate himself with `iauth()`. This prompts a dialog where you can enter your username and password without hardcoding this information in your scripts.
 
 ```{r, bobby, eval=FALSE}
-# login as bobby
-iauth()
+# login as bobby with password "passWORD"
+iauth() # or iauth("bobby", "passWORD")
 ```
 
 
