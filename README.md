@@ -38,8 +38,8 @@ cd ../irods_demo
 docker-compose up
 ```
 
-Then to connect a project from R with the iRODS server you have to
-provide the host name of the server, like so:
+Provide the host name of the server to connect an R project with an
+iRODS server, like so:
 
 ``` r
 library(rirods)
@@ -58,7 +58,7 @@ iauth()
 ```
 
 Suppose Bobby would like to upload an R object from his current R
-session to an iRODS collection. For this, use the iput command:
+session to an iRODS collection. For this, use the `iput()` command:
 
 ``` r
 # some data
@@ -70,7 +70,12 @@ ipwd()
 
 # store
 iput(foo)
+```
 
+To truly appreciate the strength of iRODS, we can add some metadata that
+describes the data object “foo”.
+
+``` r
 # add some metadata
 imeta(
   "foo", 
@@ -81,12 +86,13 @@ imeta(
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
-#>               logical_path      metadata        type
-#> 1 /tempZone/home/bobby/foo foo, bar, baz data_object
+#>                logical_path      metadata        type
+#> 1  /tempZone/home/bobby/foo foo, baz, bar data_object
+#> 2 /tempZone/home/bobby/test          NULL data_object
 ```
 
 If Bobby wanted to copy the foo R object from an iRODS collection to his
-local directory, he would use iget:
+local directory, he would use `iget()`:
 
 ``` r
 # retrieve in native R format
@@ -114,6 +120,7 @@ ils()
 #>                   logical_path        type
 #> 1     /tempZone/home/bobby/foo data_object
 #> 2 /tempZone/home/bobby/foo.csv data_object
+#> 3    /tempZone/home/bobby/test data_object
 ```
 
 Later on somebody else might want to download this file again and store
@@ -139,7 +146,9 @@ read_csv("foo.csv")
 #> 3     9 z
 ```
 
-Objects can also be discovered by using General Queries and `iquery()`:
+By adding metadata you and others can more easily discover data in
+future projects. Objects can be searched with General Queries and
+`iquery()`:
 
 ``` r
 # look for objects in the home directory with a wildcard `%`
@@ -147,20 +156,23 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 #>             collection data_object
 #> 1 /tempZone/home/bobby         foo
 #> 2 /tempZone/home/bobby     foo.csv
+#> 3 /tempZone/home/bobby        test
 ```
 
 ``` r
 # or where data objects named "foo" can be found
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#>                   collection        data_object
-#> 1       /tempZone/home/bobby                foo
-#> 2       /tempZone/home/bobby            foo.csv
-#> 3 /tempZone/trash/home/bobby                foo
-#> 4 /tempZone/trash/home/bobby     foo.1682976494
-#> 5 /tempZone/trash/home/bobby       foo.35790442
-#> 6 /tempZone/trash/home/bobby            foo.csv
-#> 7 /tempZone/trash/home/bobby foo.csv.1247785700
-#> 8 /tempZone/trash/home/bobby   foo.csv.66409892
+#>                    collection        data_object
+#> 1        /tempZone/home/bobby                foo
+#> 2        /tempZone/home/bobby            foo.csv
+#> 3  /tempZone/trash/home/bobby                foo
+#> 4  /tempZone/trash/home/bobby     foo.1576729182
+#> 5  /tempZone/trash/home/bobby     foo.2405108537
+#> 6  /tempZone/trash/home/bobby     foo.2435297455
+#> 7  /tempZone/trash/home/bobby            foo.csv
+#> 8  /tempZone/trash/home/bobby foo.csv.1036575935
+#> 9  /tempZone/trash/home/bobby foo.csv.2236717404
+#> 10 /tempZone/trash/home/bobby foo.csv.4082161960
 ```
 
 Finally, we can clean up Bobby’s home directory:
@@ -172,13 +184,8 @@ irm("foo.csv", trash = FALSE)
 
 # check if object is removed
 ils()
-#> This collection does not contain any objects or collections.
+#>                logical_path        type
+#> 1 /tempZone/home/bobby/test data_object
 ```
 
 <!-- The user Bobby can also be removed again. -->
-
-## Stop your local iRODS server
-
-``` bash
-docker-compose down
-```

@@ -1,6 +1,6 @@
 ^renv$
 ^renv\.lock$
-^rirods2\.Rproj$
+^rirods\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^data-raw$
@@ -10,3 +10,4 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^\.covrignore$

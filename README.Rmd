@@ -60,7 +60,7 @@ rirods:::iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuse
 rirods:::iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", arg4  = "passWORD")
 ```
 
-Then to connect a project from R with the iRODS server you have to provide the host name of the server, like so:
+Provide the host name of the server to connect an R project with an iRODS server, like so:
 
 ```{r start, eval=FALSE}
 library(rirods)
@@ -82,7 +82,7 @@ iauth()
 iauth("bobby", "passWORD")
 ```
 
-Suppose Bobby would like to upload an R object from his current R session to an iRODS collection. For this, use the iput command:
+Suppose Bobby would like to upload an R object from his current R session to an iRODS collection. For this, use the `iput()` command:
 
 ```{r put}
 # some data
@@ -93,7 +93,11 @@ ipwd()
 
 # store
 iput(foo)
+```
 
+To truly appreciate the strength of iRODS, we can add some metadata that describes the data object "foo". 
+
+```{r meta}
 # add some metadata
 imeta(
   "foo", 
@@ -106,8 +110,7 @@ imeta(
 ils(metadata = TRUE)
 ```
 
-If Bobby wanted to copy the foo R object from an iRODS collection to his local directory, he would use
-iget:
+If Bobby wanted to copy the foo R object from an iRODS collection to his local directory, he would use `iget()`:
 
 ```{r get}
 # retrieve in native R format
@@ -141,7 +144,7 @@ iget("foo.csv")
 read_csv("foo.csv")
 ```
 
-Objects can also be discovered by using General Queries and `iquery()`:
+By adding metadata you and others can more easily discover data in future projects. Objects can be searched with General Queries and `iquery()`:
 
 ```{r query, options}
 # look for objects in the home directory with a wildcard `%`
@@ -186,8 +189,3 @@ ils()
 file.remove("rirods.irods")
 ```
 
-## Stop your local iRODS server
-
-```{bash, eval=FALSE}
-docker-compose down
-```
