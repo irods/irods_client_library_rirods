@@ -35,7 +35,7 @@ test_that("external data-objects management works", {
 #
 #   # curl in shell
 #   system2(
-#     system.file(package = "rirods2", "bash", "iput.sh"),
+#     system.file(package = "rirods", "bash", "iput.sh"),
 #     stdout = NULL,
 #     stderr = NULL
 #   )

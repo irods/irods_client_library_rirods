@@ -33,7 +33,7 @@ test_that("shell equals R solution", {
 
   # curl in shell
   shell <- system(
-    system.file(package = "rirods2", "bash", "ils.sh"),
+    system.file(package = "rirods", "bash", "ils.sh"),
     ignore.stderr = TRUE,
     intern = TRUE
   ) |>

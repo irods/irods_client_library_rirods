@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(rirods2)
+library(rirods)
 
-test_check("rirods2")
+test_check("rirods")
