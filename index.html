@@ -74,7 +74,7 @@
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># to start</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../irods_demo</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up</span></code></pre></div>
-<p>Then to connect a project from R with the iRODS server you have to provide the host name of the server, like so:</p>
+<p>Provide the host name of the server to connect an R project with an iRODS server, like so:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://martinschobben.github.io/rirods2/">rirods</a></span><span class="op">)</span></span>
 <span></span>
@@ -84,7 +84,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># login as bobby</span></span>
 <span><span class="fu"><a href="reference/iauth.html">iauth</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Suppose Bobby would like to upload an R object from his current R session to an iRODS collection. For this, use the iput command:</p>
+<p>Suppose Bobby would like to upload an R object from his current R session to an iRODS collection. For this, use the <code><a href="reference/iput.html">iput()</a></code> command:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># some data</span></span>
 <span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span><span class="op">)</span></span>
@@ -94,9 +94,10 @@
 <span><span class="co">#&gt; [1] "/tempZone/home/bobby"</span></span>
 <span></span>
 <span><span class="co"># store</span></span>
-<span><span class="fu"><a href="reference/iput.html">iput</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># add some metadata</span></span>
+<span><span class="fu"><a href="reference/iput.html">iput</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span></span></code></pre></div>
+<p>To truly appreciate the strength of iRODS, we can add some metadata that describes the data object “foo”.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># add some metadata</span></span>
 <span><span class="fu"><a href="reference/imeta.html">imeta</a></span><span class="op">(</span></span>
 <span>  <span class="st">"foo"</span>, </span>
 <span>  <span class="st">"data_object"</span>, </span>
@@ -106,10 +107,11 @@
 <span></span>
 <span><span class="co"># check if file is stored with associated metadata</span></span>
 <span><span class="fu"><a href="reference/ils.html">ils</a></span><span class="op">(</span>metadata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;               logical_path      metadata        type</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/bobby/foo foo, bar, baz data_object</span></span></code></pre></div>
-<p>If Bobby wanted to copy the foo R object from an iRODS collection to his local directory, he would use iget:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;                logical_path      metadata        type</span></span>
+<span><span class="co">#&gt; 1  /tempZone/home/bobby/foo foo, baz, bar data_object</span></span>
+<span><span class="co">#&gt; 2 /tempZone/home/bobby/test          NULL data_object</span></span></code></pre></div>
+<p>If Bobby wanted to copy the foo R object from an iRODS collection to his local directory, he would use <code><a href="reference/iput.html">iget()</a></code>:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># retrieve in native R format</span></span>
 <span><span class="fu"><a href="reference/iput.html">iget</a></span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   x y</span></span>
@@ -117,7 +119,7 @@
 <span><span class="co">#&gt; 2 8 y</span></span>
 <span><span class="co">#&gt; 3 9 z</span></span></code></pre></div>
 <p>Possibly Bobby does not want a native R object to be stored on iRODS but a file type that can be accessed by other programs.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># creates a csv file of foo</span></span>
@@ -130,9 +132,10 @@
 <span><span class="fu"><a href="reference/ils.html">ils</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                   logical_path        type</span></span>
 <span><span class="co">#&gt; 1     /tempZone/home/bobby/foo data_object</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/bobby/foo.csv data_object</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 /tempZone/home/bobby/foo.csv data_object</span></span>
+<span><span class="co">#&gt; 3    /tempZone/home/bobby/test data_object</span></span></code></pre></div>
 <p>Later on somebody else might want to download this file again and store it locally.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># retrieve it again later</span></span>
 <span><span class="fu"><a href="reference/iput.html">iget</a></span><span class="op">(</span><span class="st">"foo.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"foo.csv"</span><span class="op">)</span></span>
@@ -150,40 +153,39 @@
 <span><span class="co">#&gt; 1     1 x    </span></span>
 <span><span class="co">#&gt; 2     8 y    </span></span>
 <span><span class="co">#&gt; 3     9 z</span></span></code></pre></div>
-<p>Objects can also be discovered by using General Queries and <code><a href="reference/imeta.html">iquery()</a></code>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p>By adding metadata you and others can more easily discover data in future projects. Objects can be searched with General Queries and <code><a href="reference/imeta.html">iquery()</a></code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># look for objects in the home directory with a wildcard `%`</span></span>
 <span><span class="fu"><a href="reference/imeta.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             collection data_object</span></span>
 <span><span class="co">#&gt; 1 /tempZone/home/bobby         foo</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/bobby     foo.csv</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; 2 /tempZone/home/bobby     foo.csv</span></span>
+<span><span class="co">#&gt; 3 /tempZone/home/bobby        test</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># or where data objects named "foo" can be found</span></span>
 <span><span class="fu"><a href="reference/imeta.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                   collection        data_object</span></span>
-<span><span class="co">#&gt; 1       /tempZone/home/bobby                foo</span></span>
-<span><span class="co">#&gt; 2       /tempZone/home/bobby            foo.csv</span></span>
-<span><span class="co">#&gt; 3 /tempZone/trash/home/bobby                foo</span></span>
-<span><span class="co">#&gt; 4 /tempZone/trash/home/bobby     foo.1682976494</span></span>
-<span><span class="co">#&gt; 5 /tempZone/trash/home/bobby       foo.35790442</span></span>
-<span><span class="co">#&gt; 6 /tempZone/trash/home/bobby            foo.csv</span></span>
-<span><span class="co">#&gt; 7 /tempZone/trash/home/bobby foo.csv.1247785700</span></span>
-<span><span class="co">#&gt; 8 /tempZone/trash/home/bobby   foo.csv.66409892</span></span></code></pre></div>
+<span><span class="co">#&gt;                    collection        data_object</span></span>
+<span><span class="co">#&gt; 1        /tempZone/home/bobby                foo</span></span>
+<span><span class="co">#&gt; 2        /tempZone/home/bobby            foo.csv</span></span>
+<span><span class="co">#&gt; 3  /tempZone/trash/home/bobby                foo</span></span>
+<span><span class="co">#&gt; 4  /tempZone/trash/home/bobby     foo.1576729182</span></span>
+<span><span class="co">#&gt; 5  /tempZone/trash/home/bobby     foo.2405108537</span></span>
+<span><span class="co">#&gt; 6  /tempZone/trash/home/bobby     foo.2435297455</span></span>
+<span><span class="co">#&gt; 7  /tempZone/trash/home/bobby            foo.csv</span></span>
+<span><span class="co">#&gt; 8  /tempZone/trash/home/bobby foo.csv.1036575935</span></span>
+<span><span class="co">#&gt; 9  /tempZone/trash/home/bobby foo.csv.2236717404</span></span>
+<span><span class="co">#&gt; 10 /tempZone/trash/home/bobby foo.csv.4082161960</span></span></code></pre></div>
 <p>Finally, we can clean up Bobby’s home directory:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># delete object</span></span>
 <span><span class="fu"><a href="reference/irm.html">irm</a></span><span class="op">(</span><span class="st">"foo"</span>, trash <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/irm.html">irm</a></span><span class="op">(</span><span class="st">"foo.csv"</span>, trash <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># check if object is removed</span></span>
 <span><span class="fu"><a href="reference/ils.html">ils</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; This collection does not contain any objects or collections.</span></span></code></pre></div>
+<span><span class="co">#&gt;                logical_path        type</span></span>
+<span><span class="co">#&gt; 1 /tempZone/home/bobby/test data_object</span></span></code></pre></div>
 <!-- The user Bobby can also be removed again. -->
-</div>
-<div class="section level2">
-<h2 id="stop-your-local-irods-server">Stop your local iRODS server<a class="anchor" aria-label="anchor" href="#stop-your-local-irods-server"></a>
-</h2>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> down</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
