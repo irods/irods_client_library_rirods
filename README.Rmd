@@ -16,8 +16,8 @@ knitr::opts_chunk$set(
 # rirods
 
 <!-- badges: start -->
-[![Codecov test coverage](https://codecov.io/gh/MartinSchobben/rirods/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/rirods?branch=master)
-[![R-CMD-check](https://github.com/MartinSchobben/rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/rirods/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/MartinSchobben/irods_client_library_rirods/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/irods_client_library_rirods?branch=dev)
+[![R-CMD-check](https://github.com/MartinSchobben/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The rirods package is an R client for iRODS.
@@ -28,7 +28,7 @@ You can install the development version of rirods like so:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("MartinSchobben/rirods")
+devtools::install_github("irods/irods_client_library_rirods")
 ```
 
 ## Example
@@ -163,13 +163,13 @@ Finally, we can clean up Bobby's home directory:
 irm("foo", trash = FALSE)
 irm("foo.csv", trash = FALSE)
 
-# check if object is removed
+# check if object are removed
 ils()
 ```
 
 
 ```{r rmfile2, include= FALSE}
-file.remove("foo.csv")
+unlink("foo.csv")
 ```
 
 
@@ -186,6 +186,6 @@ rirods:::iadmin(action = "remove", target = "user", arg2 = "bobby")
 ils()
 
 # clean-up irods file
-file.remove("rirods.irods")
+unlink("irods_client_library_rirods.irods")
 ```
 
