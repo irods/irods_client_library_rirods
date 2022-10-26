@@ -3,7 +3,7 @@
 #' @param dir Change the current directory to DIR.  The default DIR is the value
 #'  of the HOME shell variable.
 #'
-#' @return invisibly returns the path
+#' @return Visibly or invisibly returns the path.
 #' @export
 #'
 #' @examples

@@ -14,7 +14,7 @@ ipwd()
 of the HOME shell variable.}
 }
 \value{
-invisibly returns the path
+Visibly or invisibly returns the path.
 }
 \description{
 Retrieve an object from iRODS

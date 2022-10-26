@@ -6,8 +6,8 @@
 <!-- badges: start -->
 
 [![Codecov test
-coverage](https://codecov.io/gh/MartinSchobben/rirods/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/rirods?branch=master)
-[![R-CMD-check](https://github.com/MartinSchobben/rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/rirods/actions/workflows/R-CMD-check.yaml)
+coverage](https://codecov.io/gh/MartinSchobben/irods_client_library_rirods/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/irods_client_library_rirods?branch=dev)
+[![R-CMD-check](https://github.com/MartinSchobben/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The rirods package is an R client for iRODS.
@@ -18,7 +18,7 @@ You can install the development version of rirods like so:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("MartinSchobben/rirods")
+devtools::install_github("irods/irods_client_library_rirods")
 ```
 
 ## Example
@@ -162,21 +162,15 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 ``` r
 # or where data objects named "foo" can be found
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#>                    collection        data_object
-#> 1        /tempZone/home/bobby                foo
-#> 2        /tempZone/home/bobby            foo.csv
-#> 3  /tempZone/trash/home/bobby                foo
-#> 4  /tempZone/trash/home/bobby     foo.1576729182
-#> 5  /tempZone/trash/home/bobby     foo.2405108537
-#> 6  /tempZone/trash/home/bobby     foo.2435297455
-#> 7  /tempZone/trash/home/bobby     foo.2560339278
-#> 8  /tempZone/trash/home/bobby      foo.826411162
-#> 9  /tempZone/trash/home/bobby            foo.csv
-#> 10 /tempZone/trash/home/bobby foo.csv.1036575935
-#> 11 /tempZone/trash/home/bobby foo.csv.1144265542
-#> 12 /tempZone/trash/home/bobby foo.csv.2236717404
-#> 13 /tempZone/trash/home/bobby foo.csv.3876715845
-#> 14 /tempZone/trash/home/bobby foo.csv.4082161960
+#>                   collection        data_object
+#> 1       /tempZone/home/bobby                foo
+#> 2       /tempZone/home/bobby            foo.csv
+#> 3 /tempZone/trash/home/bobby                foo
+#> 4 /tempZone/trash/home/bobby     foo.3087576498
+#> 5 /tempZone/trash/home/bobby     foo.3421878791
+#> 6 /tempZone/trash/home/bobby            foo.csv
+#> 7 /tempZone/trash/home/bobby foo.csv.3322148247
+#> 8 /tempZone/trash/home/bobby  foo.csv.911948310
 ```
 
 Finally, we can clean up Bobby’s home directory:
@@ -186,7 +180,7 @@ Finally, we can clean up Bobby’s home directory:
 irm("foo", trash = FALSE)
 irm("foo.csv", trash = FALSE)
 
-# check if object is removed
+# check if object are removed
 ils()
 #>                logical_path        type
 #> 1 /tempZone/home/bobby/test data_object
