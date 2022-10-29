@@ -1,22 +1,30 @@
 with_mock_dir("data-collections", {
-  test_that("removing objects from iRODS works", {
+  test_that("creating/removing objects from iRODS works", {
 
-    # data
-    foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+    # simple collection
+    expect_invisible(imkdir("a"))
 
-    # creates a csv file of foo
-    readr::write_csv(foo, "foo.csv")
+    # collection within a collection
+    expect_invisible(imkdir("x/a", create_parent_collections = TRUE))
+
+    # check if collections are added
+    expect_snapshot(ils())
+
+    # remove dirs
+    irm("a", recursive = TRUE)
+    icd("../x")
+    irm("a", recursive = TRUE)
+    icd("..")
+    irm("x", recursive = TRUE)
 
     # store
     iput("foo.csv", overwrite = TRUE)
 
-    # delete object "test"
+    # delete object "foo.csv"
     expect_invisible(irm("foo.csv", trash = FALSE))
 
     # check if file is delete
     expect_snapshot(ils())
 
-    # garbage collect
-    unlink("foo.csv")
   })
 })

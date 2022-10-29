@@ -12,7 +12,10 @@ with_mock_dir("irods-rest-call", {
     )
 
     # with a httr response
-    expect_s3_class(irods_rest_call("list", "GET", args, FALSE), "httr2_response")
+    expect_s3_class(
+      irods_rest_call("list", "GET", args, FALSE),
+      "httr2_response"
+    )
 
   })
 })
