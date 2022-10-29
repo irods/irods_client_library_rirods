@@ -6,11 +6,12 @@ test_that("compare shell with R solution", {
 
   # curl in shell
   shell <- system(
-    system.file(package = "rirods", "bash", "auth.sh"),
+    system.file(package = "rirods", "bash", "iauth.sh"),
     ignore.stderr = TRUE,
     intern = TRUE
   )
+
   # curl in R
-  R <- get_token("rods:rods")
+  R <- get_token("rods:rods", find_host())
   expect_equal(nchar(R), nchar(shell))
 })
