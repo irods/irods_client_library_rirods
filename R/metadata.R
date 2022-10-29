@@ -63,7 +63,7 @@ imeta <- function(
 
   # logical path
   if (path == ".") {
-    lpath <- paste0(.rirods2$current_dir, "/", x)
+    lpath <- paste0(.rirods$current_dir, "/", x)
   } else {
     lpath <- paste0(path, "/", x)
   }

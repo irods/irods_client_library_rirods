@@ -49,7 +49,7 @@ iput <- function(
 
   # logical path
   if (path == ".") {
-    lpath <- paste0(.rirods2$current_dir, "/", name)
+    lpath <- paste0(.rirods$current_dir, "/", name)
   } else {
     lpath <- paste0(path, "/", name)
   }
@@ -102,7 +102,7 @@ iget  <- function(
 
   # logical path
   if (!grepl("/", x)) {
-    lpath <- paste0(.rirods2$current_dir, "/", x)
+    lpath <- paste0(.rirods$current_dir, "/", x)
   } else {
     lpath <- x
   }

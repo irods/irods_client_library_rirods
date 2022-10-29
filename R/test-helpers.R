@@ -1,6 +1,6 @@
 # create local irods instance in temp dir
 local_create_irods <- function(
-    host = "http://localhost/irods-rest/0.9.2",
+    host = "http://localhost/irods-rest/0.9.3",
     dir = tempdir(),
     env = parent.frame()
   ) {

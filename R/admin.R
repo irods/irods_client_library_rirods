@@ -25,7 +25,7 @@ iadmin <- function(
     verbose = FALSE
   ) {
 
-  token <- local(token, envir = .rirods2)
+  token <- local(token, envir = .rirods)
 
   # request
   req <- httr2::request(find_host()) |>

@@ -32,12 +32,12 @@ icd  <- function(dir) {
 
   # get current dir
   if (dir  == ".") {
-    current_dir <- local(current_dir, envir = .rirods2)
+    current_dir <- local(current_dir, envir = .rirods)
   }
 
   # get level lower
   if (dir  == "..") {
-    current_dir <- local(current_dir, envir = .rirods2)
+    current_dir <- local(current_dir, envir = .rirods)
     current_dir <- sub(paste0("/", basename(current_dir)), "", current_dir)
     if (current_dir == character(1))
       current_dir <- "/"
@@ -64,7 +64,7 @@ icd  <- function(dir) {
   }
 
   # store internally
-  .rirods2$current_dir <- current_dir
+  .rirods$current_dir <- current_dir
 
   # return location
   invisible(current_dir)
@@ -72,7 +72,7 @@ icd  <- function(dir) {
 #' @rdname icd
 #'
 #' @export
-ipwd <- function() .rirods2$current_dir
+ipwd <- function() .rirods$current_dir
 
 #' Listing iRODS data objects and collections
 #'
@@ -113,7 +113,7 @@ ils <- function(
 ) {
 
   # logical path
-  if (path == ".") lpath <- .rirods2$current_dir else lpath <- path
+  if (path == ".") lpath <- .rirods$current_dir else lpath <- path
 
   # flags to curl call
   args <- list(

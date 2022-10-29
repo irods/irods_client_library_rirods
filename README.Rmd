@@ -48,7 +48,7 @@ docker-compose up
 ```{r admin, include=FALSE}
 library(rirods)
 # switch to new irods project
-create_irods("http://localhost/irods-rest/0.9.2", overwrite = TRUE)
+create_irods("http://localhost/irods-rest/0.9.3", overwrite = TRUE)
 
 # authenticate
 iauth("rods", "rods")
@@ -66,7 +66,7 @@ Provide the host name of the server to connect an R project with an iRODS server
 library(rirods)
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.2")
+create_irods("http://localhost/irods-rest/0.9.3")
 ```
 
 In this example Bobby is a user of iRODS and he can authenticate himself with `iauth()`. This prompts a dialog where you can enter your username and password without hardcoding this information in your scripts.
