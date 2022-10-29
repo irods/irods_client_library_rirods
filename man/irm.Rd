@@ -2,9 +2,17 @@
 % Please edit documentation in R/collections.R
 \name{irm}
 \alias{irm}
-\title{Delete an object from iRODS}
+\alias{imkdir}
+\title{Create/remove objects in iRODS}
 \usage{
 irm(x, trash = TRUE, recursive = FALSE, unregister = FALSE, verbose = FALSE)
+
+imkdir(
+  x,
+  collection = TRUE,
+  create_parent_collections = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{x}{R object stored on iRODS server.}
@@ -18,12 +26,21 @@ irm(x, trash = TRUE, recursive = FALSE, unregister = FALSE, verbose = FALSE)
 (default = FALSE).}
 
 \item{verbose}{Show information about the http request and response.}
+
+\item{collection}{Indicates that a collection is being created (defaults to
+TRUE).}
+
+\item{create_parent_collections}{Indicates that parent collections of the
+destination collection should be created if necessary. Only applicable when
+collection = TRUE is used. Defaults to FALSE.}
 }
 \value{
 Invisible object to be removed
 }
 \description{
-Delete an object from iRODS
+These functions provide an interface to remove or create objects or
+collections from the iRODS namespace. By default the objects/collections are
+moved to the trash collection when removed.
 }
 \examples{
 if(interactive()) {
@@ -41,6 +58,9 @@ ils()
 
 # delete object
 irm("foo", trash = FALSE)
+
+# create collection
+imkdir("a")
 
 # check if file is delete
 ils()

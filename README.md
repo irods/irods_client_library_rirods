@@ -45,7 +45,7 @@ iRODS server, like so:
 library(rirods)
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.2")
+create_irods("http://localhost/irods-rest/0.9.3")
 ```
 
 In this example Bobby is a user of iRODS and he can authenticate himself
@@ -166,11 +166,9 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
 #> 1       /tempZone/home/bobby                foo
 #> 2       /tempZone/home/bobby            foo.csv
 #> 3 /tempZone/trash/home/bobby                foo
-#> 4 /tempZone/trash/home/bobby     foo.3087576498
-#> 5 /tempZone/trash/home/bobby     foo.3421878791
-#> 6 /tempZone/trash/home/bobby            foo.csv
-#> 7 /tempZone/trash/home/bobby foo.csv.3322148247
-#> 8 /tempZone/trash/home/bobby  foo.csv.911948310
+#> 4 /tempZone/trash/home/bobby     foo.2309812103
+#> 5 /tempZone/trash/home/bobby            foo.csv
+#> 6 /tempZone/trash/home/bobby foo.csv.2597355982
 ```
 
 Finally, we can clean up Bobby’s home directory:

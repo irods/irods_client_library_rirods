@@ -2,6 +2,11 @@ find_host <- function() {
 
   # find irods file
   irods <- list.files(".", "\\.irods$")
+
+  if (length(irods) == 0)
+    stop("Can't connect with iRODS server. Did you supply the correct host",
+    "name with `create_riods()`?", call. = FALSE)
+
   # read irods file
   x <- readLines(irods)
   sub("host: ", "", x)
@@ -17,7 +22,7 @@ irods_rest_call <- function(
   ) {
 
   # get token from secret environment
-  token <- local(token, envir = .rirods2)
+  token <- local(token, envir = .rirods)
 
   # request
   req <- httr2::request(find_host()) |>

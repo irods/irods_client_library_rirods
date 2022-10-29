@@ -1,2 +1,2 @@
 # irods session environment
-.rirods2 <- new.env(parent = parent.env(environment()))
+.rirods <- new.env(parent = parent.env(environment()))

@@ -22,10 +22,10 @@ iauth <- function(user = NULL, password = NULL) {
   }
 
   # get token
-  token <- get_token(paste(user, password, sep =":"))
+  token <- get_token(paste(user, password, sep = ":"), find_host())
 
   # store token
-  assign("token", token, envir = .rirods2)
+  assign("token", token, envir = .rirods)
 
   # starting dir as admin or user
   if (user == "rods") {
@@ -34,29 +34,33 @@ iauth <- function(user = NULL, password = NULL) {
     start_rirods <- paste0("/tempZone/home/", user)
   }
 
-  .rirods2$current_dir <- start_rirods
+  .rirods$current_dir <- start_rirods
 
   invisible(NULL)
 }
 
-rirods_env <- function(var) {
+# rirods_env <- function(var) {
+#
+#   if(!exists(var, envir = .rirods2)) {
+#     stop(var, " was not found! Try `iinit()` to start irods session.")
+#   }
+#
+#   local(var, envir = .rirods2)
+# }
 
-  if(!exists(var, envir = .rirods2)) {
-    stop(var, " was not found! Try `iinit()` to start irods session.")
-  }
+get_token <- function(details, host) {
 
-  local(var, envir = .rirods2)
-}
+  # password and user as variables
+  secret <- base64enc::base64encode(charToRaw(details))
 
-get_token <- function(details, host = "http://localhost/irods-rest/0.9.2") {
-
-  secret <- system(paste("echo -n", details, "| base64"), intern = TRUE) # password and user as variables
-
+  # request
   req <- httr2::request(host) |>
     httr2::req_url_path_append("auth") |>
     httr2::req_headers(Authorization = paste0("Basic ", secret)) |>
-    httr2::req_method("POST")
+    httr2::req_method("POST") |>
+    httr2::req_error(body = irods_errors)
 
+  # response
   httr2::req_perform(req) |>
     httr2::resp_body_string()
 }
