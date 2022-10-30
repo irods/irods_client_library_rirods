@@ -16,13 +16,14 @@ simplify = FALSE
 
 test_that("overwrite error works", {
 
-  test <- "test"
   # overwrite error on irods
+  test <- "test"
   expect_error(iput(test, path = "/tempZone/home/bobby"))
 
-  test_file <- tempfile(fileext = ".csv")
   # overwrite error locally
+  test_file <- tempfile(fileext = ".csv")
   expect_error(iget(basename(test_file), path = dirname(test_file)))
+
 })
 
 # test_that("shell equals R solution", {
