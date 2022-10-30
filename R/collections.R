@@ -53,7 +53,11 @@ irm <- function(x, trash = TRUE, recursive = FALSE, unregister = FALSE,
   }
 
   # flags to curl call
-  args <- list(`logical-path` = lpath, `no-trash` = as.integer(trash), recursive = as.integer(recursive))
+  args <- list(
+    `logical-path` = lpath,
+    `no-trash` = as.integer(trash),
+    recursive = as.integer(recursive)
+  )
 
   # http call
   out <- irods_rest_call("logicalpath", "DELETE", args, verbose)
