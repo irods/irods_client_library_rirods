@@ -11,6 +11,9 @@ on:
 
 name: pkgdown
 
+env:
+  RENV_PATHS_ROOT: ~/.local/share/renv
+
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
@@ -28,10 +31,28 @@ jobs:
         with:
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
+      - name: Install system dependencies
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev
+
+      - name: Cache packages
+        uses: actions/cache@v1
         with:
-          extra-packages: any::pkgdown, local::.
-          needs: website
+          path: ${{ env.RENV_PATHS_ROOT }}
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
+      - name: Restore packages
+        shell: Rscript {0}
+        run: |
+          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          if (!requireNamespace("pkgdown", quietly = TRUE)) install.packages("pkgdown")
+          if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
+          renv::restore()
+          devtools::install()
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)

@@ -1,5 +1,5 @@
-with_mock_dir("data-collections", {
-  test_that("creating/removing objects from iRODS works", {
+with_mock_dir("add-data-collections", {
+  test_that("creating collections from iRODS works", {
 
     # simple collection
     expect_invisible(imkdir("a"))
@@ -16,6 +16,11 @@ with_mock_dir("data-collections", {
     irm("a", recursive = TRUE)
     icd("..")
     irm("x", recursive = TRUE)
+  })
+})
+
+with_mock_dir("remove-objects", {
+  test_that("removing objects from iRODS works", {
 
     # store
     iput("foo.csv", overwrite = TRUE)

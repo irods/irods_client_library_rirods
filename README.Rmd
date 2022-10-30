@@ -11,13 +11,16 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+knitr::opts_knit$set(
+  root.dir = tempdir()
+)
 ```
 
 # rirods
 
 <!-- badges: start -->
-[![Codecov test coverage](https://codecov.io/gh/MartinSchobben/irods_client_library_rirods/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/irods_client_library_rirods?branch=dev)
-[![R-CMD-check](https://github.com/MartinSchobben/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/irods/irods_client_library_rirods/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/irods/irods_client_library_rirods?branch=dev)
+[![R-CMD-check](https://github.com/irods/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/irods/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The rirods package is an R client for iRODS.
@@ -51,18 +54,18 @@ This will result in the demonstration REST API running at http://localhost/irods
 
 To connect to the REST API endpoint of your choice, load `rirods`, connect with `create_irods()`, and authenticate with your iRODS credentials:
 
-```{r admin}
+```{r project}
 # load
 library(rirods)
 
 # connect
-create_irods("http://localhost/irods-rest/0.9.3", overwrite = TRUE)
-
-# authenticate
-iauth("rods", "rods")
+create_irods("http://localhost/irods-rest/0.9.3")
 ```
 
 ```{r admin, include=FALSE}
+# authenticate
+iauth("rods", "rods")
+
 # add user bobby
 rirods:::iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
 
@@ -142,8 +145,8 @@ iput("foo.csv")
 ils()
 ```
 
-```{r rmfile1, include=FALSE}
-file.remove("foo.csv")
+```{r rmfile, include=FALSE}
+unlink("foo.csv")
 ```
 
 Later on somebody else might want to download this file again and store it locally:
@@ -159,7 +162,7 @@ read_csv("foo.csv")
 By adding metadata you and others can more easily discover data in future projects. Objects can be searched with General Queries and `iquery()`:
 
 ```{r query, options}
-# look for objects in the home directory with a wildcard '%'
+# look for objects in the home collection with a wildcard `%`
 iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 ```
 
@@ -181,10 +184,6 @@ irm("foo.csv", trash = FALSE)
 ils()
 ```
 
-```{r rmfile2, include=FALSE}
-unlink("foo.csv")
-```
-
 <!-- The user Bobby can also be removed again. -->
 
 ```{r rmbobby, include=FALSE}
@@ -196,8 +195,4 @@ rirods:::iadmin(action = "remove", target = "user", arg2 = "bobby")
 
 # check if bobby is removed
 ils()
-
-# clean-up irods file
-unlink("irods_client_library_rirods.irods")
 ```
-

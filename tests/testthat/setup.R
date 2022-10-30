@@ -2,8 +2,15 @@ library(httptest2)
 
 try({
 
+  # write an gitignore file
+  cat(
+    "**/*.R",
+    file = ".gitignore",
+    sep = "\n"
+  )
+
   # switch to new irods project
-  create_irods("http://localhost/irods-rest/0.9.3", overwrite = TRUE)
+  create_irods(Sys.getenv("DEV_HOST_IRODS"), overwrite = TRUE)
   withr::defer(unlink("testthat.irods"), teardown_env())
 
   # some data

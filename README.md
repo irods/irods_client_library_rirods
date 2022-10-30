@@ -6,8 +6,8 @@
 <!-- badges: start -->
 
 [![Codecov test
-coverage](https://codecov.io/gh/MartinSchobben/irods_client_library_rirods/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/MartinSchobben/irods_client_library_rirods?branch=dev)
-[![R-CMD-check](https://github.com/MartinSchobben/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MartinSchobben/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml)
+coverage](https://codecov.io/gh/irods/irods_client_library_rirods/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/irods/irods_client_library_rirods?branch=dev)
+[![R-CMD-check](https://github.com/irods/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/irods/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The rirods package is an R client for iRODS.
@@ -21,32 +21,39 @@ You can install the development version of rirods like so:
 devtools::install_github("irods/irods_client_library_rirods")
 ```
 
-## Example
+## Prerequisites
 
-This is a basic example which shows you how to quickly launch a local
-iRODS server, connect with R, and perform some actions. For more
-information on the iRODS demo server check
-<https://github.com/irods/irods_demo>.
+This package connects to the iRODS C++ REST API -
+<https://github.com/irods/irods_client_rest_cpp>.
+
+The launch a local demonstration iRODS service (including the REST API):
 
 ``` bash
-# clone the repo
-# git clone https://github.com/irods/irods_demo
-# initiate git submodules
-# git submodule update --init
-# to start
-cd ../irods_demo
-docker-compose up
+# clone the repository
+git clone --recursive https://github.com/irods/irods_demo
+# start the REST API
+cd irods_demo
+docker-compose up nginx-reverse-proxy
 ```
 
-Provide the host name of the server to connect an R project with an
-iRODS server, like so:
+This will result in the demonstration REST API running at
+<http://localhost/irods-rest/0.9.3> (or later version).
+
+## Example Usage
+
+To connect to the REST API endpoint of your choice, load `rirods`,
+connect with `create_irods()`, and authenticate with your iRODS
+credentials:
 
 ``` r
+# load
 library(rirods)
 
-# connect project to server
+# connect
 create_irods("http://localhost/irods-rest/0.9.3")
 ```
+
+### authentication
 
 In this example Bobby is a user of iRODS and he can authenticate himself
 with `iauth()`. This prompts a dialog where you can enter your username
@@ -57,6 +64,8 @@ and password without hardcoding this information in your scripts.
 iauth() # or iauth("bobby", "passWORD")
 ```
 
+### put
+
 Suppose Bobby would like to upload an R object from his current R
 session to an iRODS collection. For this, use the `iput()` command:
 
@@ -64,16 +73,18 @@ session to an iRODS collection. For this, use the `iput()` command:
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
-# check where we are
+# check where we are in the iRODS namespace
 ipwd()
 #> [1] "/tempZone/home/bobby"
 
-# store
+# store data in iRODS
 iput(foo)
 ```
 
+### metadata
+
 To truly appreciate the strength of iRODS, we can add some metadata that
-describes the data object “foo”.
+describes the data object “foo”:
 
 ``` r
 # add some metadata
@@ -86,10 +97,11 @@ imeta(
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
-#>                logical_path      metadata        type
-#> 1  /tempZone/home/bobby/foo foo, baz, bar data_object
-#> 2 /tempZone/home/bobby/test          NULL data_object
+#>               logical_path      metadata        type
+#> 1 /tempZone/home/bobby/foo foo, bar, baz data_object
 ```
+
+### get
 
 If Bobby wanted to copy the foo R object from an iRODS collection to his
 local directory, he would use `iget()`:
@@ -103,8 +115,10 @@ iget("foo")
 #> 3 9 z
 ```
 
+### csv
+
 Possibly Bobby does not want a native R object to be stored on iRODS but
-a file type that can be accessed by other programs.
+a file type that can be accessed by other programs:
 
 ``` r
 library(readr)
@@ -120,11 +134,10 @@ ils()
 #>                   logical_path        type
 #> 1     /tempZone/home/bobby/foo data_object
 #> 2 /tempZone/home/bobby/foo.csv data_object
-#> 3    /tempZone/home/bobby/test data_object
 ```
 
 Later on somebody else might want to download this file again and store
-it locally.
+it locally:
 
 ``` r
 # retrieve it again later
@@ -146,42 +159,40 @@ read_csv("foo.csv")
 #> 3     9 z
 ```
 
+### query
+
 By adding metadata you and others can more easily discover data in
 future projects. Objects can be searched with General Queries and
 `iquery()`:
 
 ``` r
-# look for objects in the home directory with a wildcard `%`
+# look for objects in the home collection with a wildcard `%`
 iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 #>             collection data_object
 #> 1 /tempZone/home/bobby         foo
 #> 2 /tempZone/home/bobby     foo.csv
-#> 3 /tempZone/home/bobby        test
 ```
 
 ``` r
 # or where data objects named "foo" can be found
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#>                   collection        data_object
-#> 1       /tempZone/home/bobby                foo
-#> 2       /tempZone/home/bobby            foo.csv
-#> 3 /tempZone/trash/home/bobby                foo
-#> 4 /tempZone/trash/home/bobby     foo.2309812103
-#> 5 /tempZone/trash/home/bobby            foo.csv
-#> 6 /tempZone/trash/home/bobby foo.csv.2597355982
+#>             collection data_object
+#> 1 /tempZone/home/bobby         foo
+#> 2 /tempZone/home/bobby     foo.csv
 ```
 
-Finally, we can clean up Bobby’s home directory:
+### cleanup
+
+Finally, we can clean up Bobby’s home collection:
 
 ``` r
 # delete object
 irm("foo", trash = FALSE)
 irm("foo.csv", trash = FALSE)
 
-# check if object are removed
+# check if objects are removed
 ils()
-#>                logical_path        type
-#> 1 /tempZone/home/bobby/test data_object
+#> This collection does not contain any objects or collections.
 ```
 
 <!-- The user Bobby can also be removed again. -->
