@@ -20,30 +20,95 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          # - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          # - {os: ubuntu-latest,   r: 'oldrel-1'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      RENV_PATHS_ROOT: ~/.local/share/renv
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Install rirods
+        uses: actions/checkout@v3
+        with:
+          path: rirods
 
-      - uses: r-lib/actions/setup-pandoc@v2
+      - name: Install irods_demo
+        if: startsWith(runner.os, 'Linux')
+        uses: actions/checkout@v3
+        with:
+          repository: irods/irods_demo
+          path: irods_demo
 
-      - uses: r-lib/actions/setup-r@v2
+      - name: Setup iRODS demo
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          cd ./irods_demo
+          git submodule update --init
+          docker-compose up -d nginx-reverse-proxy
+
+      - name: Install Pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
+      - name: Install system dependencies
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev
 
-      - uses: r-lib/actions/check-r-package@v2
+      - name: Cache packages
+        uses: actions/cache@v1
         with:
-          upload-snapshots: true
+          path: ${{ env.RENV_PATHS_ROOT }}
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
+      - name: Restore packages
+        working-directory: ./rirods
+        shell: Rscript {0}
+        run: |
+          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          if (!requireNamespace("rcmdcheck", quietly = TRUE)) install.packages("rcmdcheck")
+          if (!requireNamespace("pkgload", quietly = TRUE)) install.packages("pkgload")
+          renv::restore()
+
+# On linux we remove httptest2 mock files to force a realistic test against
+# the irods_demo server
+
+      - name: Remove mock files on Linux
+        working-directory: ./rirods
+        if: startsWith(runner.os, 'Linux')
+        shell: Rscript {0}
+        run: |
+          pkgload::load_all()
+          remove_mock_files()
+
+      - name: R CMD check of rirods
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          working-directory: ./rirods
+          # upload-snapshots: true
+
+      - name: Commit and push snapshots
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          cp -TR ./rirods/check/**/tests/testthat/ ./rirods/tests/testthat/
+          cd ./rirods
+          rm ./tests/testthat/.gitignore
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add ./tests/testthat/\*
+          git commit -m "Snapshots http response" || echo "No changes to commit"
+          git pull --ff-only
+          git push origin
+

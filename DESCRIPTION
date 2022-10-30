@@ -9,7 +9,13 @@ Authors@R:
      role = c("aut", "cre"),
      comment = c(ORCID = "0000-0001-8560-0037")
     )
-Description: What the package does (one paragraph).
+Description: The Integrated Rule-Oriented Data System 'iRODS' 
+ (<https://irods.org/>) open sourced data management software suite offer 
+ solutions which encompasses the whole data life cycle from 
+ data generation, storage and recycling. The loosely constructed and highly 
+ configurable architecture of iRODS frees the user from strict formatting 
+ constrains and single-vendor solutions. This package provides an R interface to 
+ iRODS' REST API, allowing you to manage your data from your own machine.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -25,6 +31,7 @@ Suggests:
     readr,
     spelling,
     testthat (>= 3.0.0),
+    usethis,
     withr
 Config/testthat/edition: 3
 Depends: 
