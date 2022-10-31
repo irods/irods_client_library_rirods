@@ -31,43 +31,46 @@ You can install the development version of rirods like so:
 devtools::install_github("irods/irods_client_library_rirods")
 ```
 
-## Example
+## Prerequisites
 
-This is a basic example which shows you how to quickly launch a local iRODS server, connect with R, and perform some actions. For more information on the iRODS demo server check https://github.com/irods/irods_demo.
+This package connects to the iRODS C++ REST API - https://github.com/irods/irods_client_rest_cpp.
+
+The launch a local demonstration iRODS service (including the REST API):
 
 ```{bash, eval=FALSE}
-# clone the repo
-# git clone https://github.com/irods/irods_demo
-# initiate git submodules
-# git submodule update --init
-# to start
-cd ../irods_demo
-docker-compose up
+# clone the repository
+git clone --recursive https://github.com/irods/irods_demo
+# start the REST API
+cd irods_demo
+docker-compose up nginx-reverse-proxy
 ```
 
-```{r admin, include=FALSE}
+This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version).
+
+## Example Usage
+
+To connect to the REST API endpoint of your choice, load `rirods`, connect with `create_irods()`, and authenticate with your iRODS credentials:
+
+```{r admin}
+# load
 library(rirods)
-# switch to new irods project
+
+# connect
 create_irods("http://localhost/irods-rest/0.9.3", overwrite = TRUE)
 
 # authenticate
 iauth("rods", "rods")
+```
 
+```{r admin, include=FALSE}
 # add user bobby
 rirods:::iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
 
-# modify pass word bobby
+# modify bobby's password
 rirods:::iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password", arg4  = "passWORD")
 ```
 
-Provide the host name of the server to connect an R project with an iRODS server, like so:
-
-```{r start, eval=FALSE}
-library(rirods)
-
-# connect project to server
-create_irods("http://localhost/irods-rest/0.9.3")
-```
+### authentication
 
 In this example Bobby is a user of iRODS and he can authenticate himself with `iauth()`. This prompts a dialog where you can enter your username and password without hardcoding this information in your scripts.
 
@@ -76,11 +79,12 @@ In this example Bobby is a user of iRODS and he can authenticate himself with `i
 iauth() # or iauth("bobby", "passWORD")
 ```
 
-
 ```{r, secret, include=FALSE}
 # login as bobby
 iauth("bobby", "passWORD")
 ```
+
+### put
 
 Suppose Bobby would like to upload an R object from his current R session to an iRODS collection. For this, use the `iput()` command:
 
@@ -88,14 +92,16 @@ Suppose Bobby would like to upload an R object from his current R session to an 
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
-# check where we are
+# check where we are in the iRODS namespace
 ipwd()
 
-# store
+# store data in iRODS
 iput(foo)
 ```
 
-To truly appreciate the strength of iRODS, we can add some metadata that describes the data object "foo". 
+### metadata
+
+To truly appreciate the strength of iRODS, we can add some metadata that describes the data object "foo":
 
 ```{r meta}
 # add some metadata
@@ -110,6 +116,8 @@ imeta(
 ils(metadata = TRUE)
 ```
 
+### get
+
 If Bobby wanted to copy the foo R object from an iRODS collection to his local directory, he would use `iget()`:
 
 ```{r get}
@@ -117,7 +125,9 @@ If Bobby wanted to copy the foo R object from an iRODS collection to his local d
 iget("foo")
 ```
 
-Possibly Bobby does not want a native R object to be stored on iRODS but a file type that can be accessed by other programs.
+### csv
+
+Possibly Bobby does not want a native R object to be stored on iRODS but a file type that can be accessed by other programs:
 
 ```{r filetypes}
 library(readr)
@@ -132,11 +142,11 @@ iput("foo.csv")
 ils()
 ```
 
-```{r rmfile1, include= FALSE}
+```{r rmfile1, include=FALSE}
 file.remove("foo.csv")
 ```
 
-Later on somebody else might want to download this file again and store it locally.
+Later on somebody else might want to download this file again and store it locally:
 
 ```{r csv}
 # retrieve it again later
@@ -144,10 +154,12 @@ iget("foo.csv")
 read_csv("foo.csv")
 ```
 
+### query
+
 By adding metadata you and others can more easily discover data in future projects. Objects can be searched with General Queries and `iquery()`:
 
 ```{r query, options}
-# look for objects in the home directory with a wildcard `%`
+# look for objects in the home directory with a wildcard '%'
 iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 ```
 
@@ -156,22 +168,22 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
 ```
 
-Finally, we can clean up Bobby's home directory:
+### cleanup
+
+Finally, we can clean up Bobby's home collection:
 
 ```{r clean}
 # delete object
 irm("foo", trash = FALSE)
 irm("foo.csv", trash = FALSE)
 
-# check if object are removed
+# check if objects are removed
 ils()
 ```
 
-
-```{r rmfile2, include= FALSE}
+```{r rmfile2, include=FALSE}
 unlink("foo.csv")
 ```
-
 
 <!-- The user Bobby can also be removed again. -->
 
