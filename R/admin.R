@@ -28,7 +28,7 @@ iadmin <- function(
   token <- local(token, envir = .rirods)
 
   # request
-  req <- httr2::request(find_host()) |>
+  req <- httr2::request(find_irods_file("host")) |>
     httr2::req_headers(Authorization = token) |>
     httr2::req_url_query(
       action = action,

@@ -2,6 +2,10 @@ library(httptest2)
 
 try({
 
+  # fire up irods demo
+  system("cd $(find ~ -path ~/.local  -prune -o -type d -name 'irods_demo' -print); docker-compose up -d nginx-reverse-proxy")
+  withr::defer("docker-compose down", teardown_env())
+
   # write an gitignore file
   cat(
     "**/*.R",
@@ -10,7 +14,7 @@ try({
   )
 
   # switch to new irods project
-  create_irods(Sys.getenv("DEV_HOST_IRODS"), overwrite = TRUE)
+  create_irods(Sys.getenv("DEV_HOST_IRODS"), Sys.getenv("DEV_ZONE_PATH_IRODS"), overwrite = TRUE)
   withr::defer(unlink("testthat.irods"), teardown_env())
 
   # some data
@@ -21,7 +25,7 @@ try({
   withr::defer(unlink("foo.csv"), teardown_env())
 
   # authenticate
-  iauth("rods", "rods")
+  iauth("rods", "rods", role = "rodsadmin")
 
   # add user bobby
   rirods:::iadmin(
@@ -46,7 +50,7 @@ try({
   iput(test, path = "/tempZone/home/bobby", overwrite = TRUE)
 
   # authenticate
-  iauth("rods", "rods")
+  iauth("rods", "rods", role = "rodsadmin")
 
 },
 silent = TRUE
@@ -54,12 +58,12 @@ silent = TRUE
 
 # fool the tests if no token is available (offline mode)
 tk <- try(
-  get_token(paste("rods", "rods", sep = ":"), find_host()),
+  get_token(paste("rods", "rods", sep = ":"), find_irods_file("host")),
   silent = TRUE
 )
 if (inherits(tk, "try-error")) {
   # set home dir
-  .rirods$current_dir <- "/tempZone/home"
+  .rirods$current_dir <- find_irods_file("zone_path")
   # store token
   assign("token", "secret", envir = .rirods)
 }

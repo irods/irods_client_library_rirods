@@ -66,10 +66,10 @@ iput <- function(
 
   # flags to curl call
   args <- list(
-            `logical-path` = lpath,
-            offset = offset,
-            truncate = as.integer(truncate)
-          )
+    `logical-path` = lpath,
+    offset = offset,
+    truncate = as.integer(truncate)
+  )
 
   # http call
   out <- irods_rest_call("stream", "PUT", args, verbose, x)
@@ -119,7 +119,7 @@ iget  <- function(
   on.exit(close(con)) # close connection
 
   # convert to file or R object
-  if (is.character(x) && tools::file_ext(x) %in% c("csv", "tsv")) {
+  if (is.character(x) && tools::file_ext(x) %in% c("csv", "tsv", "txt")) {
     con <- file(x, "wb")
     writeBin(resp, con)
   } else {

@@ -1,7 +1,13 @@
 #' Authentication service for the iRODS zone
 #'
-#' @param user iRODS user name.
-#' @param password iRODS password.
+#' Provides an authentication service for the iRODS zone. Using the function
+#' without arguments results in a prompt asking for the user name and password
+#' thereby preventing hard-coding of sensitive information in scripts.
+#'
+#' @param user iRODS user name (prompts user for user name if not supplied).
+#' @param password iRODS password (prompts user for password if not supplied).
+#' @param zone_path iRODS zone path (defaults to "/tempZone/home").
+#' @param role iRODS role of user (defaults to "rodsuser").
 #'
 #' @return Invisibly NULL
 #' @export
@@ -11,7 +17,7 @@
 #' # authenticate
 #' iauth()
 #' }
-iauth <- function(user = NULL, password = NULL) {
+iauth <- function(user = NULL, password = NULL, role = "rodsuser") {
 
   # ask for credentials
   if (is.null(user)) {
@@ -22,31 +28,27 @@ iauth <- function(user = NULL, password = NULL) {
   }
 
   # get token
-  token <- get_token(paste(user, password, sep = ":"), find_host())
+  token <- get_token(paste(user, password, sep = ":"), find_irods_file("host"))
 
   # store token
   assign("token", token, envir = .rirods)
 
   # starting dir as admin or user
-  if (user == "rods") {
-    start_rirods <- "/tempZone/home"
+  if (role == "rodsadmin") {
+    start_rirods <- find_irods_file("zone_path")
+  } else if (role == "rodsuser") {
+    # check path formatting, does it end with "/"? If not, then add it.
+    if (!grepl("/$", find_irods_file("zone_path")))
+      zone_path <- paste0(find_irods_file("zone_path"), "/")
+    start_rirods <- paste0(zone_path, user)
   } else {
-    start_rirods <- paste0("/tempZone/home/", user)
+    stop("Unkown role of user.")
   }
 
   .rirods$current_dir <- start_rirods
 
   invisible(NULL)
 }
-
-# rirods_env <- function(var) {
-#
-#   if(!exists(var, envir = .rirods2)) {
-#     stop(var, " was not found! Try `iinit()` to start irods session.")
-#   }
-#
-#   local(var, envir = .rirods2)
-# }
 
 get_token <- function(details, host) {
 

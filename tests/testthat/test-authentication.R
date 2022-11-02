@@ -12,6 +12,6 @@ test_that("compare shell with R solution", {
   )
 
   # curl in R
-  R <- get_token("rods:rods", find_host())
+  R <- get_token("rods:rods", find_irods_file("host"))
   expect_equal(nchar(R), nchar(shell))
 })
