@@ -4,18 +4,29 @@
 \alias{iauth}
 \title{Authentication service for the iRODS zone}
 \usage{
-iauth(user = NULL, password = NULL)
+iauth(
+  user = NULL,
+  password = NULL,
+  zone_path = "/tempZone/home",
+  role = "rodsuser"
+)
 }
 \arguments{
-\item{user}{iRODS user name.}
+\item{user}{iRODS user name (prompts user for user name if not supplied).}
 
-\item{password}{iRODS password.}
+\item{password}{iRODS password (prompts user for password if not supplied).}
+
+\item{zone_path}{iRODS zone path (defaults to "/tempZone/home").}
+
+\item{role}{iRODS role of user (defaults to "rodsuser").}
 }
 \value{
 Invisibly NULL
 }
 \description{
-Authentication service for the iRODS zone
+Provides an authentication service for the iRODS zone. Using the function
+without arguments results in a prompt asking for the user name and password
+thereby preventing hard-coding of sensitive information in scripts.
 }
 \examples{
 if(interactive()) {

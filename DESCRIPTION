@@ -2,12 +2,34 @@ Package: rirods
 Title: R Client for iRODS
 Version: 0.0.0.9000
 Authors@R: 
-    person(
-     "Martin", 
-     "Schobben", 
-     email = "schobbenmartin@gmail.com", 
-     role = c("aut", "cre"),
-     comment = c(ORCID = "0000-0001-8560-0037")
+    c(
+      person(
+       "Martin", 
+       "Schobben", 
+       email = "schobbenmartin@gmail.com", 
+       role = c("aut", "cre"),
+       comment = c(ORCID = "0000-0001-8560-0037")
+      ),
+      person(
+       "Terrell", 
+       "Russell", 
+       role = c("ctb")
+      ),
+      person(
+       "Christine", 
+       "Staiger", 
+       role = c("ctb")
+      ),
+      person(
+       "Ton", 
+       "Smeele", 
+       role = c("ctb")
+      ),
+      person(
+       "Alan", 
+       "King", 
+       role = c("ctb")
+      )
     )
 Description: The Integrated Rule-Oriented Data System 'iRODS' 
  (<https://irods.org/>) open sourced data management software suite offer 

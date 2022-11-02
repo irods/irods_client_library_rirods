@@ -1,15 +1,21 @@
-find_host <- function() {
+find_irods_file <- function(what) {
 
   # find irods file
   irods <- list.files(".", "\\.irods$")
-
   if (length(irods) == 0)
     stop("Can't connect with iRODS server. Did you supply the correct host",
-    "name with `create_riods()`?", call. = FALSE)
+         "name with `create_riods()`?", call. = FALSE)
 
   # read irods file
   x <- readLines(irods)
-  sub("host: ", "", x)
+  # find line
+  x <- x[grepl(what, x)]
+  # error if not found
+  if (length(x) == 0)
+    stop("IRODS project file is incomplete.", call. = FALSE)
+  # extract information
+  sub(paste0(what, ": "), "", x)
+
 }
 
 irods_rest_call <- function(
@@ -25,7 +31,7 @@ irods_rest_call <- function(
   token <- local(token, envir = .rirods)
 
   # request
-  req <- httr2::request(find_host()) |>
+  req <- httr2::request(find_irods_file("host")) |>
     httr2::req_url_path_append(endpoint) |>
     httr2::req_headers(Authorization = token) |>
     httr2::req_method(verb)

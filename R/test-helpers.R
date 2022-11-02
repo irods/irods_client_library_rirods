@@ -13,6 +13,7 @@ remove_mock_files <- function() {
 # create local irods instance in temp dir
 local_create_irods <- function(
     host = Sys.getenv("DEV_HOST_IRODS"),
+    zone_path = Sys.getenv("DEV_ZONE_PATH_IRODS"),
     dir = tempdir(),
     env = parent.frame()
   ) {
@@ -25,20 +26,7 @@ local_create_irods <- function(
   withr::defer(setwd(old_dir), envir = env)
 
   # switch to new irods project
-  create_irods(host, overwrite = TRUE)
-
-  # authenticate
-  iauth("rods", "rods")
-
-  # add user bobby
-  iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
-
-  # modify pass word bobby
-  iadmin(action = "modify", target = "user", arg2 = "bobby", arg3 = "password",
-         arg4  = "passWORD")
-
-  # login
-  iauth("bobby", "passWORD")
+  create_irods(host, zone_path, overwrite = TRUE)
 
   invisible(dir)
 }
