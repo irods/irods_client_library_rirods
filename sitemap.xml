@@ -1,45 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://martinschobben.github.io/rirods/404.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/404.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/LICENSE-text.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/LICENSE.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/authors.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/authors.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/index.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/index.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/reference/create_irods.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/create_irods.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/reference/iadmin.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/iauth.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/reference/iauth.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/icd.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/reference/icd.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/ils.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/reference/ils.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/imeta.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/reference/imeta.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/reference/index.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/iput.html</loc>
   </url>
   <url>
-    <loc>https://martinschobben.github.io/rirods/reference/iput.html</loc>
-  </url>
-  <url>
-    <loc>https://martinschobben.github.io/rirods/reference/irm.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/irm.html</loc>
   </url>
 </urlset>
