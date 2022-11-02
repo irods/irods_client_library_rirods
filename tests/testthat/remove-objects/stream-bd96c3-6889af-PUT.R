@@ -1,6 +1,6 @@
 structure(list(method = "PUT", url = "/stream?logical-path=%2FtempZone%2Fhome%2Ffoo.csv&offset=0&truncate=1", 
     status_code = 200L, headers = structure(list(Server = "nginx/1.23.1", 
-        Date = "Wed, 02 Nov 2022 07:37:27 GMT", `Content-Length` = "33", 
+        Date = "Wed, 02 Nov 2022 12:11:05 GMT", `Content-Length` = "33", 
         Connection = "keep-alive", `Access-Control-Allow-Origin` = "*", 
         `Access-Control-Allow-Headers` = "*", `Access-Control-Allow-Methods` = "AUTHORIZATION,ACCEPT,GET,POST,OPTIONS,PUT,DELETE"), class = "httr2_headers"), 
     body = as.raw(c(0x7b, 0x22, 0x63, 0x6f, 0x64, 0x65, 0x22, 
