@@ -38,7 +38,7 @@ devtools::install_github("irods/irods_client_library_rirods")
 
 This package connects to the iRODS C++ REST API - https://github.com/irods/irods_client_rest_cpp.
 
-The launch a local demonstration iRODS service (including the REST API):
+Launch a local demonstration iRODS service (including the REST API):
 
 ```{bash, eval=FALSE}
 # clone the repository
@@ -167,7 +167,7 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 ```
 
 ```{r query2}
-# or where data objects named "foo" can be found
+# or for data objects with a name that starts with "foo"
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
 ```
 
