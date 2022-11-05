@@ -5,7 +5,8 @@ with_mock_dir("data-objects", {
     expect_invisible(iput("foo.csv"))
 
     # retrieve object
-    expect_snapshot(iget("foo.csv", overwrite = TRUE))
+    iget("foo.csv", overwrite = TRUE)
+    expect_equal(read.csv("foo.csv"), foo)
 
     # remove object
     expect_invisible(irm("foo.csv"))
@@ -18,7 +19,12 @@ test_that("overwrite error works", {
 
   # overwrite error on irods
   test <- "test"
-  expect_error(iput(test, path = "/tempZone/home/bobby"))
+  expect_error(
+    iput(
+      test,
+      path = paste0(lpath, "/", user, "/testthat")
+    )
+  )
 
   # overwrite error locally
   test_file <- tempfile(fileext = ".csv")
@@ -33,11 +39,12 @@ test_that("overwrite error works", {
 #   skip_if(inherits(tk, "try-error"))
 #
 #   # curl in shell
-#   system2(
-#     system.file(package = "rirods", "bash", "iput.sh"),
-#     stdout = NULL,
-#     stderr = NULL
-#   )
+# system2(
+#   system.file(package = "rirods", "bash", "iput.sh"),
+#   c(Sys.getenv("DEV_USER"), Sys.getenv("DEV_PASS"), Sys.getenv("DEV_HOST_IRODS"), paste0(Sys.getenv("DEV_ZONE_PATH_IRODS"), "/rods"), 0),
+#   stdout = NULL,
+#   stderr = NULL
+# )
 #
 #   shell <- utils::object.size(iget("/tempZone/home/rods/foo"))
 #

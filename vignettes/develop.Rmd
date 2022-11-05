@@ -1,0 +1,135 @@
+---
+title: "Developing rirods"
+output: 
+  rmarkdown::html_vignette:
+    md_extensions: [ 
+      "-autolink_bare_uris" 
+    ]
+vignette: >
+  %\VignetteIndexEntry{Developing rirods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Contributing to rirods development
+
+To contribute to rirods fork the source files from: 
+https://github.com/irods/irods_client_library_rirods, and make a Pull Request. 
+
+## Prerequisites R
+
+The following R packages are required for development: `jsonlite`, `readr`, 
+`testthat` (>= 3.0.0) and `withr`, and `httr2` and `httptest2`. For convenience,
+one can also use `renv` () and `renv::restore()` to install all 
+dependencies. The `usethis` and the `devtools` packages are further 
+suggestions to streamline development. See https://devtools.r-lib.org/ and 
+https://usethis.r-lib.org/ for common development tasks and setups covered by 
+these packages.
+
+Development of `rirods` relies on the `httptest2` which enables testing of the 
+logic on the R side of the API without requiring access to the remote service.
+It does this by recording the API response as mock files. These mock files are 
+stored in several directories under `.tests/testthat/`. To enable testing
+against the real API one needs to remove these mock files. The helper 
+`remove_mock_files()` simplifies this task. This function is not exported and 
+needs to be sourced (e.g., using `devtools::load_all()`) and subsequently 
+called.
+
+## Prerequisites iRODS
+
+The unit test included in the source files can either be run against a local or 
+remote iRODS C++ REST API service, version 0.9.3 or later - 
+https://github.com/irods/irods_client_rest_cpp.
+
+### Local server
+
+Launch a local demonstration iRODS service (including the REST API):
+
+```{bash, eval=FALSE}
+# clone the repository
+git clone --recursive https://github.com/irods/irods_demo
+# start the REST API
+cd irods_demo
+docker-compose up -d nginx-reverse-proxy
+```
+
+This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version). 
+No further configuration in R is needed for development (except for removing 
+possible mock files). For example, to run the unit tests against this local 
+server use: `devtools::test()`.
+
+For miscellaneous development tasks one can, furthermore, use the non-exported 
+function: `local_create_irods()`. This test fixture is almost the same as the
+exported function `create_irods()` except that it uses a temporary directory as 
+the working directory thereby preventing cluttering of the package source files.
+When restarting the R session (possibly with `CTRL + SHIFT + F10`) or running 
+`withr::deferred_run()` the working directory is restored to the 
+package directory. 
+
+### Remote server
+
+Testing against a remote server requires the specification of server 
+information. This information needs to be entered in the `.Rprofile` file:
+
+```{r prof, eval=FALSE}
+# dependency management
+options(renv.settings.snapshot.type = "explicit")
+source("renv/activate.R")
+
+# development key (create key with httr2::secret_make_key() and place in user
+# level environment variables. One can use usethis::edit_r_environ() for this.
+# Store the key under "DEV_KEY_IRODS")
+
+# irods environment variables for development
+Sys.setenv(DEV_HOST_IRODS = "nLO8T0IpHCT2kXklYE-IB0HjYpNkg5wN4ZKk7TPSvkwGf9FauDR-O5mVI-mmD2_zNFGLoaVcAgYl")
+Sys.setenv(DEV_ZONE_PATH_IRODS = "gunp5Ts08NHfpKAdbFCBuilVb7Wjnxojbt7bA1e-9Q")
+Sys.setenv(DEV_USER = "ZGlORquE2G6BIPS5JAcuPcngmBB6Wg")
+Sys.setenv(DEV_PASS = "ZGlORquE2G6BIPS5JAcuPcngmBB6Wg")
+```
+
+The server information is stored in the environmental variables `DEV_HOST_IRODS`
+,`DEV_ZONE_PATH_IRODS`, `DEV_USER`, and `DEV_PASS`. Server information is 
+provided in scrambled format to prevent leakage of sensitive information to 
+GitHub. 
+
+The following step are needed to scramble this information.
+
+1) Generate package development key:
+
+```{r key, eval=FALSE}
+httr2::secret_make_key()
+```
+
+2) Store the package development key as an environmental variable at the user 
+level. For convenience one can use `usethis::edit_r_environ()` which opens the 
+`.Renviron` file. Enter your key by replacing `<key>` as follows:
+
+```
+DEV_KEY_IRODS="<key>"
+```
+
+3) Scramble the iRODS server information with `httr2::secret_encrypt()`. 
+For example, scramble the host name as follows:
+
+```{r host, eval=FALSE}
+httr2::secret_encrypt("http://myserver/irods-rest/0.9.3" ,"DEV_KEY_IRODS")
+```
+
+4) Store the scrambled information at the designated places in the project level 
+`.Rprofile`: host name under `DEV_HOST_IRODS`, zone path under 
+`DEV_ZONE_PATH_IRODS` (e.g., `"/tempZone/home"`), user name under `DEV_USER`, 
+and password under `DEV_PASS`.
+
+5) Restart the R sessions (possibly with `CTRL + SHIFT + F10`).
+
+Note that the unit tests are built against a clean server with only one user 
+(i.e., `DEV_USER`). In addition, one should not forget to remove the mock files
+(e.g., with `remove_mock_files()`, see above) to test against the real server.
+

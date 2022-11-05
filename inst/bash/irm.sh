@@ -1,7 +1,12 @@
 #!/bin/sh
 
-# token
-SECRETS=$(echo -n rods:rods | base64)
-TOKEN=$(curl -X POST -H "Authorization: Basic ${SECRETS}" http://localhost/irods-rest/0.9.3/auth)
+# dir
+MYDIR="$(dirname "$(realpath "$0")")"
 
-curl -X DELETE -H "Authorization: ${TOKEN}" "http://localhost/irods-rest/0.9.3/logicalpath?logical-path=/tempZone/home/X&no-trash=1"
+# token
+TOKEN=$(sh "${MYDIR}/iauth.sh" $1 $2 $3)
+
+curl -G -X DELETE -H "Authorization: ${TOKEN}" \
+  --data-urlencode "logical-path=$4" \
+  --data-urlencode "no-trash=$5" \
+  "$3/logicalpath"

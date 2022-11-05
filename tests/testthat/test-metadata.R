@@ -3,13 +3,23 @@ with_mock_dir("metadata-1", {
 
     # single
     imeta(
-      "rods",
-      "collection",
+      "test",
+      "data_object",
       operations =
         list(operation = "add", attribute = "foo", value = "bar", units = "baz")
     )
 
-    expect_snapshot(ils(metadata = TRUE))
+    # reference dataframe
+    ref <- structure(list(
+      logical_path = paste0(lpath, "/", user, "/testthat/test"),
+      metadata = list(structure(list(attribute = "foo",  value = "bar", units = "baz"), row.names = c(NA, -1L), class = "data.frame")),
+      type = "data_object"
+    ),
+    row.names = c(NA, -1L),
+    class = "data.frame"
+    )
+
+    expect_equal(ils(metadata = TRUE), ref)
 
   })
 })
@@ -19,8 +29,8 @@ with_mock_dir("metadata-2", {
 
     # double
     imeta(
-      "rods",
-      "collection",
+      "test",
+      "data_object",
       operations =
         list(
           list(operation = "add", attribute = "foo", value = "bar", units = "baz"),
@@ -28,7 +38,23 @@ with_mock_dir("metadata-2", {
         )
     )
 
-    expect_snapshot(ils(metadata = TRUE))
+    # reference dataframe
+    ref <- structure(list(
+      logical_path = paste0(lpath, "/", user, "/testthat/test"),
+      metadata = list(
+        structure(
+          list(attribute = c("foo", "foo2"), value = c("bar", "bar2"), units = c("baz", "baz2")),
+          row.names = c(1L, 2L),
+          class = "data.frame"
+          )
+        ),
+      type = "data_object"
+    ),
+    row.names = c(NA, -1L),
+    class = "data.frame"
+    )
+
+    expect_equal(ils(metadata = TRUE), ref)
 
   })
 })
@@ -36,12 +62,23 @@ with_mock_dir("metadata-2", {
 with_mock_dir("metadata-query", {
   test_that("metadata query works" , {
 
-    # query
-    expect_snapshot(
-      iquery(
-        "SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'"
-      )
+    # reference dataframe
+    ref <- structure(list(
+      collection = paste0(lpath, "/", user, "/testthat"),
+      data_object = "test"
+    ),
+    row.names = c(1L),
+    class = "data.frame"
     )
+
+    # query
+    expect_equal(
+      iquery(
+        paste0("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '", lpath, "/%'")
+      ),
+      ref
+    )
+
   })
 })
 
@@ -50,8 +87,8 @@ with_mock_dir("metadata-remove", {
 
     # remove metadata
     imeta(
-      "rods",
-      "collection",
+      "test",
+      "data_object",
       operations =
         list(
           list(operation = "remove", attribute = "foo", value = "bar", units = "baz"),
@@ -59,8 +96,17 @@ with_mock_dir("metadata-remove", {
         )
     )
 
-    expect_snapshot(ils(metadata = TRUE))
+    # reference dataframe
+    ref <- structure(list(
+      logical_path = paste0(lpath, "/", user, "/testthat/test"),
+      metadata = list(list()),
+      type = "data_object"
+    ),
+    row.names = c(NA, -1L),
+    class = "data.frame"
+    )
 
+    expect_equal(ils(metadata = TRUE), ref)
 
   })
 })

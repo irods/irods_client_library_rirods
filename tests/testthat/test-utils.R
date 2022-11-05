@@ -3,7 +3,7 @@ with_mock_dir("irods-rest-call", {
 
     # flags to curl call
     args <- list(
-      `logical-path` = "/tempZone/home/bobby",
+      `logical-path` = paste0(lpath, "/", user, "/testthat"),
       stat = 1,
       permissions = 1,
       metadata = 1,
@@ -24,18 +24,18 @@ with_mock_dir("object-helpers", {
   test_that("irods object helpers work", {
 
     # path exists
-    expect_true(path_exists("/tempZone/home/bobby"))
-    expect_false(path_exists("/tempZone/home/frank"))
+    expect_true(path_exists(paste0(lpath, "/", user)))
+    expect_false(path_exists(paste0(lpath, "/frank")))
 
     # collection exists
-    expect_true(is_collection("/tempZone/home/bobby")) # is a collection
-    expect_false(is_collection("/tempZone/home/bobby/test")) # is a data object
-    expect_error(is_collection("/tempZone/home/frank")) # does not exist at all
+    expect_true(is_collection(paste0(lpath, "/", user))) # is a collection
+    expect_false(is_collection(paste0(lpath, "/", user, "/testthat/test"))) # is a data object
+    expect_error(is_collection(paste0(lpath, "/frank"))) # does not exist at all
 
     # object exists
-    expect_true(is_object("/tempZone/home/bobby/test")) # is a data object
-    expect_false(is_object("/tempZone/home/bobby")) # is a collection
-    expect_error(is_object("/tempZone/home/frank/test")) # does not exist at all
+    expect_true(is_object(paste0(lpath, "/", user, "/testthat/test"))) # is a data object
+    expect_false(is_object(paste0(lpath, "/", user))) # is a collection
+    expect_error(is_object(paste0(lpath, "/projectx/test"))) # does not exist at all
   })
 },
 simplify = FALSE

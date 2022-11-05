@@ -1,8 +1,19 @@
 #!/bin/sh
 
+# dir
+MYDIR="$(dirname "$(realpath "$0")")"
+
 # token
-SECRETS=$(echo -n rods:rods | base64)
-TOKEN=$(curl -X POST -H "Authorization: Basic ${SECRETS}" http://localhost/irods-rest/0.9.3/auth)
+TOKEN=$(sh "${MYDIR}/iauth.sh" $1 $2 $3)
 
 # list files
-curl -X GET -H "Authorization: ${TOKEN}" 'http://localhost/irods-rest/0.9.3/list?logical-path=%2FtempZone%2Fhome&stat=0&permissions=0&metadata=0&offset=0&limit=100' # | jq
+curl -G -X GET -H "Authorization: ${TOKEN}" \
+  --data-urlencode "logical-path=$4" \
+  --data-urlencode "stat=$5" \
+  --data-urlencode "permissions=$6" \
+  --data-urlencode "metadata=$7" \
+  --data-urlencode "offset=$8" \
+  --data-urlencode "limit=$9" \
+  "$3/list?"
+
+

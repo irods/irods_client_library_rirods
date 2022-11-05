@@ -1,7 +1,14 @@
 #!/bin/sh
 
-# token
-SECRETS=$(echo -n rods:rods | base64)
-TOKEN=$(curl -X POST -H "Authorization: Basic ${SECRETS}" http://localhost/irods-rest/0.9.3/auth)
+# dir
+MYDIR="$(dirname "$(realpath "$0")")"
 
-curl -X POST -H "Authorization: ${TOKEN}" "http://localhost/irods-rest/0.9.3/logicalpath?logical-path=/tempZone/home/rods/a/b/c&collection=1&create-parent-collections=1"
+# token
+TOKEN=$(sh "${MYDIR}/iauth.sh" $1 $2 $3)
+
+# imdkir
+curl -G -X POST -H "Authorization: ${TOKEN}" \
+  --data-urlencode "logical-path=$4" \
+  --data-urlencode "collection=$5" \
+  --data-urlencode "create-parent-collections=$6" \
+  "$3/logicalpath"

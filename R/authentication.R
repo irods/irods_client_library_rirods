@@ -6,7 +6,6 @@
 #'
 #' @param user iRODS user name (prompts user for user name if not supplied).
 #' @param password iRODS password (prompts user for password if not supplied).
-#' @param zone_path iRODS zone path (defaults to "/tempZone/home").
 #' @param role iRODS role of user (defaults to "rodsuser").
 #'
 #' @return Invisibly NULL

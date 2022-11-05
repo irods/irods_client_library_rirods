@@ -1,11 +1,24 @@
 #!/bin/sh
 
-# token
-SECRETS=$(echo -n rods:rods | base64)
-TOKEN=$(curl -X POST -H "Authorization: Basic ${SECRETS}" http://localhost/irods-rest/0.9.3/auth)
+# dir
+MYDIR="$(dirname "$(realpath "$0")")"
 
-# create user bobby
-curl -X POST -H "Authorization: ${TOKEN}" 'http://localhost/irods-rest/0.9.3/admin?action=add&target=user&arg2=bobby&arg3=rodsuser&arg4=&arg5=&arg6=&arg7=' -o /dev/null
+# token
+TOKEN=$(sh "${MYDIR}/iauth.sh" $1 $2 $3)
+
+# create user bobby (G flag appends data with "?")
+curl -G -X POST -H "Authorization: ${TOKEN}" \
+  --data-urlencode "action=$5" \
+  --data-urlencode "target=$6" \
+  --data-urlencode "arg2=$7" \
+  --data-urlencode "arg3=$8" \
+  --data-urlencode "arg4=$9" \
+  --data-urlencode "arg5=$10" \
+  --data-urlencode "arg6=$11" \
+  --data-urlencode "arg7=$12" \
+  -o /dev/null \
+  "$3/admin"
 
 # list to show result
-curl -X GET -H "Authorization: ${TOKEN}" 'http://localhost/irods-rest/0.9.3/list?logical-path=%2FtempZone%2Fhome&stat=0&permissions=0&metadata=0&offset=0&limit=100'  | jq
+
+sh "${MYDIR}/ils.sh" $1 $2 $3 $4 0 0 0 0 100

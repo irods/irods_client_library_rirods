@@ -107,8 +107,13 @@ jobs:
           rm ./tests/testthat/.gitignore
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git add ./tests/testthat/\*
+          git add ./tests/testthat/\*\*/\*\.R
+          cat > ./tests/testthat/.gitignore
+          echo "**/*.R" >> ./tests/testthat/.gitignore
+          git add ./tests/testthat/.gitignore
           git commit -m "Snapshots http response" || echo "No changes to commit"
           git pull --ff-only
           git push origin
+          git rm --cached tests/testthat/\*\*/\*.R
+
 

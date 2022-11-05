@@ -1,11 +1,17 @@
 #!/bin/sh
 
-# token
-SECRETS=$(echo -n bobby:passWORD | base64)
-TOKEN=$(curl -X POST -H "Authorization: Basic ${SECRETS}" http://localhost/irods-rest/0.9.3/auth)
+# dir
+MYDIR="$(dirname "$(realpath "$0")")"
 
-curl -X POST \
--H "Authorization: ${TOKEN}" \
--H "Content-Type: application/json" \
---data '{"entity_name":"/tempZone/home/bobby/foo","entity_type":"data_object","operations":[{"operation":"add","attribute":"foo","value":"bar","units":"baz"}]}' \
-http://localhost/irods-rest/0.9.3/metadata
+# token
+TOKEN=$(sh "${MYDIR}/iauth.sh" $1 $2 $3)
+
+# add metadata
+curl -G -X POST \
+  -H "Authorization: ${TOKEN}" \
+  -H "Content-Type: application/json" \
+  --data '{"entity_name":'"$4"',"entity_type":"collection","operations":[{"operation":"add","attribute":"foo","value":"bar","units":"baz"}]}' \
+  "$3/metadata"
+
+# list to show result
+sh "${MYDIR}/ils.sh" $1 $2 $3 $4 0 0 1 0 100

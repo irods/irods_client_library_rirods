@@ -3,9 +3,9 @@ Codecov
 GeneralQuery
 IRODS
 Unregister
-arg
-childfromresc
-childtoresc
+Zonepath
+cpp
+csv
 github
 hardcoding
 http
@@ -13,7 +13,6 @@ https
 iCAT
 iRODS
 irods
-rebalance
-specificQuery
+rodsuser
+tempZone
 tibble
-unusedAVUs

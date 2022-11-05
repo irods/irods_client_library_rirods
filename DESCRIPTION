@@ -47,13 +47,13 @@ Imports:
     base64enc,
     httr2 (>= 0.2.2)
 Suggests: 
-    covr,
     httptest2,
     jsonlite,
+    knitr,
     readr,
+    rmarkdown,
     spelling,
     testthat (>= 3.0.0),
-    usethis,
     withr
 Config/testthat/edition: 3
 Depends: 
@@ -61,3 +61,4 @@ Depends:
 Language: en-US
 URL: https://github.com/irods/irods_client_library_rirods
 BugReports: https://github.com/irods/irods_client_library_rirods/issues
+VignetteBuilder: knitr

@@ -1,7 +1,23 @@
+use_irods_demo <- function(action = "up") {
+
+  # does it exist
+  pt <- system("find ~ -path ~/.local  -prune -o -type d -name 'irods_demo' -print", intern = TRUE)
+  if (length(pt) == 0)
+    warning("The iRODS demo is not installed on this system. Using http mock files instead.", call. = FALSE)
+
+  if (action == "up") {
+    system(paste0("cd ",pt ," ; docker-compose up -d nginx-reverse-proxy"))
+  } else if (action == "down") {
+    system(paste0("cd ",pt ," ; docker-compose down"))
+  } else {
+    stop("Action unkown.", call. = FALSE)
+  }
+}
+
 # remove httptest2 mock files
 remove_mock_files <- function() {
   # find the mock dirs
-  pt <- file.path(usethis::proj_get(), testthat::test_path())
+  pt <- file.path(getwd(), testthat::test_path())
   fls <- list.files(pt, include.dirs = TRUE)
   mockers <- fls[!grepl(pattern = "((.*)\\..*$)|(^_)",  x= fls)]
   # remove mock dirs
@@ -12,11 +28,29 @@ remove_mock_files <- function() {
 
 # create local irods instance in temp dir
 local_create_irods <- function(
-    host = Sys.getenv("DEV_HOST_IRODS"),
-    zone_path = Sys.getenv("DEV_ZONE_PATH_IRODS"),
+    host = NULL,
+    zone_path = NULL,
     dir = tempdir(),
     env = parent.frame()
   ) {
+
+  # default host
+  if (is.null(host)) {
+    if (Sys.getenv("DEV_KEY_IROD") != "") {
+      host <- httr2::secret_decrypt(Sys.getenv("DEV_HOST_IRODS"), "DEV_KEY_IRODS")
+    } else {
+      host <- "http://localhost/irods-rest/0.9.3"
+    }
+  }
+
+  # defaults path
+  if (is.null(zone_path)) {
+    if (Sys.getenv("DEV_KEY_IROD") != "") {
+      zone_path <- httr2::secret_decrypt(Sys.getenv("DEV_ZONE_PATH_IRODS"), "DEV_KEY_IRODS")
+    } else {
+      zone_path <- "/tempZone/home"
+    }
+  }
 
   # to return to
   old_dir <- getwd()
@@ -30,3 +64,4 @@ local_create_irods <- function(
 
   invisible(dir)
 }
+
