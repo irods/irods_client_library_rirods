@@ -4,10 +4,12 @@
 \alias{create_irods}
 \title{Generate IRODS project file}
 \usage{
-create_irods(host, path = ".", overwrite = FALSE)
+create_irods(host, zone_path, path = ".", overwrite = FALSE)
 }
 \arguments{
 \item{host}{URL of host.}
+
+\item{zone_path}{Zonepath of the iRODS server (e.g., "/tempZone/home").}
 
 \item{path}{Path of project (defaults to current directory).}
 
@@ -18,11 +20,13 @@ Invisibly returns path to irods file.
 }
 \description{
 This will create an irods project file containing information about the
-iRODS server.
+iRODS server. It allows for working with an iRODS server in the particular
+context of a working directory and source files. Furthermore, future sessions
+connect again with the same iRODS server without further intervention.
 }
 \examples{
 if(interactive()) {
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.2")
+create_irods("http://localhost/irods-rest/0.9.2", "/tempZone/home")
 }
 }

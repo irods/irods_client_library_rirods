@@ -1,5 +1,4 @@
 function (response) {
-
   # mask host in headers
   response$url <- gsub(rirods:::find_irods_file("host"), "", response$url, fixed = TRUE)
 

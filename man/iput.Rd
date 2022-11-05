@@ -3,7 +3,7 @@
 \name{iput}
 \alias{iput}
 \alias{iget}
-\title{Working with data objects}
+\title{Working with iRODS data objects}
 \usage{
 iput(
   x,
@@ -32,10 +32,14 @@ iget(x, path = x, offset = 0, count = 1000, verbose = FALSE, overwrite = FALSE)
 \item{count}{Maximum number of bytes to read or write.}
 }
 \value{
-R object
+Invisibly the http response in case of \code{iput()}, or invisibly NULL
+or an R object in case of \code{iget()}.
 }
 \description{
-Working with data objects
+Store a file into iRODS with \code{iput()}. If the destination data-object or
+collection are not provided, the current iRODS directory and the input file
+name are used. Get data-objects or collections from iRODS space with \code{iget()}
+, either to the specified local area or to the current working directory.
 }
 \examples{
 if(interactive()) {

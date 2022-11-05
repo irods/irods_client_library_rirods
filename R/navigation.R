@@ -1,4 +1,7 @@
-#' Retrieve an object from iRODS
+#' Change/show current working directory
+#'
+#' Changes iRODS the current working directory (collection). The functions
+#' mimic behavior of unix `cd` and `pwd`.
 #'
 #' @param dir Change the current directory to DIR.  The default DIR is the value
 #'  of the HOME shell variable.
@@ -46,17 +49,38 @@ icd  <- function(dir) {
   # get requested dir
   if (!dir %in% c(".", "..")) {
 
-    if(!grepl("\\.\\./", dir)) {
-      current_dir <- dir
+    if(!grepl("^\\.{1,2}/", dir)) {
+
+      if (grepl("^\\/", dir)) {
+        # absolute path
+        current_dir <- dir
+      } else {
+        # relative path
+        current_dir <- paste0(local(current_dir, envir = .rirods), "/", dir)
+      }
+
     } else {
-      base_dir <- icd(".")
-      current_dir <- paste0(
-        base_dir,
-        ifelse(base_dir == "/", "", "/"), sub("\\.\\./", "", dir)
-      )
+      if(grepl("^\\.{2}/", dir)) {
+
+        # movement relative path
+        base_dir <- icd("..")
+
+        current_dir <- paste0(
+          base_dir,
+          ifelse(base_dir == "/", "", "/"), sub("\\.\\./", "", dir)
+        )
+      } else if(grepl("^\\.{1}/", dir)) {
+        # no movement relative path
+        base_dir <- icd(".")
+
+        current_dir <- paste0(
+          base_dir,
+          ifelse(base_dir == "/", "", "/"), sub("\\./", "", dir)
+        )
+      }
     }
 
-    # check if irods collecion exists
+    # check if irods collection exists
     if (!is_collection(current_dir))
       stop("This is not a directory (collection).", call. = FALSE)
 
@@ -134,7 +158,7 @@ ils <- function(
     check_type = FALSE,
     simplifyVector = TRUE
   )$`_embedded` |>
-    as.data.frame()
+  as.data.frame()
 
   # metadata reordering
   if (isTRUE(metadata)) {

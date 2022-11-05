@@ -1,5 +1,9 @@
 ---
-output: github_document
+output: 
+  github_document:
+     md_extensions: [ 
+      "-autolink_bare_uris" 
+    ]
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -19,7 +23,7 @@ knitr::opts_knit$set(
 # rirods
 
 <!-- badges: start -->
-[![Codecov test coverage](https://codecov.io/gh/irods/irods_client_library_rirods/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/irods/irods_client_library_rirods?branch=dev)
+[![Codecov test coverage](https://codecov.io/gh/irods/irods_client_library_rirods/branch/main/graph/badge.svg)](https://app.codecov.io/gh/irods/irods_client_library_rirods?branch=main)
 [![R-CMD-check](https://github.com/irods/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/irods/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -45,7 +49,7 @@ Launch a local demonstration iRODS service (including the REST API):
 git clone --recursive https://github.com/irods/irods_demo
 # start the REST API
 cd irods_demo
-docker-compose up nginx-reverse-proxy
+docker-compose up -d nginx-reverse-proxy
 ```
 
 This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version).
@@ -59,7 +63,7 @@ To connect to the REST API endpoint of your choice, load `rirods`, connect with 
 library(rirods)
 
 # connect
-create_irods("http://localhost/irods-rest/0.9.3")
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 ```
 
 ```{r admin, include=FALSE}

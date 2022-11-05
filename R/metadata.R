@@ -1,4 +1,9 @@
-#' Describe your data
+#' Describe your iRODS objects
+#'
+#' Metadata attribute-value-units triples (AVUs) consist of an Attribute-Name,
+#' Attribute-Value, and an optional Attribute-Units. They can be added
+#' via the 'add' command ,or removed with 'remove', and then queried to find
+#' matching objects.
 #'
 #' @param x object, collection or user
 #' @param entity_type Type (object, collection or user)
@@ -33,7 +38,6 @@
 #' ils()
 #'
 #' # add some metadata
-#'# add some metadata
 #' imeta(
 #'  "foo",
 #'  "data_object",

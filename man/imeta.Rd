@@ -3,7 +3,7 @@
 \name{imeta}
 \alias{imeta}
 \alias{iquery}
-\title{Describe your data}
+\title{Describe your iRODS objects}
 \usage{
 imeta(
   x,
@@ -53,7 +53,10 @@ query}
 Invisibly returns the response.
 }
 \description{
-Describe your data
+Metadata attribute-value-units triples (AVUs) consist of an Attribute-Name,
+Attribute-Value, and an optional Attribute-Units. They can be added
+via the 'add' command ,or removed with 'remove', and then queried to find
+matching objects.
 }
 \examples{
 if(interactive()) {
@@ -69,7 +72,6 @@ iput(foo)
 # check if file is stored
 ils()
 
-# add some metadata
 # add some metadata
 imeta(
  "foo",

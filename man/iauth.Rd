@@ -4,19 +4,12 @@
 \alias{iauth}
 \title{Authentication service for the iRODS zone}
 \usage{
-iauth(
-  user = NULL,
-  password = NULL,
-  zone_path = "/tempZone/home",
-  role = "rodsuser"
-)
+iauth(user = NULL, password = NULL, role = "rodsuser")
 }
 \arguments{
 \item{user}{iRODS user name (prompts user for user name if not supplied).}
 
 \item{password}{iRODS password (prompts user for password if not supplied).}
-
-\item{zone_path}{iRODS zone path (defaults to "/tempZone/home").}
 
 \item{role}{iRODS role of user (defaults to "rodsuser").}
 }

@@ -6,7 +6,7 @@
 #' connect again with the same iRODS server without further intervention.
 #'
 #' @param host URL of host.
-#' @param zone Zonepath of the iRODS server (e.g., "/tempZone/home").
+#' @param zone_path Zonepath of the iRODS server (e.g., "/tempZone/home").
 #' @param path Path of project (defaults to current directory).
 #' @param overwrite Overwrite existing irods file (defaults to `FALSE`).
 #'

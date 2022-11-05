@@ -7,12 +7,18 @@ with_mock_dir("add-data-collections", {
     # collection within a collection
     expect_invisible(imkdir("x/a", create_parent_collections = TRUE))
 
+    # reference dataframe
+    ref <- data.frame(
+      logical_path = paste0(lpath, "/", user, "/testthat", c("/a", "/x", "/test")),
+      type = c("collection", "collection", "data_object")
+    )
+
     # check if collections are added
-    expect_snapshot(ils())
+    expect_equal(ils(), ref)
 
     # remove dirs
     irm("a", recursive = TRUE)
-    icd("../x")
+    icd("./x")
     irm("a", recursive = TRUE)
     icd("..")
     irm("x", recursive = TRUE)
@@ -28,8 +34,14 @@ with_mock_dir("remove-objects", {
     # delete object "foo.csv"
     expect_invisible(irm("foo.csv", trash = FALSE))
 
+    # reference dataframe
+    ref <- data.frame(
+      logical_path = paste0(lpath, "/", user, "/testthat/test"),
+      type = "data_object"
+    )
+
     # check if file is delete
-    expect_snapshot(ils())
+    expect_equal(ils(), ref)
 
   })
 })
