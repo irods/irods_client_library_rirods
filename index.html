@@ -50,6 +50,12 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/develop.html">Developing rirods</a>
+  </div>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -87,12 +93,12 @@
 <h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h2>
 <p>This package connects to the iRODS C++ REST API - <a href="https://github.com/irods/irods_client_rest_cpp" class="external-link uri">https://github.com/irods/irods_client_rest_cpp</a>.</p>
-<p>The launch a local demonstration iRODS service (including the REST API):</p>
+<p>Launch a local demonstration iRODS service (including the REST API):</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone the repository</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--recursive</span> https://github.com/irods/irods_demo</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># start the REST API</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> irods_demo</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up nginx-reverse-proxy</span></code></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up <span class="at">-d</span> nginx-reverse-proxy</span></code></pre></div>
 <p>This will result in the demonstration REST API running at <a href="http://localhost/irods-rest/0.9.3" class="external-link uri">http://localhost/irods-rest/0.9.3</a> (or later version).</p>
 </div>
 <div class="section level2">
@@ -104,7 +110,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/irods/irods_client_library_rirods" class="external-link">rirods</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># connect</span></span>
-<span><span class="fu"><a href="reference/create_irods.html">create_irods</a></span><span class="op">(</span><span class="st">"http://localhost/irods-rest/0.9.3"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/create_irods.html">create_irods</a></span><span class="op">(</span><span class="st">"http://localhost/irods-rest/0.9.3"</span>, <span class="st">"/tempZone/home"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="authentication">authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
 </h3>
@@ -207,7 +213,7 @@
 <span><span class="co">#&gt; 1 /tempZone/home/bobby         foo</span></span>
 <span><span class="co">#&gt; 2 /tempZone/home/bobby     foo.csv</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># or where data objects named "foo" can be found</span></span>
+<code class="sourceCode R"><span><span class="co"># or for data objects with a name that starts with "foo"</span></span>
 <span><span class="fu"><a href="reference/imeta.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             collection data_object</span></span>
 <span><span class="co">#&gt; 1 /tempZone/home/bobby         foo</span></span>
@@ -257,13 +263,14 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Martin Schobben <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8560-0037" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://app.codecov.io/gh/irods/irods_client_library_rirods?branch=dev" class="external-link"><img src="https://codecov.io/gh/irods/irods_client_library_rirods/branch/dev/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://app.codecov.io/gh/irods/irods_client_library_rirods?branch=main" class="external-link"><img src="https://codecov.io/gh/irods/irods_client_library_rirods/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://github.com/irods/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/irods/irods_client_library_rirods/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
