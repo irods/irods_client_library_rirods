@@ -7,19 +7,19 @@
 \usage{
 iput(
   x,
-  path = ".",
+  logical_path,
   offset = 0,
-  count = 1000L,
-  truncate = TRUE,
+  count = 3000L,
+  truncate = "true",
   verbose = FALSE,
   overwrite = FALSE
 )
 
 iget(
-  x,
-  path = x,
+  logical_path,
+  path = ".",
   offset = 0,
-  count = 1000L,
+  count = 3000L,
   verbose = FALSE,
   overwrite = FALSE
 )
@@ -27,7 +27,7 @@ iget(
 \arguments{
 \item{x}{R object stored on iRODS server.}
 
-\item{path}{Destination path.}
+\item{logical_path}{Destination path.}
 
 \item{offset}{Offset in bytes into the data object (Defaults to FALSE).}
 
@@ -38,6 +38,8 @@ iget(
 \item{verbose}{Show information about the http request and response.}
 
 \item{overwrite}{Overwrite irods object or local file (defaults to FALSE).}
+
+\item{path}{Local path.}
 }
 \value{
 Invisibly the http response in case of \code{iput()}, or invisibly NULL
@@ -51,6 +53,9 @@ name are used. Get data-objects or collections from iRODS space with \code{iget(
 }
 \examples{
 if(interactive()) {
+# connect project to server
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+
 # authentication
 iauth()
 
@@ -58,12 +63,12 @@ iauth()
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
 # store
-iput(foo)
+iput(foo, "foo.rds")
 
 # check if file is stored
 ils()
 
 # retrieve in native R format
-iget("foo")
+iget("foo.rds")
 }
 }

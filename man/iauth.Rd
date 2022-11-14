@@ -23,6 +23,8 @@ thereby preventing hard-coding of sensitive information in scripts.
 }
 \examples{
 if(interactive()) {
+# connect project to server
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 # authenticate
 iauth()
 }

@@ -5,7 +5,7 @@
 \title{Listing iRODS data objects and collections}
 \usage{
 ils(
-  path = ".",
+  logical_path = ".",
   stat = FALSE,
   permissions = FALSE,
   metadata = FALSE,
@@ -16,7 +16,7 @@ ils(
 )
 }
 \arguments{
-\item{path}{Directory to be listed.}
+\item{logical_path}{Directory to be listed.}
 
 \item{stat}{Boolean flag to indicate stat information is desired.}
 

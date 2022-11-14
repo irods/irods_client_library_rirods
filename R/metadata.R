@@ -5,7 +5,7 @@
 #' via the 'add' command ,or removed with 'remove', and then queried to find
 #' matching objects.
 #'
-#' @param x object, collection or user
+#' @param logical_path object, collection or user
 #' @param entity_type Type (object, collection or user)
 #' @param operations List which contains the following named elements;
 #'  `operation`, which adds (`"add"`) or removes (`"remove"`) the object, and
@@ -17,7 +17,7 @@
 #' @param limit  The max number of rows to return (defaults to 100)
 #' @param offset Number of rows to skip for paging (defaults to 0).
 #' @param type Either 'general' or 'specific' (defaults to 'general').
-#' @param casesensitive Affects string matching (defaults to TRUE).
+#' @param case_sensitive Affects string matching (defaults to TRUE).
 #' @param distinct Only list distinct rows (defaults to TRUE).
 #'
 #' @return Invisibly returns the response.
@@ -25,6 +25,9 @@
 #'
 #' @examples
 #' if(interactive()) {
+#' # connect project to server
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#'
 #' # authentication
 #' iauth()
 #'
@@ -32,14 +35,14 @@
 #' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 #'
 #' # store
-#' iput(foo)
+#' iput(foo, "foo.rds")
 #'
 #' # check if file is stored
 #' ils()
 #'
 #' # add some metadata
 #' imeta(
-#'  "foo",
+#'  "foo.rds",
 #'  "data_object",
 #'  operations =
 #'   list(operation = "add", attribute = "foo", value = "bar", units = "baz")
@@ -52,7 +55,7 @@
 #' iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 #' }
 imeta <- function(
-    x,
+    logical_path,
     entity_type,
     operations =
       list(
@@ -65,12 +68,8 @@ imeta <- function(
     verbose = FALSE
 ) {
 
-  # logical path
-  if (path == ".") {
-    lpath <- paste0(.rirods$current_dir, "/", x)
-  } else {
-    lpath <- paste0(path, "/", x)
-  }
+  # expand logical path to absolute logical path
+  logical_path <- get_absolute_lpath(logical_path, open = "read")
 
   # check list depth if 1 add another layer
   if (list_depth(operations) == 1)
@@ -78,10 +77,10 @@ imeta <- function(
 
   # data to be converted to json for body (double operation list important for boxing)
   json <- list(
-    entity_name = lpath,
+    entity_name = logical_path,
     entity_type = entity_type,
     operations = operations
-    )
+  )
 
   # http call
   resp <- irods_rest_call("metadata", "POST", args = list(), verbose, json)
@@ -106,7 +105,7 @@ iquery <- function(
     limit = 100,
     offset = 0,
     type = 'general',
-    casesensitive = TRUE,
+    case_sensitive = TRUE,
     distinct = TRUE,
     verbose = FALSE
   ) {
@@ -116,7 +115,7 @@ iquery <- function(
     limit = limit,
     offset = offset,
     type = type,
-    `case-sensitive` = as.integer(casesensitive),
+    `case-sensitive` = as.integer(case_sensitive),
     distinct = as.integer(distinct),
     query = query
   )
@@ -124,13 +123,12 @@ iquery <- function(
   # http call
   resp <- irods_rest_call("query", "GET", args, verbose)
 
+  # response
   out <- httr2::resp_body_json(
     resp,
     check_type = FALSE,
     simplifyVector = TRUE
-  )$`_embedded` |>
-    as.data.frame()
+  )$`_embedded`
 
-  if (nrow(out) > 0 ) colnames(out) <- c("collection", "data_object")
   out
 }
