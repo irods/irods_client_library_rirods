@@ -11,7 +11,7 @@ library(httptest2)
 # (possibly place those in your .Rprofile for convenience)
 #-----------------------------------------------------------------------------
 
-if (Sys.getenv("DEV_KEY_IROD") != "") {
+if (Sys.getenv("DEV_KEY_IRODS") != "") {
   user <- httr2::secret_decrypt(Sys.getenv("DEV_USER"), "DEV_KEY_IRODS")
   pass <- httr2::secret_decrypt(Sys.getenv("DEV_PASS"), "DEV_KEY_IRODS")
   lpath <- httr2::secret_decrypt(Sys.getenv("DEV_ZONE_PATH_IRODS"), "DEV_KEY_IRODS")

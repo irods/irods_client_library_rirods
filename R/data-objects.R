@@ -39,6 +39,7 @@ iput <- function(
     x,
     path = ".",
     offset = 0,
+    count = 1000L,
     truncate = TRUE,
     verbose = FALSE,
     overwrite = FALSE
@@ -75,6 +76,7 @@ iput <- function(
   args <- list(
     `logical-path` = lpath,
     offset = offset,
+    count = count,
     truncate = as.integer(truncate)
   )
 
@@ -91,7 +93,7 @@ iget  <- function(
     x,
     path = x,
     offset = 0,
-    count = 1000,
+    count = 1000L,
     verbose = FALSE,
     overwrite = FALSE
   ) {
