@@ -21,6 +21,9 @@
 #'
 #' @examples
 #' if(interactive()) {
+#' # connect project to server
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#'
 #' # authentication
 #' iauth()
 #'
@@ -28,13 +31,13 @@
 #' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 #'
 #' # store
-#' iput(foo)
+#' iput(foo, "foo.rds")
 #'
 #' # check if file is stored
 #' ils()
 #'
 #' # delete object
-#' irm("foo", trash = FALSE)
+#' irm("foo.rds", trash = FALSE)
 #'
 #' # create collection
 #' imkdir("a")
@@ -42,19 +45,15 @@
 #' # check if file is delete
 #' ils()
 #' }
-irm <- function(x, trash = TRUE, recursive = FALSE, unregister = FALSE,
+irm <- function(logical_path, trash = TRUE, recursive = FALSE, unregister = FALSE,
                 verbose = FALSE) {
 
-  # logical path
-  if (!grepl("/", x)) {
-    lpath <- paste0(.rirods$current_dir, "/", x)
-  } else {
-    lpath <- x
-  }
+  # expand logical path to absolute logical path
+  logical_path <- get_absolute_lpath(logical_path, open = "read")
 
   # flags to curl call
   args <- list(
-    `logical-path` = lpath,
+    `logical-path` = logical_path,
     `no-trash` = as.integer(trash),
     recursive = as.integer(recursive)
   )
@@ -68,19 +67,15 @@ irm <- function(x, trash = TRUE, recursive = FALSE, unregister = FALSE,
 #' @rdname irm
 #'
 #' @export
-imkdir <- function(x, collection = TRUE, create_parent_collections = FALSE,
-                   verbose = FALSE) {
+imkdir <- function(logical_path, collection = TRUE,
+                   create_parent_collections = FALSE, verbose = FALSE) {
 
-  # logical path
-  if (grepl("^/", x) && is_collection(x)) {
-    lpath <- x
-  } else {
-    lpath <- paste0(.rirods$current_dir, "/", x)
-  }
+  # expand logical path to absolute logical path
+  logical_path <- get_absolute_lpath(logical_path)
 
   # flags to curl call
   args <- list(
-    `logical-path` = lpath,
+    `logical-path` = logical_path,
     collection = as.integer(collection),
     `create-parent-collections` = as.integer(create_parent_collections)
   )

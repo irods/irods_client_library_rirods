@@ -2,6 +2,11 @@
 options(renv.settings.snapshot.type = "explicit")
 source("renv/activate.R")
 
+# package development
+if (interactive()) {
+  suppressPackageStartupMessages(require(devtools))
+}
+
 # development key (create key with httr2::secret_make_key() and place in user
 # level environment variables. One can use usethis::edit_r_environ() for this.
 # Store the key under "DEV_KEY_IRODS")

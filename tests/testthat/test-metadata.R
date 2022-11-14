@@ -3,20 +3,29 @@ with_mock_dir("metadata-1", {
 
     # single
     imeta(
-      "test",
+      "test.rds",
       "data_object",
       operations =
         list(operation = "add", attribute = "foo", value = "bar", units = "baz")
     )
 
     # reference dataframe
-    ref <- structure(list(
-      logical_path = paste0(lpath, "/", user, "/testthat/test"),
-      metadata = list(structure(list(attribute = "foo",  value = "bar", units = "baz"), row.names = c(NA, -1L), class = "data.frame")),
-      type = "data_object"
-    ),
-    row.names = c(NA, -1L),
-    class = "data.frame"
+    ref <- structure(
+      list(
+        logical_path = paste0(lpath, "/", user, "/testthat/test.rds"),
+        metadata = list(structure(
+          list(
+            attribute = "foo",
+            value = "bar",
+            units = "baz"
+          ),
+          row.names = c(NA,-1L),
+          class = "data.frame"
+        )),
+        type = "data_object"
+      ),
+      row.names = c(NA,-1L),
+      class = "data.frame"
     )
 
     expect_equal(ils(metadata = TRUE), ref)
@@ -29,7 +38,7 @@ with_mock_dir("metadata-2", {
 
     # double
     imeta(
-      "test",
+      "test.rds",
       "data_object",
       operations =
         list(
@@ -40,7 +49,7 @@ with_mock_dir("metadata-2", {
 
     # reference dataframe
     ref <- structure(list(
-      logical_path = paste0(lpath, "/", user, "/testthat/test"),
+      logical_path = paste0(lpath, "/", user, "/testthat/test.rds"),
       metadata = list(
         structure(
           list(attribute = c("foo", "foo2"), value = c("bar", "bar2"), units = c("baz", "baz2")),
@@ -63,21 +72,17 @@ with_mock_dir("metadata-query", {
   test_that("metadata query works" , {
 
     # reference dataframe
-    ref <- structure(list(
-      collection = paste0(lpath, "/", user, "/testthat"),
-      data_object = "test"
-    ),
-    row.names = c(1L),
-    class = "data.frame"
-    )
+    ref <- c(
+      paste0(lpath, "/", user, "/testthat"),
+      "test.rds"
+    ) |> matrix(ncol = 2)
 
     # query
-    expect_equal(
-      iquery(
-        paste0("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '", lpath, "/%'")
-      ),
-      ref
+    iq <- iquery(
+      paste0("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '", lpath, "/%'")
     )
+
+    expect_equal(iq, ref)
 
   })
 })
@@ -87,7 +92,7 @@ with_mock_dir("metadata-remove", {
 
     # remove metadata
     imeta(
-      "test",
+      "test.rds",
       "data_object",
       operations =
         list(
@@ -98,7 +103,7 @@ with_mock_dir("metadata-remove", {
 
     # reference dataframe
     ref <- structure(list(
-      logical_path = paste0(lpath, "/", user, "/testthat/test"),
+      logical_path = paste0(lpath, "/", user, "/testthat/test.rds"),
       metadata = list(list()),
       type = "data_object"
     ),

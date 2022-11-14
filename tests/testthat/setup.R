@@ -41,25 +41,28 @@ tk <- try({
 
   # some data
   foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+  baz <- matrix(1:100000)
 
   # creates a csv file of foo
   readr::write_csv(foo, "foo.csv")
+  saveRDS(baz, "baz.rds")
   withr::defer(unlink("foo.csv"), teardown_env())
+  withr::defer(unlink("baz.rds"), teardown_env())
 
   # authenticate
   iauth(user, pass, "rodsuser")
 
   # make tests collections
   def_path <- paste0(lpath, "/", user)
-  if (!path_exists(paste0(def_path, "/testthat"))) imkdir("testthat")
-  if (!path_exists(paste0(def_path, "/projectx"))) imkdir("projectx")
+  if (!lpath_exists(paste0(def_path, "/testthat"))) imkdir("testthat")
+  if (!lpath_exists(paste0(def_path, "/projectx"))) imkdir("projectx")
 
   # move one level up
-  icd("./testthat")
+  icd("testthat")
 
   # test object
   test <- 1
-  iput(test, overwrite = TRUE)
+  iput(test, "test.rds", overwrite = TRUE)
 
   # token
   get_token(paste(user, pass, sep = ":"), find_irods_file("host"))

@@ -6,7 +6,7 @@
 \title{Describe your iRODS objects}
 \usage{
 imeta(
-  x,
+  logical_path,
   entity_type,
   operations = list(operation = "add", attribute = NULL, value = NULL, units = NULL),
   path = ".",
@@ -18,13 +18,13 @@ iquery(
   limit = 100,
   offset = 0,
   type = "general",
-  casesensitive = TRUE,
+  case_sensitive = TRUE,
   distinct = TRUE,
   verbose = FALSE
 )
 }
 \arguments{
-\item{x}{object, collection or user}
+\item{logical_path}{object, collection or user}
 
 \item{entity_type}{Type (object, collection or user)}
 
@@ -45,7 +45,7 @@ query}
 
 \item{type}{Either 'general' or 'specific' (defaults to 'general').}
 
-\item{casesensitive}{Affects string matching (defaults to TRUE).}
+\item{case_sensitive}{Affects string matching (defaults to TRUE).}
 
 \item{distinct}{Only list distinct rows (defaults to TRUE).}
 }
@@ -60,6 +60,9 @@ matching objects.
 }
 \examples{
 if(interactive()) {
+# connect project to server
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+
 # authentication
 iauth()
 
@@ -67,14 +70,14 @@ iauth()
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
 # store
-iput(foo)
+iput(foo, "foo.rds")
 
 # check if file is stored
 ils()
 
 # add some metadata
 imeta(
- "foo",
+ "foo.rds",
  "data_object",
  operations =
   list(operation = "add", attribute = "foo", value = "bar", units = "baz")

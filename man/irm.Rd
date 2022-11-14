@@ -5,17 +5,23 @@
 \alias{imkdir}
 \title{Create/remove objects in iRODS}
 \usage{
-irm(x, trash = TRUE, recursive = FALSE, unregister = FALSE, verbose = FALSE)
+irm(
+  logical_path,
+  trash = TRUE,
+  recursive = FALSE,
+  unregister = FALSE,
+  verbose = FALSE
+)
 
 imkdir(
-  x,
+  logical_path,
   collection = TRUE,
   create_parent_collections = FALSE,
   verbose = FALSE
 )
 }
 \arguments{
-\item{x}{R object stored on iRODS server.}
+\item{logical_path}{Destination path.}
 
 \item{trash}{Send to trash or delete permanently (default = TRUE).}
 
@@ -44,6 +50,9 @@ moved to the trash collection when removed.
 }
 \examples{
 if(interactive()) {
+# connect project to server
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+
 # authentication
 iauth()
 
@@ -51,13 +60,13 @@ iauth()
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
 # store
-iput(foo)
+iput(foo, "foo.rds")
 
 # check if file is stored
 ils()
 
 # delete object
-irm("foo", trash = FALSE)
+irm("foo.rds", trash = FALSE)
 
 # create collection
 imkdir("a")

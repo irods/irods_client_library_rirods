@@ -32,8 +32,8 @@ create_irods <- function(
   # check for existence of irods project file
   if (file.exists(path) && isFALSE(overwrite))
     stop(
-      "Irods file alread exists. If you want to overwrite this file then",
-      "set `overwrite` to TRUE.",
+      "Irods file already exists. If you want to overwrite this file then",
+      " set `overwrite` to TRUE.",
       call. = FALSE
     )
 

@@ -56,6 +56,6 @@ test_that("shell equals R solution", {
     jsonlite::fromJSON()
 
   # curl in R
-  R <- ils(path = def_path)
+  R <- ils(def_path)
   expect_equal(R, shell$`_embedded`)
 })
