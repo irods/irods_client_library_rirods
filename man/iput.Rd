@@ -9,12 +9,20 @@ iput(
   x,
   path = ".",
   offset = 0,
+  count = 1000L,
   truncate = TRUE,
   verbose = FALSE,
   overwrite = FALSE
 )
 
-iget(x, path = x, offset = 0, count = 1000, verbose = FALSE, overwrite = FALSE)
+iget(
+  x,
+  path = x,
+  offset = 0,
+  count = 1000L,
+  verbose = FALSE,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{x}{R object stored on iRODS server.}
@@ -23,13 +31,13 @@ iget(x, path = x, offset = 0, count = 1000, verbose = FALSE, overwrite = FALSE)
 
 \item{offset}{Offset in bytes into the data object (Defaults to FALSE).}
 
+\item{count}{Maximum number of bytes to read or write.}
+
 \item{truncate}{Truncates the object on open (defaults to TRUE).}
 
 \item{verbose}{Show information about the http request and response.}
 
 \item{overwrite}{Overwrite irods object or local file (defaults to FALSE).}
-
-\item{count}{Maximum number of bytes to read or write.}
 }
 \value{
 Invisibly the http response in case of \code{iput()}, or invisibly NULL
