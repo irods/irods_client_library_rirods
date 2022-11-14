@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   develop: develop.html
-last_built: 2022-11-13T13:15Z
+last_built: 2022-11-14T22:47Z
 urls:
   reference: https://irods.github.io/irods_client_library_rirods/reference
   article: https://irods.github.io/irods_client_library_rirods/articles
