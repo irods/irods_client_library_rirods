@@ -1,8 +1,35 @@
 with_mock_dir("data-objects", {
   test_that("external data-objects management works", {
 
-    # store
-    expect_invisible(iput("foo.csv"))
+    # a bunch of datasets
+    rng <- c(1:5)
+    ls_data <- ls("package:datasets")
+    get_data <- mget(ls_data[rng], as.environment("package:datasets"))
+    ls_data <- gsub("\\.", "_", ls_data)
+    for(i in seq_along(rng)) {
+      # assign to environment
+      assign(ls_data[i], get_data[[i]])
+      # upload to irods
+      expect_invisible(
+        eval(
+          substitute(
+            iput(x, y, overwrite = TRUE),
+            list(
+              x = str2lang(ls_data[i]),
+              y = paste0(ls_data[i], ".rds")
+            )
+          )
+        )
+      )
+      # retrieve object
+      X <- iget(paste0(ls_data[i], ".rds"))
+      expect_equal(X, eval(str2lang(ls_data[i])))
+      # remove object
+      expect_invisible(irm(paste0(ls_data[i], ".rds")))
+    }
+
+    # store file
+    expect_invisible(iput("foo.csv", "foo.csv", overwrite = TRUE))
 
     # retrieve object
     iget("foo.csv", overwrite = TRUE)
@@ -39,25 +66,28 @@ test_that("overwrite error works", {
 #   skip_if(inherits(tk, "try-error"))
 #
 #   # curl in shell
-# system2(
-#   system.file(package = "rirods", "bash", "iput.sh"),
-#   c(Sys.getenv("DEV_USER"), Sys.getenv("DEV_PASS"), Sys.getenv("DEV_HOST_IRODS"), paste0(Sys.getenv("DEV_ZONE_PATH_IRODS"), "/rods"), 0),
-#   stdout = NULL,
-#   stderr = NULL
-# )
+#   system2(
+#     system.file(package = "rirods", "bash", "iput.sh"),
+#     c(user, pass, host, paste0(def_path, "/testthat") , 0, 8192L),
+#     stdout = NULL,
+#     stderr = NULL
+#   )
 #
-#   shell <- utils::object.size(iget("/tempZone/home/rods/foo"))
+#   # get back from shell
+#   system2(
+#     system.file(package = "rirods", "bash", "iget.sh"),
+#     c(user, pass, host, paste0(def_path, "/testthat/foo.rds") , 0, 8192L),
+#     stdout = NULL,
+#     stderr = NULL
+#   )
 #
-#   # some data
-#   foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+#   # get shell put object
+#   shell <- readRDS("foo.rds")
+#   expect_equal(shell, foo)
 #
-#   # store
-#   iput(foo, path = "/tempZone/home/rods", overwrite = TRUE)
-#
-#   R <- utils::object.size(iget("/tempZone/home/rods/foo"))
-#
-#   expect_equal(shell, R)
+#   # remove file
+#   unlink("foo.rds")
 #
 #   # remove object
-#   expect_invisible(irm("/tempZone/home/rods/foo"))
+#   expect_invisible(irm(paste0(def_path, "/testthat/foo.rds")))
 # })

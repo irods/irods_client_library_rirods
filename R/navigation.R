@@ -11,6 +11,9 @@
 #'
 #' @examples
 #' if(interactive()) {
+#' # connect project to server
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#'
 #' # authenticate
 #' iauth()
 #'
@@ -19,7 +22,7 @@
 #' ipwd()
 #'
 #'
-#' # some other dir
+#' # relative paths work as well
 #' icd("/tempZone/home")
 #' ipwd()
 #'
@@ -27,8 +30,8 @@
 #' icd("..")
 #' ipwd()
 #'
-#' # relative paths work as well
-#' icd("../home/public")
+#' # absolute paths work as well
+#' icd("/tempZone/home/rods")
 #' ipwd()
 #' }
 icd  <- function(dir) {
