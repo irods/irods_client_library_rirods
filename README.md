@@ -82,7 +82,7 @@ iput(foo)
 ```
 
 ### metadata
-
+#### Adding metadata
 To truly appreciate the strength of iRODS, we can add some metadata that
 describes the data object “foo”:
 
@@ -100,6 +100,31 @@ ils(metadata = TRUE)
 #>               logical_path      metadata        type
 #> 1 /tempZone/home/bobby/foo foo, bar, baz data_object
 ```
+
+#### Reading metadata
+Assume you have a well-annotated object and you would like to use some of the metadata in your analysis. How can you read the metadata of "foo" into an R table?
+In the code below we extract the metadata table which the `ils` command provides us with and assign it to a new variable we can further work with:
+
+```r
+foo_meta <- ils(path="foo", metadata = TRUE)
+foo_meta
+[[1]]
+  attribute  value units
+1       foo    bar   baz
+```
+`foo_meta` is of type list, which contains an R `data.frame`. We can also directly read out the R data.frame:
+
+```r
+foo_meta_table <- ils(path="foo", metadata = TRUE)[[2]][[1]]
+foo_meta_table
+  attribute  value units
+1       foo    bar   baz
+foo_meta_table[1, 2]
+[1] "bar"
+```
+Note that the command `ils` can also handle the full path in iRODS to retrieve information about data objects and collections like
+`foo_meta <- ils(path="/tempZone/home/bob/foo", metadata = TRUE)`.
+Hence it is not necessary to always change the working directory.
 
 ### get
 
