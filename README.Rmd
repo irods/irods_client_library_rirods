@@ -124,7 +124,7 @@ imeta(
 ils(metadata = TRUE)
 ```
 #### Reading metadata
-Assume you have a well-annotated object and you would like to use some of the metadata in your analysis. how can you read the metadata of "foo" into an R table?
+Assume you have a well-annotated object and you would like to use some of the metadata in your analysis. How can you read the metadata of "foo" into an R table?
 In the code below we extract the metadata table which the `ils` command provides us with and assign it to a new variable we can further work with:
 
 ```r
