@@ -126,7 +126,7 @@ foo_metatable[1, 2]
 [1] "bar"
 ```
 Note that the command `ils` can also handle the full path in iRODS to retrieve information about data objects and collections like
-`foo_meta <- ils(path="/tempZone/home/bob/foo", metadata = TRUE)`.
+`foo_meta <- ils(path = "/tempZone/home/bob/foo", metadata = TRUE)`.
 Hence it is not necessary to always change the working directory.
 
 ### get
