@@ -115,11 +115,14 @@ foo_meta
 `foo_meta` is of type list, which contains an R `data.frame`. We can also directly read out the R data.frame:
 
 ```r
-foo_meta_table <- ils(path="foo", metadata = TRUE)[[2]][[1]]
-foo_meta_table
+foo_metatable <- ils(path="foo", metadata = TRUE)[[2]][[1]]
+foo_metatable
   attribute  value units
 1       foo    bar   baz
-foo_meta_table[1, 2]
+```
+and we can access single cells of the table and extract their values.
+```r
+foo_metatable[1, 2]
 [1] "bar"
 ```
 Note that the command `ils` can also handle the full path in iRODS to retrieve information about data objects and collections like
