@@ -1,23 +1,3 @@
-find_irods_file <- function(what) {
-
-  # find irods file
-  irods <- list.files(".", "\\.irods$")
-  if (length(irods) == 0)
-    stop("Can't connect with iRODS server. Did you supply the correct host",
-         "name with `create_riods()`?", call. = FALSE)
-
-  # read irods file
-  x <- readLines(irods)
-  # find line
-  x <- x[grepl(what, x)]
-  # error if not found
-  if (length(x) == 0)
-    stop("IRODS project file is incomplete.", call. = FALSE)
-  # extract information
-  sub(paste0(what, ": "), "", x)
-
-}
-
 irods_rest_call <- function(
     endpoint,
     verb,
@@ -25,7 +5,10 @@ irods_rest_call <- function(
     verbose,
     object = NULL,
     error = TRUE
-  ) {
+) {
+
+  # check connection
+   if (!is_connected_irods()) stop("Not connected to iRODS.", call. = FALSE)
 
   # get token from secret environment
   token <- local(token, envir = .rirods)
@@ -43,7 +26,6 @@ irods_rest_call <- function(
   if (isTRUE(error))
     req <- httr2::req_error(req, body = irods_errors)
 
-  # the file to be send along
   if (!is.null(object)) {
     if (is.character(object) && file.exists(object)) {
       # get type of object to be stored
@@ -72,43 +54,11 @@ data_switch <- function(type, req, object) {
 
   switch(
     type,
-    httr2::req_body_raw(req, object),
+    rds = httr2::req_body_file(req, object),
+    txt = ,
     tsv = ,
     csv = httr2::req_body_file(req, object),
     json = httr2::req_body_json(req, object, auto_unbox = TRUE, digits = NA,
                                 null = "null")
   )
-}
-
-# check if irods collection exists
-is_collection <- function(current_dir) {
-
-  # initial check
-  if (path_exists(current_dir))
-    lpath <- ils(path = current_dir, message = FALSE)
-  else
-    stop("Logical path [", current_dir,"] is not accessible.", call. = FALSE)
-
-  # this cannot be a collection
-  if (current_dir %in% lpath$logical_path && lpath$type == "data_object") {
-    FALSE
-  } else {
-    TRUE
-  }
-
-}
-
-# check if irods data object exists
-is_object <- function(current_dir) !is_collection(current_dir)
-
-# check if irods path exists
-path_exists <- function(current_dir) {
-
-  lpath <- try(ils(path = current_dir, message = FALSE), silent = TRUE)
-
-  if (inherits(lpath, "try-error")) {
-    FALSE
-  } else {
-    TRUE
-  }
 }

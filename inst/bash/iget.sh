@@ -6,16 +6,10 @@ MYDIR="$(dirname "$(realpath "$0")")"
 # token
 TOKEN=$(sh "${MYDIR}/iauth.sh" $1 $2 $3)
 
-# put file
-sh "${MYDIR}/put.sh" $1 $2 $3
-
 # get file
-curl -v -G -X GET -H "Authorization: ${TOKEN}" \
+curl -G -X GET -H "Authorization: ${TOKEN}" \
   -H "Accept-Encoding: gzip, deflate, br" \
   --data-urlencode "logical-path=$4" \
   --data-urlencode "offset=$5" \
   --data-urlencode "count=$6" \
-   "$3/stream" > foo.bin
-
-# delete file
-rm foo.rds foo.bin
+   "$3/stream" > foo.rds

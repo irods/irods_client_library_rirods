@@ -9,7 +9,7 @@ with_mock_dir("add-data-collections", {
 
     # reference dataframe
     ref <- data.frame(
-      logical_path = paste0(lpath, "/", user, "/testthat", c("/a", "/x", "/test")),
+      logical_path = paste0(lpath, "/", user, "/testthat", c("/a", "/x", "/test.rds")),
       type = c("collection", "collection", "data_object")
     )
 
@@ -17,11 +17,12 @@ with_mock_dir("add-data-collections", {
     expect_equal(ils(), ref)
 
     # remove dirs
-    irm("a", recursive = TRUE)
+    irm("a", recursive = TRUE, trash = FALSE)
     icd("./x")
-    irm("a", recursive = TRUE)
+    irm("a", recursive = TRUE, trash = FALSE)
     icd("..")
-    irm("x", recursive = TRUE)
+    irm("x", recursive = TRUE, trash = FALSE)
+
   })
 })
 
@@ -29,19 +30,27 @@ with_mock_dir("remove-objects", {
   test_that("removing objects from iRODS works", {
 
     # store
-    iput("foo.csv", overwrite = TRUE)
+    iput("foo.csv", "foo.csv", overwrite = TRUE)
 
     # delete object "foo.csv"
     expect_invisible(irm("foo.csv", trash = FALSE))
 
     # reference dataframe
     ref <- data.frame(
-      logical_path = paste0(lpath, "/", user, "/testthat/test"),
+      logical_path = paste0(lpath, "/", user, "/testthat/test.rds"),
       type = "data_object"
     )
 
     # check if file is delete
     expect_equal(ils(), ref)
 
+    # r objects
+    x <- 1
+    # with extension
+    iput(x, "x.rds", overwrite = TRUE)
+    expect_invisible(irm("x.rds", trash = FALSE))
+    # without extension
+    iput(x, "x", overwrite = TRUE)
+    expect_invisible(irm("x", trash = FALSE))
   })
 })

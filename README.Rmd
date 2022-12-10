@@ -103,7 +103,7 @@ foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 ipwd()
 
 # store data in iRODS
-iput(foo)
+iput(foo, "foo.rds")
 ```
 
 ### metadata
@@ -113,7 +113,7 @@ To truly appreciate the strength of iRODS, we can add some metadata that describ
 ```{r meta}
 # add some metadata
 imeta(
-  "foo", 
+  "foo.rds", 
   "data_object", 
   operations = 
     list(operation = "add", attribute = "foo", value = "bar", units = "baz")
@@ -125,11 +125,11 @@ ils(metadata = TRUE)
 
 ### get
 
-If Bobby wanted to copy the foo R object from an iRODS collection to his local directory, he would use `iget()`:
+If Bobby wanted to copy the foo R object from an iRODS collection to his current R session, he would use `iget()`:
 
 ```{r get}
 # retrieve in native R format
-iget("foo")
+iget("foo.rds")
 ```
 
 ### csv
@@ -143,7 +143,7 @@ library(readr)
 write_csv(foo, "foo.csv")
 
 # send file
-iput("foo.csv")
+iput("foo.csv", "foo.csv")
 
 # check whether it is stored
 ils()
@@ -181,7 +181,7 @@ Finally, we can clean up Bobby's home collection:
 
 ```{r clean}
 # delete object
-irm("foo", trash = FALSE)
+irm("foo.rds", trash = FALSE)
 irm("foo.csv", trash = FALSE)
 
 # check if objects are removed

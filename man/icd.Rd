@@ -22,6 +22,9 @@ mimic behavior of unix \code{cd} and \code{pwd}.
 }
 \examples{
 if(interactive()) {
+# connect project to server
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+
 # authenticate
 iauth()
 
@@ -30,7 +33,7 @@ icd(".")
 ipwd()
 
 
-# some other dir
+# relative paths work as well
 icd("/tempZone/home")
 ipwd()
 
@@ -38,8 +41,8 @@ ipwd()
 icd("..")
 ipwd()
 
-# relative paths work as well
-icd("../home/public")
+# absolute paths work as well
+icd("/tempZone/home/rods")
 ipwd()
 }
 }

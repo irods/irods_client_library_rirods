@@ -78,7 +78,7 @@ ipwd()
 #> [1] "/tempZone/home/bobby"
 
 # store data in iRODS
-iput(foo)
+iput(foo, "foo.rds")
 ```
 
 ### metadata
@@ -89,7 +89,7 @@ describes the data object “foo”:
 ``` r
 # add some metadata
 imeta(
-  "foo", 
+  "foo.rds", 
   "data_object", 
   operations = 
     list(operation = "add", attribute = "foo", value = "bar", units = "baz")
@@ -97,18 +97,18 @@ imeta(
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
-#>               logical_path      metadata        type
-#> 1 /tempZone/home/bobby/foo foo, bar, baz data_object
+#>                   logical_path      metadata        type
+#> 1 /tempZone/home/bobby/foo.rds foo, bar, baz data_object
 ```
 
 ### get
 
 If Bobby wanted to copy the foo R object from an iRODS collection to his
-local directory, he would use `iget()`:
+current R session, he would use `iget()`:
 
 ``` r
 # retrieve in native R format
-iget("foo")
+iget("foo.rds")
 #>   x y
 #> 1 1 x
 #> 2 8 y
@@ -127,13 +127,13 @@ library(readr)
 write_csv(foo, "foo.csv")
 
 # send file
-iput("foo.csv")
+iput("foo.csv", "foo.csv")
 
 # check whether it is stored
 ils()
 #>                   logical_path        type
-#> 1     /tempZone/home/bobby/foo data_object
-#> 2 /tempZone/home/bobby/foo.csv data_object
+#> 1 /tempZone/home/bobby/foo.csv data_object
+#> 2 /tempZone/home/bobby/foo.rds data_object
 ```
 
 Later on somebody else might want to download this file again and store
@@ -168,17 +168,17 @@ future projects. Objects can be searched with General Queries and
 ``` r
 # look for objects in the home collection with a wildcard `%`
 iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
-#>             collection data_object
-#> 1 /tempZone/home/bobby         foo
-#> 2 /tempZone/home/bobby     foo.csv
+#>      [,1]                   [,2]     
+#> [1,] "/tempZone/home/bobby" "foo.csv"
+#> [2,] "/tempZone/home/bobby" "foo.rds"
 ```
 
 ``` r
 # or for data objects with a name that starts with "foo"
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#>             collection data_object
-#> 1 /tempZone/home/bobby         foo
-#> 2 /tempZone/home/bobby     foo.csv
+#>      [,1]                   [,2]     
+#> [1,] "/tempZone/home/bobby" "foo.csv"
+#> [2,] "/tempZone/home/bobby" "foo.rds"
 ```
 
 ### cleanup
@@ -187,7 +187,7 @@ Finally, we can clean up Bobby’s home collection:
 
 ``` r
 # delete object
-irm("foo", trash = FALSE)
+irm("foo.rds", trash = FALSE)
 irm("foo.csv", trash = FALSE)
 
 # check if objects are removed
