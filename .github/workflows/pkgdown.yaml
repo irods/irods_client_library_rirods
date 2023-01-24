@@ -49,9 +49,9 @@ jobs:
         shell: Rscript {0}
         run: |
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          renv::restore(repos = c(CRAN = "https://cloud.r-project.org"))
           if (!requireNamespace("pkgdown", quietly = TRUE)) install.packages("pkgdown")
           if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
-          renv::restore()
           devtools::install()
 
       - name: Build site
