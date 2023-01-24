@@ -1,9 +1,9 @@
 pandoc: 2.19.2
-pkgdown: 2.0.6
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   develop: develop.html
-last_built: 2022-11-14T22:47Z
+last_built: 2023-01-24T16:10Z
 urls:
   reference: https://irods.github.io/irods_client_library_rirods/reference
   article: https://irods.github.io/irods_client_library_rirods/articles
