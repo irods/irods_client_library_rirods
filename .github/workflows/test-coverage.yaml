@@ -42,8 +42,8 @@ jobs:
         shell: Rscript {0}
         run: |
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          renv::restore(repos = c(CRAN = "https://cloud.r-project.org"))
           if (!requireNamespace("covr", quietly = TRUE)) install.packages("covr")
-          renv::restore()
 
       - name: Test coverage
         run: |

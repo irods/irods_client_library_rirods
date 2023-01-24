@@ -78,9 +78,9 @@ jobs:
         shell: Rscript {0}
         run: |
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          renv::restore(repos = c(CRAN = "https://cloud.r-project.org"))
           if (!requireNamespace("rcmdcheck", quietly = TRUE)) install.packages("rcmdcheck")
           if (!requireNamespace("pkgload", quietly = TRUE)) install.packages("pkgload")
-          renv::restore()
 
 # On linux we remove httptest2 mock files to force a realistic test against
 # the irods_demo server
