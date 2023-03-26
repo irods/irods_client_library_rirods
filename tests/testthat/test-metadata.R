@@ -9,7 +9,7 @@ with_mock_dir("metadata-1", {
         list(operation = "add", attribute = "foo", value = "bar", units = "baz")
     )
 
-    # reference dataframe
+    # reference `dataframe`
     ref <- structure(
       list(
         logical_path = paste0(lpath, "/", user, "/testthat/test.rds"),

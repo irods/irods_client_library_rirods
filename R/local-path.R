@@ -33,7 +33,6 @@ chunk_file <- function(fil, count) {
   # write to temo dir
   Map(function(x, y) writeBin(x, y), rw, fm)
 
-
   list(fm, x[[2]], x[[3]])
 }
 

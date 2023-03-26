@@ -1,4 +1,5 @@
 library(httptest2)
+library(httr2)
 
 #-----------------------------------------------------------------------------
 # Snapshots are created with github actions and use the latest irods_demo
@@ -35,7 +36,7 @@ tk <- try({
     )
   }
 
-  # switch to new irods project
+  # switch to new iRODS project
   create_irods(host, lpath, overwrite = TRUE)
   withr::defer(unlink("testthat.irods"), teardown_env())
 
@@ -43,11 +44,13 @@ tk <- try({
   foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
   baz <- matrix(1:100000)
 
+  # save baz
+  saveRDS(baz, "baz.rds")
+  withr::defer(unlink("baz.rds"), teardown_env())
+
   # creates a csv file of foo
   readr::write_csv(foo, "foo.csv")
-  saveRDS(baz, "baz.rds")
   withr::defer(unlink("foo.csv"), teardown_env())
-  withr::defer(unlink("baz.rds"), teardown_env())
 
   # authenticate
   iauth(user, pass, "rodsuser")
@@ -62,10 +65,10 @@ tk <- try({
 
   # test object
   test <- 1
-  iput(test, "test.rds", overwrite = TRUE)
+  isaveRDS(test, "test.rds", overwrite = TRUE) # set to `TRUE` in case of test failures
 
   # token
-  get_token(paste(user, pass, sep = ":"), find_irods_file("host"))
+  rirods:::get_token(paste(user, pass, sep = ":"), rirods:::find_irods_file("host"))
 },
 silent = TRUE
 )
@@ -74,8 +77,8 @@ silent = TRUE
 if (inherits(tk, "try-error")) {
   # set home dir
   # check path formatting, does it end with "/"? If not, then add it.
-  if (!grepl("/$", find_irods_file("zone_path")))
-    zone_path <- paste0(find_irods_file("zone_path"), "/")
+  if (!grepl("/$", rirods:::find_irods_file("zone_path")))
+    zone_path <- paste0( rirods:::find_irods_file("zone_path"), "/")
   .rirods$current_dir <- paste0(zone_path, user, "/testthat")
   # store token
   assign("token", "secret", envir = .rirods)

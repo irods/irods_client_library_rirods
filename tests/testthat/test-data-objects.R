@@ -1,35 +1,27 @@
 with_mock_dir("data-objects", {
   test_that("external data-objects management works", {
 
-    # a bunch of datasets
-    rng <- c(1:5)
-    ls_data <- ls("package:datasets")
-    get_data <- mget(ls_data[rng], as.environment("package:datasets"))
-    ls_data <- gsub("\\.", "_", ls_data)
-    for(i in seq_along(rng)) {
-      # assign to environment
-      assign(ls_data[i], get_data[[i]])
-      # upload to irods
-      expect_invisible(
-        eval(
-          substitute(
-            iput(x, y, overwrite = TRUE),
-            list(
-              x = str2lang(ls_data[i]),
-              y = paste0(ls_data[i], ".rds")
-            )
-          )
-        )
-      )
-      # retrieve object
-      X <- iget(paste0(ls_data[i], ".rds"))
-      expect_equal(X, eval(str2lang(ls_data[i])))
-      # remove object
-      expect_invisible(irm(paste0(ls_data[i], ".rds")))
-    }
+    # I use the argument overwrite = TRUE here so that the
+    # call to the list REST API is omitted. This omits an additional snapshot
+    # for this REST call that is not the purpose of this test.
+
+    # currently mocking does not work
+    skip_if(.rirods$token == "secret", "IRODS server unavailable")
+
+    # small dataset
+    dfr <- data.frame(a = c("a", "b", "c"), b = 1:3, c = 6:8)
+    expect_invisible(isaveRDS(dfr, "dfr.rds",  overwrite = TRUE))
+    expect_equal(dfr, ireadRDS("dfr.rds",  overwrite = TRUE))
+    expect_invisible(irm("dfr.rds"))
+
+    # large dataset (about two times default count of 2000)
+    mt <- matrix(1:940, 94, 10)
+    expect_invisible(isaveRDS(mt, "mt.rds", overwrite = TRUE))
+    expect_equal(mt, ireadRDS("mt.rds"))
+    expect_invisible(irm("mt.rds"))
 
     # store file
-    expect_invisible(iput("foo.csv", "foo.csv", overwrite = TRUE))
+    expect_invisible(iput("foo.csv", overwrite = TRUE))
 
     # retrieve object
     iget("foo.csv", overwrite = TRUE)
@@ -61,9 +53,8 @@ test_that("overwrite error works", {
 
 # test_that("shell equals R solution", {
 #
-#   # this can not be accommodated by httptest2
-#   skip_if_offline()
-#   skip_if(inherits(tk, "try-error"))
+#   # currently mocking does not work
+#   skip_if(.rirods$token == "secret", "IRODS server unavailable")
 #
 #   # curl in shell
 #   system2(
