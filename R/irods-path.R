@@ -1,4 +1,5 @@
-get_absolute_lpath <- function(lpath, data_type = "data_object", open = "write") {
+get_absolute_lpath <- function(lpath, data_type = "data_object", open = "write",
+                               safely = TRUE) {
 
   if (!grepl("^/" , lpath)) {
     # default zone_path writable by user
@@ -9,19 +10,21 @@ get_absolute_lpath <- function(lpath, data_type = "data_object", open = "write")
     lpath <- Reduce(function(x, y) { paste(x, y, sep = "/") }, c(zpath, x))
   }
 
-  # check if logical path exists
-  if (open == "read") {
-    if (data_type == "data_object") {
-      is_object(lpath)
-    } else if (data_type == "collection") {
-      is_collection(lpath)
+  if (isTRUE(safely)) {
+    # check if logical path exists
+    if (open == "read") {
+      if (data_type == "data_object") {
+        is_object(lpath)
+      } else if (data_type == "collection") {
+        is_collection(lpath)
+      } else {
+        stop("`open` only accepts \"write\" or \"read\".", call. = FALSE)
+      }
+    } else if (open == "write") {
+      # could add some checks on irods file names in the future
     } else {
-      stop("`open` only accepts \"write\" or \"read\".", call. = FALSE)
+      stop("`data_type` only accepts \"data_object\" or \"collection\".", call. = FALSE)
     }
-  } else if (open == "write") {
-    # could add some checks on irods file names in the future
-  } else {
-    stop("`data_type` only accepts \"data_object\" or \"collection\".", call. = FALSE)
   }
 
   # return
@@ -67,10 +70,10 @@ is_collection <- function(lpath) {
 
 }
 
-# check if irods data object exists
+# check if iRODS data object exists
 is_object <- function(lpath) !is_collection(lpath)
 
-# check if irods path exists
+# check if iRODS path exists
 lpath_exists <- function(lpath) {
 
   # check connection

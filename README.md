@@ -55,19 +55,20 @@ create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
 ### authentication
 
-In this example Bobby is a user of iRODS and he can authenticate himself
-with `iauth()`. This prompts a dialog where you can enter your username
-and password without hardcoding this information in your scripts.
+In this example Alice is a user of iRODS and she can authenticate
+herself with `iauth()`. This prompts a dialog where you can enter your
+username and password without hardcoding this information in your
+scripts.
 
 ``` r
-# login as bobby with password "passWORD"
-iauth() # or iauth("bobby", "passWORD")
+# login as Alice with password "passWORD"
+iauth() # or iauth("alice", "passWORD")
 ```
 
-### put
+### save R objects
 
-Suppose Bobby would like to upload an R object from his current R
-session to an iRODS collection. For this, use the `iput()` command:
+Suppose Alice would like to upload an R object from his current R
+session to an iRODS collection. For this, use the `isaveRDS()` command:
 
 ``` r
 # some data
@@ -75,10 +76,10 @@ foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
 # check where we are in the iRODS namespace
 ipwd()
-#> [1] "/tempZone/home/bobby"
+#> [1] "/tempZone/home/alice"
 
 # store data in iRODS
-iput(foo, "foo.rds")
+isaveRDS(foo, "foo.rds")
 ```
 
 ### metadata
@@ -98,17 +99,17 @@ imeta(
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
 #>                   logical_path      metadata        type
-#> 1 /tempZone/home/bobby/foo.rds foo, bar, baz data_object
+#> 1 /tempZone/home/alice/foo.rds foo, bar, baz data_object
 ```
 
-### get
+### read R objects
 
-If Bobby wanted to copy the foo R object from an iRODS collection to his
-current R session, he would use `iget()`:
+If Alice wanted to copy the foo R object from an iRODS collection to his
+current R session, she would use `ireadRDS()`:
 
 ``` r
 # retrieve in native R format
-iget("foo.rds")
+ireadRDS("foo.rds")
 #>   x y
 #> 1 1 x
 #> 2 8 y
@@ -117,8 +118,9 @@ iget("foo.rds")
 
 ### csv
 
-Possibly Bobby does not want a native R object to be stored on iRODS but
-a file type that can be accessed by other programs:
+Possibly Alice does not want a native R object to be stored on iRODS but
+a file type that can be accessed by other programs. For this, use the
+`iput()` command:
 
 ``` r
 library(readr)
@@ -127,13 +129,13 @@ library(readr)
 write_csv(foo, "foo.csv")
 
 # send file
-iput("foo.csv", "foo.csv")
+iput("foo.csv")
 
 # check whether it is stored
 ils()
 #>                   logical_path        type
-#> 1 /tempZone/home/bobby/foo.csv data_object
-#> 2 /tempZone/home/bobby/foo.rds data_object
+#> 1 /tempZone/home/alice/foo.csv data_object
+#> 2 /tempZone/home/alice/foo.rds data_object
 ```
 
 Later on somebody else might want to download this file again and store
@@ -169,21 +171,21 @@ future projects. Objects can be searched with General Queries and
 # look for objects in the home collection with a wildcard `%`
 iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 #>      [,1]                   [,2]     
-#> [1,] "/tempZone/home/bobby" "foo.csv"
-#> [2,] "/tempZone/home/bobby" "foo.rds"
+#> [1,] "/tempZone/home/alice" "foo.csv"
+#> [2,] "/tempZone/home/alice" "foo.rds"
 ```
 
 ``` r
 # or for data objects with a name that starts with "foo"
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
 #>      [,1]                   [,2]     
-#> [1,] "/tempZone/home/bobby" "foo.csv"
-#> [2,] "/tempZone/home/bobby" "foo.rds"
+#> [1,] "/tempZone/home/alice" "foo.csv"
+#> [2,] "/tempZone/home/alice" "foo.rds"
 ```
 
 ### cleanup
 
-Finally, we can clean up Bobby’s home collection:
+Finally, we can clean up Alice’s home collection:
 
 ``` r
 # delete object
@@ -195,4 +197,4 @@ ils()
 #> This collection does not contain any objects or collections.
 ```
 
-<!-- The user Bobby can also be removed again. -->
+<!-- The user Alice can also be removed again. -->

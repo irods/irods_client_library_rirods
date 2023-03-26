@@ -1,8 +1,7 @@
 test_that("compare shell with R solution", {
 
-  # this can not be accommodated by httptest2
-  skip_if_offline()
-  skip_if(inherits(tk, "try-error"))
+  # currently mocking does not work
+  skip_if(.rirods$token == "secret", "IRODS server unavailable")
 
   # curl in shell
   shell <- system2(
@@ -13,7 +12,7 @@ test_that("compare shell with R solution", {
   )
 
   # curl in R
-  R <- get_token(paste0(user, ":", pass), host)
+  R <- rirods:::get_token(paste0(user, ":", pass), host)
 
   expect_equal(nchar(R), nchar(shell))
 })

@@ -29,6 +29,9 @@ with_mock_dir("add-data-collections", {
 with_mock_dir("remove-objects", {
   test_that("removing objects from iRODS works", {
 
+    # currently mocking does not work
+    skip_if(.rirods$token == "secret", "IRODS server unavailable")
+
     # store
     iput("foo.csv", "foo.csv", overwrite = TRUE)
 
@@ -46,11 +49,7 @@ with_mock_dir("remove-objects", {
 
     # r objects
     x <- 1
-    # with extension
-    iput(x, "x.rds", overwrite = TRUE)
+    isaveRDS(x, "x.rds", overwrite = TRUE)
     expect_invisible(irm("x.rds", trash = FALSE))
-    # without extension
-    iput(x, "x", overwrite = TRUE)
-    expect_invisible(irm("x", trash = FALSE))
   })
 })

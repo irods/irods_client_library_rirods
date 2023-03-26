@@ -40,9 +40,8 @@ with_mock_dir("navigation", {
 
 test_that("shell equals R solution", {
 
-  # this can not be accommodated by httptest2
-  skip_if_offline()
-  skip_if(inherits(tk, "try-error"))
+  # currently mocking does not work
+  skip_if(.rirods$token == "secret", "IRODS server unavailable")
 
   def_path <- paste0(lpath, "/", user)
 
