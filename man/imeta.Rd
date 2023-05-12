@@ -2,61 +2,41 @@
 % Please edit documentation in R/metadata.R
 \name{imeta}
 \alias{imeta}
-\alias{iquery}
-\title{Describe your iRODS objects}
+\title{Add or remove metadata}
 \usage{
 imeta(
   logical_path,
-  entity_type,
-  operations = list(operation = "add", attribute = NULL, value = NULL, units = NULL),
-  path = ".",
-  verbose = FALSE
-)
-
-iquery(
-  query,
-  limit = 100,
-  offset = 0,
-  type = "general",
-  case_sensitive = TRUE,
-  distinct = TRUE,
+  entity_type = c("data_object", "collection", "user"),
+  operations = list(),
   verbose = FALSE
 )
 }
 \arguments{
-\item{logical_path}{object, collection or user}
+\item{logical_path}{Path to the data object or collection (or name of the user).}
 
-\item{entity_type}{Type (object, collection or user)}
+\item{entity_type}{Type of item to add metadata to or remove it from.
+Options are 'data_object', 'collection' and 'user'.}
 
-\item{operations}{List which contains the following named elements;
-\code{operation}, which adds (\code{"add"}) or removes (\code{"remove"}) the object, and
-the metadata triplet attribute, value, units.}
+\item{operations}{List of named lists of vectors representing operations.
+The valid components of each of these lists or vectors are:
+\itemize{
+\item \code{operation}, with values 'add' or 'remove', depending on whether the AVU
+should be added to or removed from the metadata of the item.
+\item \code{attribute}, with the name of the AVU.
+\item \code{value}, with the value of the AVU.
+\item \code{units}, with the unit of the AVU.
+}}
 
-\item{path}{Path to object (defaults to \code{"."}).}
-
-\item{verbose}{Show information about the http request and response.
-query}
-
-\item{query}{GeneralQuery for searching the iCAT database.}
-
-\item{limit}{The max number of rows to return (defaults to 100)}
-
-\item{offset}{Number of rows to skip for paging (defaults to 0).}
-
-\item{type}{Either 'general' or 'specific' (defaults to 'general').}
-
-\item{case_sensitive}{Affects string matching (defaults to TRUE).}
-
-\item{distinct}{Only list distinct rows (defaults to TRUE).}
+\item{verbose}{Whether information should be printed about the HTTP request and response.}
 }
 \value{
-Invisibly returns the response.
+Invisibly, the HTTP response.
 }
 \description{
-Metadata attribute-value-units triples (AVUs) consist of an Attribute-Name,
-Attribute-Value, and an optional Attribute-Units. They can be added
-via the 'add' command ,or removed with 'remove', and then queried to find
-matching objects.
+In iRODS, metadata is stored as attribute-value-units triples (AVUs), consisting
+of an attribute name, an attribute value and an optional unit.
+This function allows to chain several operations ('add' or 'remove') linked to
+specific AVUs.
 }
 \examples{
 if(interactive()) {
@@ -79,14 +59,24 @@ ils()
 imeta(
  "foo.rds",
  "data_object",
- operations =
-  list(operation = "add", attribute = "foo", value = "bar", units = "baz")
+ operations = list(
+    operation = "add",
+    attribute = "foo",
+    value = "bar",
+    units = "baz"
+    )
+)
+
+imeta(
+ "foo.rds",
+ "data_object",
+ operations = list(
+   list(operation = "add", attribute = "foo2", value = "bar2"),
+   list(operation = "add", attribute = "foo3", value = "bar3")
+ )
 )
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
-
-# search for objects by metadata
-iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/\%'")
 }
 }

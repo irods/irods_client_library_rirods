@@ -3,22 +3,22 @@
 \name{icd}
 \alias{icd}
 \alias{ipwd}
-\title{Change/show current working directory}
+\title{Get or set current working directory in iRODS}
 \usage{
 icd(dir)
 
 ipwd()
 }
 \arguments{
-\item{dir}{Change the current directory to DIR.  The default DIR is the value
-of the HOME shell variable.}
+\item{dir}{Collection to set as working directory.}
 }
 \value{
-Visibly or invisibly returns the path.
+The current working directory (invisibly in the case of \code{cd()}).
 }
 \description{
-Changes iRODS the current working directory (collection). The functions
-mimic behavior of unix \code{cd} and \code{pwd}.
+\code{ipwd()} and \code{icd()} are the iRODS equivalents of \code{getwd()} and \code{setwd()}
+respectively. For example, whereas \code{getwd()} returns the current working directory
+in the local system, \code{ipwd()} returns the current working directory in iRODS.
 }
 \examples{
 if(interactive()) {
@@ -31,7 +31,6 @@ iauth()
 # default dir
 icd(".")
 ipwd()
-
 
 # relative paths work as well
 icd("/tempZone/home")

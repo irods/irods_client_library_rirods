@@ -1,12 +1,12 @@
-#' Change/show current working directory
+#' Get or set current working directory in iRODS
 #'
-#' Changes iRODS the current working directory (collection). The functions
-#' mimic behavior of unix `cd` and `pwd`.
+#' `ipwd()` and `icd()` are the iRODS equivalents of `getwd()` and `setwd()`
+#' respectively. For example, whereas `getwd()` returns the current working directory
+#' in the local system, `ipwd()` returns the current working directory in iRODS.
 #'
-#' @param dir Change the current directory to DIR.  The default DIR is the value
-#'  of the HOME shell variable.
+#' @param dir Collection to set as working directory.
 #'
-#' @return Visibly or invisibly returns the path.
+#' @return The current working directory (invisibly in the case of `cd()`).
 #' @export
 #'
 #' @examples
@@ -20,7 +20,6 @@
 #' # default dir
 #' icd(".")
 #' ipwd()
-#'
 #'
 #' # relative paths work as well
 #' icd("/tempZone/home")
@@ -96,37 +95,47 @@ icd  <- function(dir) {
   # return location
   invisible(current_dir)
 }
+
 #' @rdname icd
 #'
 #' @export
 ipwd <- function() .rirods$current_dir
 
-#' Listing iRODS data objects and collections
+#' List iRODS data objects and collections
 #'
-#' Recursive listing of a collection, or stat, metadata, and access control
-#' information for a given data object.
+#' List the contents of a collection, optionally with stat, metadata, and/or
+#' access control information for each element in the collection.
 #'
-#' @param logical_path Directory to be listed.
-#' @param stat Boolean flag to indicate stat information is desired.
-#' @param permissions  Boolean flag to indicate access control information is
-#'  desired.
-#' @param metadata Boolean flag to indicate metadata is desired.
-#' @param offset Number of records to skip for pagination.
-#' @param limit Number of records desired per page.
-#' @param message In case the collection is empty a message saying so is
-#'  returned.
-#' @param verbose Show information about the http request and response.
+#' @param logical_path Path to the collection whose contents are to be listed.
+#'    By default this is the current working directory (see `ipwd()`).
+#' @param stat Whether stat information should be included. Defaults to `FALSE`.
+#' @param permissions Whether access control information should be included.
+#'    Defaults to `FALSE`.
+#' @param metadata Whether metadata information should be included. Defaults to `FALSE`.
+#' @param offset Number of records to skip for pagination. Defaults to 0.
+#' @param limit Number of records to show per page. Defaults to 100.
+#' @param message Whether a message should be printed when the collection is empty.
+#' @param verbose Whether information should be printed about the HTTP request and response.
 #'
-#' @return tibble with logical paths
+#' @return Dataframe with logical paths and, if requested, additional information.
 #' @export
 #'
 #' @examples
 #' if(interactive()) {
+#' # connect project to server
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#'
 #' # authenticate
 #' iauth()
 #'
 #' # list home directory
 #' ils()
+#'
+#' # list a different directory
+#' ils('/tempZone/home/rods/some_collection')
+#'
+#' # show metadata
+#' ils(metadata = TRUE)
 #' }
 ils <- function(
     logical_path = ".",

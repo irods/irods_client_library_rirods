@@ -17,11 +17,11 @@ with_mock_dir("add-data-collections", {
     expect_equal(ils(), ref)
 
     # remove dirs
-    irm("a", recursive = TRUE, trash = FALSE)
+    irm("a", recursive = TRUE, force = FALSE)
     icd("./x")
-    irm("a", recursive = TRUE, trash = FALSE)
+    irm("a", recursive = TRUE, force = FALSE)
     icd("..")
-    irm("x", recursive = TRUE, trash = FALSE)
+    irm("x", recursive = TRUE, force = FALSE)
 
   })
 })
@@ -36,7 +36,7 @@ with_mock_dir("remove-objects", {
     iput("foo.csv", "foo.csv", overwrite = TRUE)
 
     # delete object "foo.csv"
-    expect_invisible(irm("foo.csv", trash = FALSE))
+    expect_invisible(irm("foo.csv", force = FALSE))
 
     # reference dataframe
     ref <- data.frame(

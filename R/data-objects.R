@@ -1,49 +1,43 @@
-#' Working with iRODS data objects
+#' Save files and objects in iRODS
 #'
-#' Store a file into iRODS with `iput()`. If the destination data-object or
-#' collection are not provided, the current iRODS directory and the input file
-#' name are used. Get data-objects or collections from iRODS space with `iget()`
-#' , either to the specified local area or to the current working directory.
+#' Store an object or file into iRODS. `iput()` should be used to transfer
+#' a file from the local storage to iRODS; `isaveRDS()` saves an R object from the
+#' current environment in iRODS in RDS format (see `saveRDS()`).
 #'
-#' @param local_path File stored on iRODS server.
-#' @param logical_path Destination path.
-#' @param offset Offset in bytes into the data object (Defaults to FALSE).
-#' @param truncate Truncates the object on open (defaults to TRUE).
-#' @param count Maximum number of bytes to read or write.
-#' @param verbose Show information about the http request and response.
-#' @param overwrite Overwrite irods object or local file (defaults to FALSE).
+#' @param local_path Local path of file to be sent to iRODS.
+#' @param x R object to save in iRODS.
+#' @param logical_path Destination path in iRODS.
+#'    By default, the basename of `local_path` is used and the file is
+#'    stored in the current working directory (see `ipwd()`).
+#' @param offset Offset in bytes into the data object. Defaults to 0.
+#' @param count Maximum number of bytes to write. Defaults to 2000.
+#' @param truncate Whether to truncate the object when opening it. Defaults to `TRUE`.
+#' @param verbose Whether to print information about the HTTP request and response.
+#' @param overwrite Whether the file in iRODS should be overwritten if it exists.
+#'     Defaults to `FALSE`.
 #'
-#' @return Invisibly the http response in case of `iput()`, or invisibly NULL in
-#' case of `iget()`.
-#'
+#' @return (Invisibly) the HTTP response.
 #' @export
 #'
 #' @examples
-#' if(interactive()) {
+#' if (interactive()) {
 #' # connect project to server
-#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", TRUE)
 #'
-#' # authentication
+#' # authenticate
 #' iauth()
 #'
-#' # creates a csv local file of the iris dataset
+#' # save the iris dataset as csv and send the file to iRODS
 #' library(readr)
 #' write_csv(iris, "iris.csv")
+#' iput("iris.csv", overwrite = TRUE)
 #'
-#' # store to iRODS
-#' iput("iris.csv")
-#'
-#' # delete local file
-#' unlink("iris.csv")
-#'
-#' # check if file is stored
+#' # save with a different name
+#' iput("iris.csv", "irids_in_irods.csv", overwrite = TRUE)
 #' ils()
 #'
-#' # write to local file
-#' iget("iris.csv")
-#'
-#' # check local files
-#' list.files()
+#' # send an R object to iRODS in RDS format
+#' isaveRDS(iris, "irids_in_rds.rds", overwrite = TRUE)
 #' }
 iput <- function(
     local_path,
@@ -80,43 +74,8 @@ iput <- function(
   invisible(out[[1]])
 }
 
-#' iRODS serialization Interface for Single R Objects
-#'
-#' Store an in-memory R object in iRODS with `isaveRDS()`. If the destination
-#' data-object or collection are not provided, the current iRODS collection and
-#' the input R object name are used. Get data-objects or collections from iRODS
-#' space in memory (R environment) with `ireadRDS()`.
-#'
-#' @param x R object stored on iRODS server.
-#' @param logical_path Destination path.
-#' @param offset Offset in bytes into the data object (Defaults to FALSE).
-#' @param truncate Truncates the object on open (defaults to TRUE).
-#' @param count Maximum number of bytes to read or write.
-#' @param verbose Show information about the http request and response.
-#' @param overwrite Overwrite irods object or local file (defaults to FALSE).
-#'
-#' @return Invisibly the http response in case of `isaveRDS()`, or an R object
-#' in case of `ireadRDS()`.
-#'
+#' @rdname iput
 #' @export
-#'
-#' @examples
-#' if(interactive()) {
-#' # connect project to server
-#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
-#'
-#' # authentication
-#' iauth()
-#'
-#' # store into iRODS
-#' isaveRDS(iris, "iris.rds")
-#'
-#' # check if file is stored
-#' ils()
-#'
-#' # retrieve in native R format
-#' ireadRDS("iris.rds")
-#' }
 isaveRDS <- function(
     x,
     logical_path,
@@ -205,7 +164,9 @@ local_to_irods <- function(local_path, logical_path, offset, count, truncate,
   )
 
 }
-# internal: object to irods conversion
+
+#' Object to iRODS conversion
+#' @noRd
 local_to_irods_ <- function(
     local_path,
     logical_path,
@@ -228,9 +189,47 @@ local_to_irods_ <- function(
 }
 
 
-#' @rdname iput
+#' Retrieve file or object from iRODS
 #'
+#' Transfer a file from iRODS to the local storage with `iget()` or
+#' read an R object from an RDS file in iRODS with `ireadRDS()` (see `readRDS()`).
+#'
+#' @param logical_path Source path in iRODS.
+#' @param local_path Destination path in local storage. By default,
+#'   the basename of the logical path; the file will be stored in the current
+#'   directory (see `getwd()`).
+#' @param offset Offset in bytes into the data object. Defaults to 0.
+#' @param count Maximum number of bytes to write. Defaults to 2000.
+#' @param verbose Whether information should be printed about the HTTP request and response.
+#' @param overwrite Whether the local file should be overwritten if it exists.
+#'    Defaults to `FALSE`.
+#'
+#' @return The R object in case of `ireadRDS()`, invisibly `NULL` in case of `iget()`.
 #' @export
+#'
+#' @examples
+#' if (interactive()) {
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", TRUE)
+#'
+#' # authenticate
+#' iauth()
+#'
+#' # save the iris dataset as csv and send the file to iRODS
+#' library(readr)
+#' write_csv(iris, "iris.csv")
+#' iput("iris.csv", overwrite = TRUE)
+#'
+#' # bring the file back with a different name
+#' iget("iris.csv", "new_iris.csv", overwrite = TRUE)
+#' files.exists("new_iris.csv") # check that it has been transferred
+#'
+#' # send an R object to iRODS in RDS format
+#' isaveRDS(iris, "irids_in_rds.rds")
+#'
+#' # read it back
+#' iris_again <- ireadRDS("irids_in_rds.rds")
+#' iris_again
+#' }
 iget <- function(
     logical_path,
     local_path = basename(logical_path),
@@ -265,7 +264,7 @@ iget <- function(
   invisible(NULL)
 }
 
-#' @rdname isaveRDS
+#' @rdname iget
 #'
 #' @export
 ireadRDS <- function(
@@ -332,7 +331,8 @@ irods_to_local <- function(logical_path, offset, count, verbose) {
   }
 }
 
-# internal: irods to object conversion
+#' irods to object conversion
+#' @noRd
 irods_to_local_ <- function(logical_path, offset, count, verbose) {
 
   # flags to curl call

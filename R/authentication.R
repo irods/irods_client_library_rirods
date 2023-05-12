@@ -8,7 +8,7 @@
 #' @param password iRODS password (prompts user for password if not supplied).
 #' @param role iRODS role of user (defaults to "rodsuser").
 #'
-#' @return Invisibly NULL
+#' @return Invisibly `NULL`.
 #' @export
 #'
 #' @examples
