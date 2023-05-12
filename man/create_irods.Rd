@@ -9,19 +9,18 @@ create_irods(host, zone_path, path = ".", overwrite = FALSE)
 \arguments{
 \item{host}{URL of host.}
 
-\item{zone_path}{Zonepath of the iRODS server (e.g., "/tempZone/home").}
+\item{zone_path}{Path to the zone of the iRODS server (e.g., "/tempZone/home").}
 
-\item{path}{Path of project (defaults to current directory).}
+\item{path}{Path of project. Defaults to the top directory of the zone..}
 
-\item{overwrite}{Overwrite existing irods file (defaults to \code{FALSE}).}
+\item{overwrite}{Overwrite existing iRODS project file. Defaults to \code{FALSE}.}
 }
 \value{
-Invisibly returns path to irods file.
+Invisibly, the path to the iRODS project file.
 }
 \description{
-This will create an irods project file containing information about the
-iRODS server. It allows for working with an iRODS server in the particular
-context of a working directory and source files. Furthermore, future sessions
+This will create an iRODS project file containing information about the
+iRODS server. Once the file has been created, future sessions
 connect again with the same iRODS server without further intervention.
 }
 \examples{

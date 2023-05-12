@@ -14,7 +14,7 @@ iauth(user = NULL, password = NULL, role = "rodsuser")
 \item{role}{iRODS role of user (defaults to "rodsuser").}
 }
 \value{
-Invisibly NULL
+Invisibly \code{NULL}.
 }
 \description{
 Provides an authentication service for the iRODS zone. Using the function

@@ -1,26 +1,23 @@
-#' Describe your iRODS objects
+#' Add or remove metadata
 #'
-#' Metadata attribute-value-units triples (AVUs) consist of an Attribute-Name,
-#' Attribute-Value, and an optional Attribute-Units. They can be added
-#' via the 'add' command ,or removed with 'remove', and then queried to find
-#' matching objects.
+#' In iRODS, metadata is stored as attribute-value-units triples (AVUs), consisting
+#' of an attribute name, an attribute value and an optional unit.
+#' This function allows to chain several operations ('add' or 'remove') linked to
+#' specific AVUs.
 #'
-#' @param logical_path object, collection or user
-#' @param entity_type Type (object, collection or user)
-#' @param operations List which contains the following named elements;
-#'  `operation`, which adds (`"add"`) or removes (`"remove"`) the object, and
-#'   the metadata triplet attribute, value, units.
-#' @param path Path to object (defaults to `"."`).
-#' @param verbose Show information about the http request and response.
-#'     query
-#' @param query GeneralQuery for searching the iCAT database.
-#' @param limit  The max number of rows to return (defaults to 100)
-#' @param offset Number of rows to skip for paging (defaults to 0).
-#' @param type Either 'general' or 'specific' (defaults to 'general').
-#' @param case_sensitive Affects string matching (defaults to TRUE).
-#' @param distinct Only list distinct rows (defaults to TRUE).
+#' @param logical_path Path to the data object or collection (or name of the user).
+#' @param entity_type Type of item to add metadata to or remove it from.
+#'   Options are 'data_object', 'collection' and 'user'.
+#' @param operations List of named lists of vectors representing operations.
+#'   The valid components of each of these lists or vectors are:
+#'   - `operation`, with values 'add' or 'remove', depending on whether the AVU
+#'  should be added to or removed from the metadata of the item.
+#'   - `attribute`, with the name of the AVU.
+#'   - `value`, with the value of the AVU.
+#'   - `units`, with the unit of the AVU.
+#' @param verbose Whether information should be printed about the HTTP request and response.
 #'
-#' @return Invisibly returns the response.
+#' @return Invisibly, the HTTP response.
 #' @export
 #'
 #' @examples
@@ -44,34 +41,44 @@
 #' imeta(
 #'  "foo.rds",
 #'  "data_object",
-#'  operations =
-#'   list(operation = "add", attribute = "foo", value = "bar", units = "baz")
+#'  operations = list(
+#'     operation = "add",
+#'     attribute = "foo",
+#'     value = "bar",
+#'     units = "baz"
+#'     )
+#' )
+#'
+#'imeta(
+#'  "foo.rds",
+#'  "data_object",
+#'  operations = list(
+#'    list(operation = "add", attribute = "foo2", value = "bar2"),
+#'    list(operation = "add", attribute = "foo3", value = "bar3")
+#'  )
 #' )
 #'
 #' # check if file is stored with associated metadata
 #' ils(metadata = TRUE)
-#'
-#' # search for objects by metadata
-#' iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 #' }
 imeta <- function(
     logical_path,
-    entity_type,
-    operations =
-      list(
-        operation = "add",
-        attribute = NULL,
-        value = NULL,
-        units = NULL
-      ),
-    path = ".",
+    entity_type = c("data_object", "collection", "user"),
+    operations = list(),
     verbose = FALSE
 ) {
 
   # expand logical path to absolute logical path
   logical_path <- get_absolute_lpath(logical_path, open = "read")
 
+  # define entity type
+  entity_type <- match.arg(entity_type)
+
   # check list depth if 1 add another layer
+  # TODO make a different check:
+  # operations should ALWAYS be a list of lists
+  # and those lists should have the right names inside.
+  # list of list => also a dataframe should be allowed
   if (list_depth(operations) == 1)
     operations <- list(operations)
 
@@ -97,18 +104,45 @@ list_depth <- function(this, thisdepth = 0) {
   }
 }
 
-#' @rdname imeta
+# TODO add some reference to documentation to how to query?
+#' Query data objects and collections in iRODS
 #'
+#' Use SQL-like expressions to query data objects and collections based on different properties.
+#'
+#' @param query GeneralQuery for searching the iCAT database.
+#' @param limit Maximum number of rows to return. Defaults to 100.
+#' @param offset Number of rows to skip for paging. Defaults to 0.
+#' @param type Type of query: 'general' (the default) or 'specific'.
+#' @param case_sensitive Whether the string matching in the query is case sensitive.
+#'   Defaults to `TRUE`.
+#' @param distinct Whether only distinct rows should be listed. Defaults to `TRUE`.
+#' @param verbose Whether information should be printed about the HTTP request and response.
+#'
+#' @return Invisibly, the HTTP response.
 #' @export
+#'
+#' @examples
+#' if(interactive()) {
+#' # connect project to server
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#'
+#' # authentication
+#' iauth()
+#'
+#' # search for objects by metadata
+#' iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
+#' iquery("SELECT COLL_NAME, DATA_NAME WHERE META_DATA_ATTR_NAME LIKE 'foo%'")
+#' }
 iquery <- function(
     query,
     limit = 100,
     offset = 0,
-    type = 'general',
+    type = c('general', 'specific'),
     case_sensitive = TRUE,
     distinct = TRUE,
     verbose = FALSE
   ) {
+  type <- match.arg(type)
 
   # flags to curl call
   args <- list(

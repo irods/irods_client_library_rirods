@@ -2,7 +2,7 @@
 % Please edit documentation in R/navigation.R
 \name{ils}
 \alias{ils}
-\title{Listing iRODS data objects and collections}
+\title{List iRODS data objects and collections}
 \usage{
 ils(
   logical_path = ".",
@@ -16,37 +16,46 @@ ils(
 )
 }
 \arguments{
-\item{logical_path}{Directory to be listed.}
+\item{logical_path}{Path to the collection whose contents are to be listed.
+By default this is the current working directory (see \code{ipwd()}).}
 
-\item{stat}{Boolean flag to indicate stat information is desired.}
+\item{stat}{Whether stat information should be included. Defaults to \code{FALSE}.}
 
-\item{permissions}{Boolean flag to indicate access control information is
-desired.}
+\item{permissions}{Whether access control information should be included.
+Defaults to \code{FALSE}.}
 
-\item{metadata}{Boolean flag to indicate metadata is desired.}
+\item{metadata}{Whether metadata information should be included. Defaults to \code{FALSE}.}
 
-\item{offset}{Number of records to skip for pagination.}
+\item{offset}{Number of records to skip for pagination. Defaults to 0.}
 
-\item{limit}{Number of records desired per page.}
+\item{limit}{Number of records to show per page. Defaults to 100.}
 
-\item{message}{In case the collection is empty a message saying so is
-returned.}
+\item{message}{Whether a message should be printed when the collection is empty.}
 
-\item{verbose}{Show information about the http request and response.}
+\item{verbose}{Whether information should be printed about the HTTP request and response.}
 }
 \value{
-tibble with logical paths
+Dataframe with logical paths and, if requested, additional information.
 }
 \description{
-Recursive listing of a collection, or stat, metadata, and access control
-information for a given data object.
+List the contents of a collection, optionally with stat, metadata, and/or
+access control information for each element in the collection.
 }
 \examples{
 if(interactive()) {
+# connect project to server
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+
 # authenticate
 iauth()
 
 # list home directory
 ils()
+
+# list a different directory
+ils('/tempZone/home/rods/some_collection')
+
+# show metadata
+ils(metadata = TRUE)
 }
 }

@@ -2,8 +2,8 @@
 % Please edit documentation in R/data-objects.R
 \name{iput}
 \alias{iput}
-\alias{iget}
-\title{Working with iRODS data objects}
+\alias{isaveRDS}
+\title{Save files and objects in iRODS}
 \usage{
 iput(
   local_path,
@@ -15,65 +15,62 @@ iput(
   overwrite = FALSE
 )
 
-iget(
+isaveRDS(
+  x,
   logical_path,
-  local_path = basename(logical_path),
   offset = 0,
   count = 2000L,
+  truncate = "true",
   verbose = FALSE,
   overwrite = FALSE
 )
 }
 \arguments{
-\item{local_path}{File stored on iRODS server.}
+\item{local_path}{Local path of file to be sent to iRODS.}
 
-\item{logical_path}{Destination path.}
+\item{logical_path}{Destination path in iRODS.
+By default, the basename of \code{local_path} is used and the file is
+stored in the current working directory (see \code{ipwd()}).}
 
-\item{offset}{Offset in bytes into the data object (Defaults to FALSE).}
+\item{offset}{Offset in bytes into the data object. Defaults to 0.}
 
-\item{count}{Maximum number of bytes to read or write.}
+\item{count}{Maximum number of bytes to write. Defaults to 2000.}
 
-\item{truncate}{Truncates the object on open (defaults to TRUE).}
+\item{truncate}{Whether to truncate the object when opening it. Defaults to \code{TRUE}.}
 
-\item{verbose}{Show information about the http request and response.}
+\item{verbose}{Whether to print information about the HTTP request and response.}
 
-\item{overwrite}{Overwrite irods object or local file (defaults to FALSE).}
+\item{overwrite}{Whether the file in iRODS should be overwritten if it exists.
+Defaults to \code{FALSE}.}
+
+\item{x}{R object to save in iRODS.}
 }
 \value{
-Invisibly the http response in case of \code{iput()}, or invisibly NULL in
-case of \code{iget()}.
+(Invisibly) the HTTP response.
 }
 \description{
-Store a file into iRODS with \code{iput()}. If the destination data-object or
-collection are not provided, the current iRODS directory and the input file
-name are used. Get data-objects or collections from iRODS space with \code{iget()}
-, either to the specified local area or to the current working directory.
+Store an object or file into iRODS. \code{iput()} should be used to transfer
+a file from the local storage to iRODS; \code{isaveRDS()} saves an R object from the
+current environment in iRODS in RDS format (see \code{saveRDS()}).
 }
 \examples{
-if(interactive()) {
+if (interactive()) {
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", TRUE)
 
-# authentication
+# authenticate
 iauth()
 
-# creates a csv local file of the iris dataset
+# save the iris dataset as csv and send the file to iRODS
 library(readr)
 write_csv(iris, "iris.csv")
+iput("iris.csv", overwrite = TRUE)
 
-# store to iRODS
-iput("iris.csv")
-
-# delete local file
-unlink("iris.csv")
-
-# check if file is stored
+# save with a different name
+iput("iris.csv", "irids_in_irods.csv", overwrite = TRUE)
 ils()
 
-# write to local file
-iget("iris.csv")
-
-# check local files
-list.files()
+# send an R object to iRODS in RDS format
+isaveRDS(iris, "irids_in_rds.rds", overwrite = TRUE)
 }
 }

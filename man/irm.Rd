@@ -2,54 +2,30 @@
 % Please edit documentation in R/collections.R
 \name{irm}
 \alias{irm}
-\alias{imkdir}
-\title{Create/remove objects in iRODS}
+\title{Remove data objects or collections in iRODS.}
 \usage{
-irm(
-  logical_path,
-  trash = TRUE,
-  recursive = FALSE,
-  unregister = FALSE,
-  verbose = FALSE
-)
-
-imkdir(
-  logical_path,
-  collection = TRUE,
-  create_parent_collections = FALSE,
-  verbose = FALSE
-)
+irm(logical_path, force = TRUE, recursive = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{logical_path}{Destination path.}
+\item{logical_path}{Path to the data object or collection to remove.}
 
-\item{trash}{Send to trash or delete permanently (default = TRUE).}
+\item{force}{Whether the data object or collection should be deleted permanently.
+If \code{FALSE}, it is sent to the trash collection.}
 
-\item{recursive}{Recursively delete contents of a collection
-(default = FALSE).}
+\item{recursive}{If a collection is provided, whether its contents should also be
+removed. If a collection is not empty and \code{recursive} is \code{FALSE}, it cannot
+be deleted.}
 
-\item{unregister}{Unregister data objects instead of deleting them
-(default = FALSE).}
-
-\item{verbose}{Show information about the http request and response.}
-
-\item{collection}{Indicates that a collection is being created (defaults to
-TRUE).}
-
-\item{create_parent_collections}{Indicates that parent collections of the
-destination collection should be created if necessary. Only applicable when
-collection = TRUE is used. Defaults to FALSE.}
+\item{verbose}{Whether information should be printed about the HTTP request and response.}
 }
 \value{
-Invisible object to be removed
+Invisibly the HTTP call.
 }
 \description{
-These functions provide an interface to remove or create objects or
-collections from the iRODS namespace. By default the objects/collections are
-moved to the trash collection when removed.
+This is the equivalent of \code{file.remove()}, but applied to an item inside iRODS.
 }
 \examples{
-if(interactive()) {
+if (interactive()) {
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
@@ -67,11 +43,6 @@ ils()
 
 # delete object
 irm("foo.rds", trash = FALSE)
-
-# create collection
-imkdir("a")
-
-# check if file is delete
-ils()
+iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo\%'")
 }
 }

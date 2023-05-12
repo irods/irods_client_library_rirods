@@ -1,16 +1,15 @@
 #' Generate IRODS project file
 #'
-#' This will create an irods project file containing information about the
-#' iRODS server. It allows for working with an iRODS server in the particular
-#' context of a working directory and source files. Furthermore, future sessions
+#' This will create an iRODS project file containing information about the
+#' iRODS server. Once the file has been created, future sessions
 #' connect again with the same iRODS server without further intervention.
 #'
 #' @param host URL of host.
-#' @param zone_path Zonepath of the iRODS server (e.g., "/tempZone/home").
-#' @param path Path of project (defaults to current directory).
-#' @param overwrite Overwrite existing irods file (defaults to `FALSE`).
+#' @param zone_path Path to the zone of the iRODS server (e.g., "/tempZone/home").
+#' @param path Path of project. Defaults to the top directory of the zone..
+#' @param overwrite Overwrite existing iRODS project file. Defaults to `FALSE`.
 #'
-#' @return Invisibly returns path to irods file.
+#' @return Invisibly, the path to the iRODS project file.
 #' @export
 #'
 #' @examples

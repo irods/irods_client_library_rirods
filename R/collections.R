@@ -1,26 +1,20 @@
-#' Create/remove objects in iRODS
+#' Remove data objects or collections in iRODS.
 #'
-#' These functions provide an interface to remove or create objects or
-#' collections from the iRODS namespace. By default the objects/collections are
-#' moved to the trash collection when removed.
+#' This is the equivalent of `file.remove()`, but applied to an item inside iRODS.
 #'
-#' @inheritParams iput
-#' @param trash Send to trash or delete permanently (default = TRUE).
-#' @param recursive Recursively delete contents of a collection
-#'  (default = FALSE).
-#' @param unregister Unregister data objects instead of deleting them
-#'  (default = FALSE).
-#' @param collection Indicates that a collection is being created (defaults to
-#'  TRUE).
-#' @param create_parent_collections Indicates that parent collections of the
-#'  destination collection should be created if necessary. Only applicable when
-#'  collection = TRUE is used. Defaults to FALSE.
+#' @param logical_path Path to the data object or collection to remove.
+#' @param force Whether the data object or collection should be deleted permanently.
+#'    If `FALSE`, it is sent to the trash collection.
+#' @param recursive If a collection is provided, whether its contents should also be
+#'    removed. If a collection is not empty and `recursive` is `FALSE`, it cannot
+#'    be deleted.
+#' @param verbose Whether information should be printed about the HTTP request and response.
 #'
-#' @return Invisible object to be removed
+#' @return Invisibly the HTTP call.
 #' @export
 #'
 #' @examples
-#' if(interactive()) {
+#' if (interactive()) {
 #' # connect project to server
 #' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 #'
@@ -38,14 +32,9 @@
 #'
 #' # delete object
 #' irm("foo.rds", trash = FALSE)
-#'
-#' # create collection
-#' imkdir("a")
-#'
-#' # check if file is delete
-#' ils()
+#' iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
 #' }
-irm <- function(logical_path, trash = TRUE, recursive = FALSE, unregister = FALSE,
+irm <- function(logical_path, force = TRUE, recursive = FALSE,
                 verbose = FALSE) {
 
   # expand logical path to absolute logical path
@@ -54,7 +43,7 @@ irm <- function(logical_path, trash = TRUE, recursive = FALSE, unregister = FALS
   # flags to curl call
   args <- list(
     `logical-path` = logical_path,
-    `no-trash` = as.integer(trash),
+    `no-trash` = as.integer(force),
     recursive = as.integer(recursive)
   )
 
@@ -64,11 +53,40 @@ irm <- function(logical_path, trash = TRUE, recursive = FALSE, unregister = FALS
   # response
   invisible(out)
 }
-#' @rdname irm
+
+#' Create a new collection in iRODS
 #'
+#' This is the equivalent to `dir.create()`, but creating a collection in iRODS
+#' instead of a local directory.
+#'
+#' @param logical_path Path to the collection to create, relative to the current
+#'   working directory (see `ipwd()`).
+#' @param collection Whether a collection is being created. Defaults to `TRUE`.
+#' @param create_parent_collections Whether parent collections should be created
+#'   when necessary.
+#' @param verbose Whether information about the HTTP request and response should be printed.
+#'
+#' @return Invisibly the HTTP request.
 #' @export
+#'
+#' @examples
+#' if (interactive()) {
+#' # connect project to server
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#'
+#' # authentication
+#' iauth()
+#'
+#' ils()
+#' imkdir("new_collection")
+#' ils()
+#' icd("new_collection")
+#' }
 imkdir <- function(logical_path, collection = TRUE,
                    create_parent_collections = FALSE, verbose = FALSE) {
+  # NOTE this function will be made into an internal function create_item()
+  # Then `imkdir()` will call this function with collection = TRUE
+  # and `itouch()` will call this function with collection = FALSE and create_parent_collections = FALSE
 
   # expand logical path to absolute logical path
   logical_path <- get_absolute_lpath(logical_path)
