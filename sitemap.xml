@@ -31,10 +31,16 @@
     <loc>https://irods.github.io/irods_client_library_rirods/reference/icd.html</loc>
   </url>
   <url>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/iget.html</loc>
+  </url>
+  <url>
     <loc>https://irods.github.io/irods_client_library_rirods/reference/ils.html</loc>
   </url>
   <url>
     <loc>https://irods.github.io/irods_client_library_rirods/reference/imeta.html</loc>
+  </url>
+  <url>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/imkdir.html</loc>
   </url>
   <url>
     <loc>https://irods.github.io/irods_client_library_rirods/reference/index.html</loc>
@@ -43,9 +49,9 @@
     <loc>https://irods.github.io/irods_client_library_rirods/reference/iput.html</loc>
   </url>
   <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/irm.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/iquery.html</loc>
   </url>
   <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/isaveRDS.html</loc>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/irm.html</loc>
   </url>
 </urlset>
