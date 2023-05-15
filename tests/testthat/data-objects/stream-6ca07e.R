@@ -1,6 +1,6 @@
 structure(list(method = "GET", url = "/stream?logical-path=%2FtempZone%2Fhome%2Frods%2Ftestthat%2Fdfr.rds&offset=0&count=2000", 
     status_code = 200L, headers = structure(list(Server = "nginx/1.23.1", 
-        Date = "Mon, 08 May 2023 00:18:50 GMT", `Content-Length` = "183", 
+        Date = "Mon, 15 May 2023 00:22:34 GMT", `Content-Length` = "183", 
         Connection = "keep-alive", `Access-Control-Allow-Origin` = "*", 
         `Access-Control-Allow-Headers` = "*", `Access-Control-Allow-Methods` = "AUTHORIZATION,ACCEPT,GET,POST,OPTIONS,PUT,DELETE"), class = "httr2_headers"), 
     body = as.raw(c(0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 
