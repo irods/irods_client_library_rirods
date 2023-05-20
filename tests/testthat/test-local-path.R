@@ -1,27 +1,25 @@
 test_that("warm about potential overwrite", {
-
   expect_error(stop_local_overwrite(FALSE, "testthat.irods"))
 })
 
 test_that("files can be chunked", {
 
-  # chunk file
-  fm <- chunk_file("baz.rds", 3000L)
+  # test object to be split
+  x <- matrix(1:100)
+
+  # chunk object from raw vector
+  chunks <- chunk_object(serialize(x, NULL), 10L)
 
   # reversed operation
-  xc <- Map(
-    function(x, y) {
-      con <- file(x, "rb")
-      on.exit(close(con))
-      readBin(con, "raw", y)
-    },
-    fm[[1]],
-    fm[[3]]
-    )
-  xc <- fuse_file(xc)
-  con <- rawConnection(xc)
+  xc <- fuse_object(chunks[[1]])
+  y <- unserialize(xc)
 
-  expect_equal(readRDS(gzcon(con)), readRDS("baz.rds"))
-  close(con)
+  expect_equal(x, y)
 })
 
+test_that("chunk size can be calculated",{
+  expect_snapshot(calc_chunk_size(11, 10L))
+  expect_snapshot(calc_chunk_size(20, 10L))
+  expect_snapshot(calc_chunk_size(30, 10L))
+  expect_error(calc_chunk_size(0, 20L))
+})

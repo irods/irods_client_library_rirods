@@ -1,6 +1,10 @@
 with_mock_dir("metadata-1", {
   test_that("metadata works 1" , {
 
+    # test object
+    test <- 1
+    isaveRDS(test, "test.rds", overwrite = TRUE) # set to `TRUE` in case of test failures
+
     # single
     imeta(
       "test.rds",
@@ -112,6 +116,9 @@ with_mock_dir("metadata-remove", {
     )
 
     expect_equal(ils(metadata = TRUE), ref)
+
+    # clean-up
+    irm("test.rds", force = TRUE)
 
   })
 })

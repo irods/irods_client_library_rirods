@@ -3,6 +3,9 @@ test_that("compare shell with R solution", {
   # currently mocking does not work
   skip_if(.rirods$token == "secret", "IRODS server unavailable")
 
+  # only works on demo server
+  skip_if(Sys.getenv("DEV_KEY_IRODS") != "", "Only for demo server.")
+
   # curl in shell
   shell <- system2(
     system.file(package = "rirods", "bash", "iadmin.sh"),

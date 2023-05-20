@@ -27,15 +27,6 @@ if (Sys.getenv("DEV_KEY_IRODS") != "") {
 # try to run the server
 tk <- try({
 
-  # write an gitignore file
-  if (!file.exists(".gitignore")) {
-    cat(
-      "**/*.R",
-      file = ".gitignore",
-      sep = "\n"
-    )
-  }
-
   # switch to new iRODS project
   create_irods(host, lpath, overwrite = TRUE)
   withr::defer(unlink("testthat.irods"), teardown_env())
@@ -55,17 +46,25 @@ tk <- try({
   # authenticate
   iauth(user, pass, "rodsuser")
 
-  # make tests collections
+  # make tests collections (especially useful in case of remote server)
   def_path <- paste0(lpath, "/", user)
   if (!lpath_exists(paste0(def_path, "/testthat"))) imkdir("testthat")
   if (!lpath_exists(paste0(def_path, "/projectx"))) imkdir("projectx")
 
+  # leave iRODS in clean state upon exit
+  withr::defer(irm(
+    paste0(def_path, "/testthat"),
+    recursive = TRUE,
+    force = TRUE
+  ), teardown_env())
+  withr::defer(irm(
+    paste0(def_path, "/projectx"),
+    recursive = TRUE,
+    force = TRUE
+  ), teardown_env())
+
   # move one level up
   icd("testthat")
-
-  # test object
-  test <- 1
-  isaveRDS(test, "test.rds", overwrite = TRUE) # set to `TRUE` in case of test failures
 
   # token
   rirods:::get_token(paste(user, pass, sep = ":"), rirods:::find_irods_file("host"))

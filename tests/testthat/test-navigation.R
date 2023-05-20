@@ -27,13 +27,19 @@ with_mock_dir("navigation", {
     expect_invisible(icd("../projectx"))
     expect_equal(ipwd(), proj_path)
 
+    # test object
+    test <- 1
+    isaveRDS(test, "test.rds", overwrite = TRUE) # set to `TRUE` in case of test failures
     # error when selecting file instead of collection
-    expect_error(icd(paste0(dev_path, "/test")))
+    expect_error(icd(paste0(proj_path, "/test.rds")))
     # or for typos and permissions errors
     expect_error(icd(paste0(def_path , "/projecty")))
 
+    # clean-up
+    irm(paste0(proj_path, "/test.rds"), force = TRUE)
+
     # return to default path
-    icd("../testthat")
+    icd(dev_path)
 
   })
 })
