@@ -1,11 +1,11 @@
 expression	min	median	itr/sec	mem_alloc	gc/sec	n_itr	n_gc	total_time	result	memory	time	gc	src	ref	size
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	203ms	204ms	4.858224349424299	70.4KB	0	3	0	618ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	1152
-ireadRDS(""object.rds"", count = 1000)	162ms	163ms	6.084071283044013	73.6KB	0	4	0	657ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	1152
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	197ms	210ms	4.860160490103568	70.4KB	0	3	0	617ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	4752
-ireadRDS(""object.rds"", count = 1000)	162ms	163ms	6.111661409342051	67KB	0	4	0	654ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	4752
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	196ms	205ms	4.8746659533819034	70.4KB	0	3	0	615ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	40752
-ireadRDS(""object.rds"", count = 1000)	159ms	167ms	6.0159554652416185	67KB	1.5039888663104046	4	1	665ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	40752
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	196ms	202ms	4.969180257800023	70.4KB	0	3	0	604ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	400752
-ireadRDS(""object.rds"", count = 1000)	161ms	166ms	6.012467738420323	67KB	0	4	0	665ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	400752
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	194ms	195ms	5.130467945379887	70.4KB	0	3	0	585ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	4000752
-ireadRDS(""object.rds"", count = 1000)	163ms	167ms	5.977796680960742	67KB	0	3	0	502ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	4000752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	232ms	237ms	4.121331306750495	70.4KB	0	3	0	728ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	1152
+ireadRDS(""object.rds"", count = 1000)	182ms	182ms	5.458211934346473	73.6KB	0	3	0	550ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	1152
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	221ms	222ms	4.46814534124351	70.4KB	0	3	0	671ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	4752
+ireadRDS(""object.rds"", count = 1000)	180ms	180ms	5.531754740984374	67KB	0	3	0	542ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	4752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	236ms	251ms	3.9829592672681087	70.4KB	1.9914796336340543	2	1	502ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	40752
+ireadRDS(""object.rds"", count = 1000)	180ms	183ms	5.431708929548884	67KB	0	3	0	552ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	40752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	219ms	220ms	4.40458590578684	70.4KB	0	3	0	681ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	400752
+ireadRDS(""object.rds"", count = 1000)	179ms	179ms	5.483713487281529	67KB	0	3	0	547ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	400752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	221ms	221ms	4.493817175888309	70.4KB	0	3	0	668ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	4000752
+ireadRDS(""object.rds"", count = 1000)	178ms	180ms	5.426886331884558	67KB	0	3	0	553ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	4000752
