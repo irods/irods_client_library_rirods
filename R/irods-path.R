@@ -31,11 +31,6 @@ get_absolute_lpath <- function(lpath, data_type = "data_object", open = "write",
   lpath
 }
 
-# # Construct Logical Path to File
-# file_lpath <- function(...) {
-#   Reduce(function(x, y) { paste(x, y, sep = "/") }, list(...))
-# }
-
 # stop overwriting
 stop_irods_overwrite <- function(overwrite, lpath) {
   if (isFALSE(overwrite)) {

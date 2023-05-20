@@ -5,6 +5,8 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^data-raw$
+^inst/bench$
+^dev$
 ^LICENSE\.md$
 ^codecov\.yml$
 ^_pkgdown\.yml$

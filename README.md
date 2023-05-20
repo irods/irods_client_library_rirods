@@ -61,13 +61,13 @@ username and password without hardcoding this information in your
 scripts.
 
 ``` r
-# login as Alice with password "passWORD"
+# login as alice with password "passWORD"
 iauth() # or iauth("alice", "passWORD")
 ```
 
 ### save R objects
 
-Suppose Alice would like to upload an R object from his current R
+Suppose Alice would like to upload an R object from her current R
 session to an iRODS collection. For this, use the `isaveRDS()` command:
 
 ``` r
@@ -104,7 +104,7 @@ ils(metadata = TRUE)
 
 ### read R objects
 
-If Alice wanted to copy the foo R object from an iRODS collection to his
+If Alice wanted to copy the foo R object from an iRODS collection to her
 current R session, she would use `ireadRDS()`:
 
 ``` r
@@ -130,6 +130,7 @@ write_csv(foo, "foo.csv")
 
 # send file
 iput("foo.csv")
+#> Warning in open.connection(con): connection is already open
 
 # check whether it is stored
 ils()
@@ -144,6 +145,7 @@ it locally:
 ``` r
 # retrieve it again later
 iget("foo.csv")
+#> Warning in open.connection(con): connection is already open
 read_csv("foo.csv")
 #> Rows: 3 Columns: 2
 #> ── Column specification ────────────────────────────────────────────────────────
@@ -178,9 +180,10 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 ``` r
 # or for data objects with a name that starts with "foo"
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#>      [,1]                   [,2]     
-#> [1,] "/tempZone/home/alice" "foo.csv"
-#> [2,] "/tempZone/home/alice" "foo.rds"
+#>      [,1]                         [,2]     
+#> [1,] "/tempZone/home/alice"       "foo.csv"
+#> [2,] "/tempZone/home/alice"       "foo.rds"
+#> [3,] "/tempZone/trash/home/alice" "foo.rds"
 ```
 
 ### cleanup
@@ -197,4 +200,4 @@ ils()
 #> This collection does not contain any objects or collections.
 ```
 
-<!-- The user Alice can also be removed again. -->
+<!-- The user alice can also be removed again. -->

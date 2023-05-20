@@ -1,0 +1,3 @@
+expression	min	median	itr/sec	mem_alloc	gc/sec	n_itr	n_gc	total_time	result	memory	time	gc	src	ref	size
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	 94.1ms	 95.2ms	10.506646240981999	103.9KB	0	6	0	571ms					irods/irods_client_library_rirods	HEAD	1152
+ireadRDS(""object.rds"", count = 1000)	154.3ms	155.8ms	6.275035096811565	 70.5KB	1.5687587742028912	4	1	637ms					irods/irods_client_library_rirods	HEAD	1152

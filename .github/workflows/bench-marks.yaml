@@ -1,14 +1,12 @@
-# Workflow derived for http snapshots at a cron schedule (once a week on monday at 00:00)
 on:
-  schedule:
-    - cron: '0 2 * * 1'
+  push:
+    paths: ['R/data-objects.R']
 
-name: http-snapshots
+name: bench-marks
 
 jobs:
-  http-snapshots:
+  bench-marks:
     runs-on: ubuntu-latest
-
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -57,33 +55,17 @@ jobs:
         run: |
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore(repos = c(CRAN = "https://cloud.r-project.org"))
-          if (!requireNamespace("rcmdcheck", quietly = TRUE)) install.packages("rcmdcheck")
-          if (!requireNamespace("pkgload", quietly = TRUE)) install.packages("pkgload")
 
-# On linux we remove httptest2 mock files to force a realistic test against
-# the irods_demo server
-
-      - name: Remove mock files on Linux
+      - name: Run bench mark and render Rmarkdown
         working-directory: ./rirods
-        shell: Rscript {0}
         run: |
-          pkgload::load_all()
-          remove_mock_files()
-
-      - name: R CMD check of rirods
-        uses: r-lib/actions/check-r-package@v2
-        with:
-          working-directory: ./rirods
-          # upload-snapshots: true
-
-      - name: Commit and push snapshots
-        run: |
-          cp -TR ./rirods/check/**/tests/testthat/ ./rirods/tests/testthat/
-          cd ./rirods
+          PKG_PATH=$(pwd)
+          BENCH_PATH=$(pwd)/inst/bench
+          cd ${BENCH_PATH}
+          Rscript run-bench.R main ${BENCH_PATH} irods/irods_client_library_rirods HEAD 5
+          Rscript run-bench.R dev ${BENCH_PATH} ${PKG_PATH} ${{ github.sha }} 5
+          Rscript -e "install.packages('knitr'); knitr::knit(file.path(getwd(), 'README.Rmd'), file.path(getwd(), 'README.md'))"
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git add ./tests/testthat/\*\*/\*\.R
-          git commit -m "Snapshots http response" || echo "No changes to commit"
-          git pull --ff-only
-          git push origin
-          git rm --cached tests/testthat/\*\*/\*.R
+          git commit ${BENCH_PATH[*]/.Rmd/.md/.tsv} -m 'Benchmark results' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"

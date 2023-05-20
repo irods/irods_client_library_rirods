@@ -1,0 +1,3 @@
+expression	min	median	itr/sec	mem_alloc	gc/sec	n_itr	n_gc	total_time	result	memory	time	gc	src	ref	size
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	189ms	190ms	5.253311465692153	70.4KB	0	3	0	571ms					/local/path	0b950260cdafe91d6e8773dd929da33609a17e9b	1152
+ireadRDS(""object.rds"", count = 1000)	157ms	158ms	6.113381681473024	73.6KB	0	4	0	654ms					/local/path	0b950260cdafe91d6e8773dd929da33609a17e9b	1152
