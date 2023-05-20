@@ -12,4 +12,4 @@ markdown:
 	Rscript -e "install.packages(knitr); knitr::knit(file.path(getwd(), 'README.Rmd'), file.path(getwd(), 'README.md'))"
 
 clean:
-	rm -f main.tsv dev.tsv
+	rm -f main-files.tsv dev-files.tsv main-objects.tsv dev-objects.tsv
