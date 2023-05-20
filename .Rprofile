@@ -11,8 +11,8 @@ if (interactive()) {
 # level environment variables. One can use usethis::edit_r_environ() for this.
 # Store the key under "DEV_KEY_IRODS")
 
-# irods environment variables for development
-Sys.setenv(DEV_HOST_IRODS = "itxgo_ZF5Ncd79rj1OKLC2i_0z0D7gYgWZj1JbZN7sQe28QyICI6piF5sZyiW0ITmRYCqvh9")
-Sys.setenv(DEV_ZONE_PATH_IRODS = "pDRzU24ysv8w1_bSIy6WXFZVJk2Sl2weSv9k2PI")
-Sys.setenv(DEV_USER = "ZGlORquE2G6BIPS5JAcuPcngmBB6Wg")
-Sys.setenv(DEV_PASS = "ZGlORquE2G6BIPS5JAcuPcngmBB6Wg")
+# iRODS environment variables for development
+Sys.setenv(DEV_HOST_IRODS = "Dd_rTPPENlWR7NrXsGQkPrd2GgLhUD9zavGum-ppk-v0iSL3iYwc2Uckc_7Tomx92vMcwBON")
+Sys.setenv(DEV_ZONE_PATH_IRODS = "AEGApbh1J6Gk0v16t51Wf4YzZBc7LMEFtKthhmw")
+Sys.setenv(DEV_USER = "szYLD6oOfZ73SEh9zgOlGVNU97TzWA")
+Sys.setenv(DEV_PASS = "szYLD6oOfZ73SEh9zgOlGVNU97TzWA")

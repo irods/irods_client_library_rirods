@@ -1,0 +1,3 @@
+expression	min	median	itr/sec	mem_alloc	gc/sec	n_itr	n_gc	total_time	result	memory	time	gc	src	ref	size
+iget(file_name, overwrite = TRUE, count = 1000)	157ms	159ms	6.1661932724765025	  1.43MB	0	4	0	649ms					/local/path	0b950260cdafe91d6e8773dd929da33609a17e9b	312
+iput(file_name, overwrite = TRUE, count = 1000)	191ms	191ms	4.388164331702361	315.58KB	1.462721443900787	3	1	684ms					/local/path	0b950260cdafe91d6e8773dd929da33609a17e9b	312

@@ -1,0 +1,116 @@
+---
+output: 
+  github_document:
+     md_extensions: [ 
+      "-autolink_bare_uris" 
+    ]
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+
+if (!requireNamespace("here", quietly = TRUE)) install.packages("here")
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+if (!requireNamespace("readr", quietly = TRUE)) install.packages("readr")
+if (!requireNamespace("tidyr", quietly = TRUE)) install.packages("tidyr")
+
+here::i_am("inst/bench/README.Rmd")
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyr)
+
+make_table <- function(type = "files", cap = "**") {
+  read_tsv(paste0(c("main-", "dev-"), type, ".tsv"), show_col_types = FALSE) |> 
+    relocate(src, ref, `file size` = size, .before = expression) |> 
+    select(
+      !c(result, memory, time, `gc/sec`,	n_itr,	n_gc, gc, 
+         total_time, min, `itr/sec`), 
+      `memory allocated` = mem_alloc) |> 
+    knitr::kable(digits = 2, align = "r", format = "html", caption = cap)
+}
+
+make_plot <- function(type = "files") {
+  read_tsv(paste0(c("main-", "dev-"), type, ".tsv"), show_col_types = FALSE) |> 
+    mutate(
+      `memory allocated (Mb)` = 
+        case_when(
+          endsWith(mem_alloc, "GB") ~ parse_number(mem_alloc) * 1e3,
+          endsWith(mem_alloc, "MB") ~ parse_number(mem_alloc),
+          endsWith(mem_alloc, "KB") ~ parse_number(mem_alloc) / 1e3
+        ),
+      `median time (sec)` = 1 / `itr/sec`
+      ) |> 
+    pivot_longer(c(`median time (sec)`, `memory allocated (Mb)`)) |> 
+    ggplot(aes(x = size / 1e6, y = value, color = paste0(src, "@", ref))) +
+      geom_point() +
+      geom_line() +
+      scale_x_log10() +
+      labs(x = "Size (Mb)", y = "", color = "") + 
+      theme(legend.position = "top", legend.box = "vertical") +
+      guides(color = guide_legend(nrow = 3, byrow = TRUE)) +
+      facet_grid(cols = vars(expression), rows = vars(name), scales = "free")
+  
+}
+```
+
+# rirods benchmarks
+
+## Prerequisites
+
+For the benchmarks on needs to connect to the iRODS C++ REST API - https://github.com/irods/irods_client_rest_cpp.
+
+Launch a local demonstration iRODS service (including the REST API):
+
+```{bash, eval=FALSE}
+# clone the repository
+git clone --recursive https://github.com/irods/irods_demo
+# start the REST API
+cd irods_demo
+docker-compose up -d nginx-reverse-proxy
+```
+
+This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version).
+
+## Usage benchmarks
+
+The benchmarks are based on the R package *bench*. The two parameters of interest are `median`, which is the sample median time and `mem_alloc`, which is the total amount of memory allocated by R while running the expression.
+
+To perform a benchmark use GNU make:
+
+```{bash, eval=FALSE}
+make
+```
+
+## Results
+
+The results are based on the HEAD of the main branch on the iRODS organization repository and the local package. The test case uses `iput()` and `iget()` with a `count` smaller than the file size.
+
+## Performance iget and iput
+
+```{r table1, echo=FALSE}
+make_table(cap = "<i>Table 1: Comparing allocation of memory and runtime for `iget()` and `iput()` for different file sizes.</i>")
+```
+
+```{r plot1, echo=FALSE, fig.cap="<i>Fig 1: Comparing allocation of memory and runtime for `iget()` and `iput()` for different file sizes.</i>"}
+make_plot()
+```
+
+
+## Performance isaveRDS and ireadRDS
+
+```{r table2, echo=FALSE}
+make_table(type = "objects", cap = "<i>Table 2: Comparing allocation of memory and runtime for `isaveRDS()` and `ireadRDS()` for different object sizes.</i>")
+```
+
+```{r plot2, echo=FALSE, fig.cap="<i>Fig 2: Comparing allocation of memory and runtime for `isaveRDS()` and `ireadRDS()` for different object sizes.</i>"}
+make_plot(type = "objects")
+```

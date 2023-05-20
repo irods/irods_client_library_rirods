@@ -55,7 +55,7 @@ iput <- function(
   # check if iRODS object already exists and whether it should be overwritten
   stop_irods_overwrite(overwrite, logical_path)
 
-  # what type of object are we dealing with
+  # check if local file exists
   if (!(is.character(local_path) && file.exists(local_path))) {
     stop("Local file [", basename(local_path) , "] does not exist.",
          call. = FALSE)
@@ -63,7 +63,7 @@ iput <- function(
 
   # handle file to iRODS conversion
   out <-local_to_irods(
-    local_path = local_path,
+    object = local_path,
     logical_path = logical_path,
     offset = offset,
     count = count,
@@ -95,19 +95,14 @@ isaveRDS <- function(
   # object name
   name <- deparse(substitute(x))
 
-  # serialize R object
-  if (exists(name, envir = parent.frame())) {
-    # # make intermediate file
-    fil <- tempfile(name, fileext = ".rds")
-    # serialize and gz compress
-    saveRDS(x, fil)
-  } else {
+  # check if the R object exists in the calling environment
+  if (!exists(name, envir = parent.frame())) {
     stop("Local object [", name ,"] does not exist.", call. = FALSE)
   }
 
   # handle R object to iRODS conversion
   out <- local_to_irods(
-    local_path = fil,
+    object = x,
     logical_path = logical_path,
     offset = offset,
     count = count,
@@ -118,39 +113,54 @@ isaveRDS <- function(
   invisible(out[[1]])
 }
 
-# vectorised object to irods conversion
-local_to_irods <- function(local_path, logical_path, offset, count, truncate,
+# vectorised object to iRODS conversion (object needs to be a raw object)
+local_to_irods <- function(object, logical_path, offset, count, truncate,
                            verbose) {
 
-  # when object is larger then cut object in pieces
-  if (file.size(local_path) > count) {
-    #---------------------------------------------------------------------------
-    # this is a hack to make it work
-    pl <- tempfile(
-      "place_holder",
-      fileext = paste0(".", tools::file_ext(local_path))
-    )
-    saveRDS("place_holder", pl)
-    # flags to curl call
-    args <- list(
+  # create placeholder object on iRODS with `truncate` is true in all cases
+  args <- list(
       `logical-path` = logical_path,
       offset = offset,
       count = count
-    )
-    irods_rest_call("stream", "PUT", args, verbose, pl)
-    truncate <- "false"
-    #---------------------------------------------------------------------------
-    x <- chunk_file(local_path, count)
+  )
+  irods_rest_call("stream", "PUT", args, verbose)
+
+  if (is.character(object) && file.exists(object)) {
+    # make a connection to read the file as raw bytes
+    con <- file(object, "rb", raw = TRUE)
+    # close connection on exit
+    on.exit(close(con))
+    # chunk object when necessary, this is based on the REST API byte number
+    # this is the parameter `count` of the stream end-point
+    if (file.size(object) > count){
+      # in case of files we chunk on the fly during the loop
+      truncate <- "false" # needs to be false to allow larger files
+      # chunk file (we will just pass along the connection but add also the
+      # offset and count sizes)
+      x <- chunk_file(object, count)
+      x[[1]] <- list(con)
+    } else {
+      x <- list(object = list(con), offset = 0, count = count)
+    }
   } else {
-    x <- list(local_path, offset = 0, count)
+    # serialize R object
+    # `serialize("<object>", collection = NULL)` returns a raw vector
+    raw_object <- serialize(object, connection = NULL)
+    if (length(raw_object) > count) { # length is number of bytes
+      # in case of R objects we chunk before the loop
+      truncate <- "false" # needs to be false for larger objects
+      x <- chunk_object(raw_object, count)
+    } else {
+      x <- list(object = list(raw_object), offset = 0, count = count)
+    }
   }
 
-  # vectorised call of file which enables chunked file transfer in case of larger
-  # file size than `count` bytes
+  # vectorised call of file which enables chunked object transfer in case of
+  # larger object size than `count` bytes
   Map(
     function(x, y, z) {
       local_to_irods_(
-        local_path = x,
+        object = x,
         logical_path = logical_path,
         offset = y,
         count = z,
@@ -168,13 +178,18 @@ local_to_irods <- function(local_path, logical_path, offset, count, truncate,
 #' Object to iRODS conversion
 #' @noRd
 local_to_irods_ <- function(
-    local_path,
+    object,
     logical_path,
     offset,
     count,
     truncate,
     verbose
   ) {
+
+  # if connection then only here read the data chunk
+  if (inherits(object, "connection")) {
+    object <- readBin(object, raw(), n = count, endian = "swap")
+  }
 
   # flags to curl call
   args <- list(
@@ -185,9 +200,8 @@ local_to_irods_ <- function(
   )
 
   # http call
-  irods_rest_call("stream", "PUT", args, verbose, local_path)
+  irods_rest_call("stream", "PUT", args, verbose, object)
 }
-
 
 #' Retrieve file or object from iRODS
 #'
@@ -242,23 +256,25 @@ iget <- function(
   # expand logical path to absolute logical path
   logical_path <- get_absolute_lpath(logical_path)
 
-  # handle iRODS to local file conversion
-  resp <- irods_to_local(
-    logical_path = logical_path,
-    offset = offset,
-    count = count,
-    verbose = verbose
-  )
-
   # check for local file
   stop_local_overwrite(overwrite, local_path)
 
   # close connection on exit
   on.exit(close(con))
 
-  # write file
-  con <- file(local_path, "wb")
-  writeBin(resp, con)
+  # write to file
+  if (file.exists(local_path))
+    unlink(local_path)
+  con <- file(local_path, "ab", raw = TRUE)
+
+  # handle iRODS to local file conversion
+  resp <- irods_to_local(
+    logical_path = logical_path,
+    offset = offset,
+    count = count,
+    verbose = verbose,
+    local_path = con
+  )
 
   # return
   invisible(NULL)
@@ -289,23 +305,24 @@ ireadRDS <- function(
   # close connection on exit
   on.exit(close(con))
 
-  # create R object
+  # create R connection of raw data
   con <- rawConnection(resp)
 
-  # return r object
+  # return R object
   readRDS(gzcon(con))
 }
 
-# vectorised irods to object conversion
-irods_to_local <- function(logical_path, offset, count, verbose) {
+# vectorised iRODS to object or file conversion
+irods_to_local <- function(logical_path, offset, count, verbose, local_path = NULL) {
 
-  # file size on irods
-  file_size <- ils(logical_path, stat = TRUE)[[2]][[2]]
+  # object size on iRODS
+  object_size <- ils(logical_path, stat = TRUE)[[2]][[2]]
 
   # when object is larger then cut object in pieces
-  if (file_size  > count) {
-    # chunk size
-    chunk_size <- calc_chunk_size(file_size, count)
+  if (object_size  > count) {
+    # calculated chunk size based on the REST API byte number
+    # this is the parameter `count` of the stream end-point
+    chunk_size <- calc_chunk_size(object_size, count)
     # vectorised call
     resp <- Map(
       function(offset, count) {
@@ -313,27 +330,33 @@ irods_to_local <- function(logical_path, offset, count, verbose) {
           logical_path = logical_path,
           offset = offset,
           count = count,
-          verbose = verbose
+          verbose = verbose,
+          local_path = local_path
       )},
       chunk_size[[2]],
       chunk_size[[3]]
     )
 
-    # fuse files
-    fuse_file(resp)
+    if (is.null(local_path)) {
+      # fuse objects from multiple chunks to memory (R environment)
+      fuse_object(resp)
+    }
+
   } else {
     irods_to_local_(
       logical_path = logical_path,
       offset = offset,
       count = count,
-      verbose = verbose
+      verbose = verbose,
+      local_path = local_path
     )
   }
 }
 
-#' irods to object conversion
+#' iRODS to object conversion
 #' @noRd
-irods_to_local_ <- function(logical_path, offset, count, verbose) {
+irods_to_local_ <- function(logical_path, offset, count, verbose, local_path) {
+
 
   # flags to curl call
   args <- list(`logical-path` = logical_path, offset = offset, count = count)
@@ -342,5 +365,15 @@ irods_to_local_ <- function(logical_path, offset, count, verbose) {
   out <- irods_rest_call("stream", "GET", args, verbose)
 
   # parse response
-  httr2::resp_body_raw(out)
+  resp <- httr2::resp_body_raw(out)
+
+  # stream from multiple chunks directly to disk by streaming
+  if (inherits(local_path, "connection")) {
+    writeBin(resp, local_path, endian = "swap", useBytes = TRUE)
+  } else if (is.null(local_path)) {
+    # return response
+    resp
+  } else {
+    stop("Unkown object type.", call. = FALSE)
+  }
 }
