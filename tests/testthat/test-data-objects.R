@@ -5,38 +5,47 @@ with_mock_dir("data-objects", {
     # call to the list REST API is omitted. This omits an additional snapshot
     # for this REST call that is not the purpose of this test.
 
-    # currently mocking does not work
-    skip_if(.rirods$token == "secret", "IRODS server unavailable")
-
-    # small dataset
+    #---------------------------------------------------------------------------
+    # store small objects in iRODS
+    #---------------------------------------------------------------------------
     dfr <- data.frame(a = c("a", "b", "c"), b = 1:3, c = 6:8)
+    # R objects
     expect_invisible(isaveRDS(dfr, "dfr.rds",  overwrite = TRUE))
     expect_equal(dfr, ireadRDS("dfr.rds",  overwrite = TRUE))
-    expect_invisible(irm("dfr.rds"))
+    expect_invisible(irm("dfr.rds", force = TRUE))
+    # external files
+    readr::write_csv(dfr, "dfr.csv")
+    expect_invisible(iput("dfr.csv",  overwrite = TRUE))
+    expect_invisible(iget("dfr.csv",  overwrite = TRUE))
+    expect_equal(dfr, as.data.frame(readr::read_csv("dfr.csv", show_col_types = FALSE)))
+    expect_invisible(irm("dfr.csv", force = TRUE))
+    unlink("dfr.csv")
 
-    # large dataset (about two times default count of 2000)
-    mt <- matrix(1:940, 94, 10)
-    expect_invisible(isaveRDS(mt, "mt.rds", overwrite = TRUE))
-    expect_equal(mt, ireadRDS("mt.rds"))
-    expect_invisible(irm("mt.rds"))
-
-    # store file
-    expect_invisible(iput("foo.csv", overwrite = TRUE))
-
-    # retrieve object
-    iget("foo.csv", overwrite = TRUE)
-    expect_equal(read.csv("foo.csv"), foo)
-
-    # remove object
-    expect_invisible(irm("foo.csv"))
-  })
+    # --------------------------------------------------------------------------
+    # store large objects in iRODS
+    # --------------------------------------------------------------------------
+    mt <- list(1:10000)
+    # R objects
+    expect_invisible(isaveRDS(mt, "mt.rds",  overwrite = TRUE))
+    expect_equal(mt, ireadRDS("mt.rds",  overwrite = TRUE))
+    expect_invisible(irm("mt.rds", force = TRUE))
+    # external files
+    readr::write_csv(as.data.frame(mt), "mt.csv")
+    expect_invisible(iput("mt.csv",  overwrite = TRUE))
+    expect_equal(file.size("mt.csv"), ils(stat = TRUE)$status_information$size)
+    expect_invisible(iget("mt.csv",  overwrite = TRUE))
+    expect_invisible(irm("mt.csv", force = TRUE))
+    unlink("mt.csv")
+    })
 },
 simplify = FALSE
 )
 
 test_that("overwrite error works", {
 
-  # overwrite error on irods
+  # no actual http call is made in these instances
+
+  # overwrite error on iRODS
   test <- "test"
   expect_error(
     iput(

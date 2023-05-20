@@ -130,7 +130,6 @@ write_csv(foo, "foo.csv")
 
 # send file
 iput("foo.csv")
-#> Warning in open.connection(con): connection is already open
 
 # check whether it is stored
 ils()
@@ -145,7 +144,6 @@ it locally:
 ``` r
 # retrieve it again later
 iget("foo.csv")
-#> Warning in open.connection(con): connection is already open
 read_csv("foo.csv")
 #> Rows: 3 Columns: 2
 #> ── Column specification ────────────────────────────────────────────────────────
@@ -180,10 +178,9 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 ``` r
 # or for data objects with a name that starts with "foo"
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#>      [,1]                         [,2]     
-#> [1,] "/tempZone/home/alice"       "foo.csv"
-#> [2,] "/tempZone/home/alice"       "foo.rds"
-#> [3,] "/tempZone/trash/home/alice" "foo.rds"
+#>      [,1]                   [,2]     
+#> [1,] "/tempZone/home/alice" "foo.csv"
+#> [2,] "/tempZone/home/alice" "foo.rds"
 ```
 
 ### cleanup
@@ -192,8 +189,8 @@ Finally, we can clean up Alice’s home collection:
 
 ``` r
 # delete object
-irm("foo.rds", trash = FALSE)
-irm("foo.csv", trash = FALSE)
+irm("foo.rds", force = TRUE)
+irm("foo.csv", force = TRUE)
 
 # check if objects are removed
 ils()

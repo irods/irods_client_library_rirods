@@ -1,3 +1,11 @@
 expression	min	median	itr/sec	mem_alloc	gc/sec	n_itr	n_gc	total_time	result	memory	time	gc	src	ref	size
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	189ms	190ms	5.253311465692153	70.4KB	0	3	0	571ms					/local/path	0b950260cdafe91d6e8773dd929da33609a17e9b	1152
-ireadRDS(""object.rds"", count = 1000)	157ms	158ms	6.113381681473024	73.6KB	0	4	0	654ms					/local/path	0b950260cdafe91d6e8773dd929da33609a17e9b	1152
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	203ms	204ms	4.858224349424299	70.4KB	0	3	0	618ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	1152
+ireadRDS(""object.rds"", count = 1000)	162ms	163ms	6.084071283044013	73.6KB	0	4	0	657ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	1152
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	197ms	210ms	4.860160490103568	70.4KB	0	3	0	617ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	4752
+ireadRDS(""object.rds"", count = 1000)	162ms	163ms	6.111661409342051	67KB	0	4	0	654ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	4752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	196ms	205ms	4.8746659533819034	70.4KB	0	3	0	615ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	40752
+ireadRDS(""object.rds"", count = 1000)	159ms	167ms	6.0159554652416185	67KB	1.5039888663104046	4	1	665ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	40752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	196ms	202ms	4.969180257800023	70.4KB	0	3	0	604ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	400752
+ireadRDS(""object.rds"", count = 1000)	161ms	166ms	6.012467738420323	67KB	0	4	0	665ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	400752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	194ms	195ms	5.130467945379887	70.4KB	0	3	0	585ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	4000752
+ireadRDS(""object.rds"", count = 1000)	163ms	167ms	5.977796680960742	67KB	0	3	0	502ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	4000752

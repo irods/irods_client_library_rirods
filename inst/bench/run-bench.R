@@ -94,7 +94,7 @@ timer_files <- function(file_name) {
 timer_sizes1 <- Map(timer_files, rng)
 
 # clean-up
-Map(function(x) {irm(paste0("x", x, ".csv"))}, rng)
+Map(function(x) {irm(paste0("x", x, ".csv"), force = TRUE)}, rng)
 
 #output log
 readr::write_tsv(
@@ -144,7 +144,7 @@ timer_objects <- function(object_num) {
 timer_sizes2 <- Map(timer_objects, rng)
 
 # clean-up
-irm("object.rds")
+irm("object.rds", force = TRUE)
 
 # output log
 readr::write_tsv(

@@ -42,7 +42,7 @@ iput(foo, "foo.rds")
 ils()
 
 # delete object
-irm("foo.rds", trash = FALSE)
+irm("foo.rds", force = TRUE)
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo\%'")
 }
 }

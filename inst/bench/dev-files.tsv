@@ -1,3 +1,11 @@
 expression	min	median	itr/sec	mem_alloc	gc/sec	n_itr	n_gc	total_time	result	memory	time	gc	src	ref	size
-iget(file_name, overwrite = TRUE, count = 1000)	157ms	159ms	6.1661932724765025	  1.43MB	0	4	0	649ms					/local/path	0b950260cdafe91d6e8773dd929da33609a17e9b	312
-iput(file_name, overwrite = TRUE, count = 1000)	191ms	191ms	4.388164331702361	315.58KB	1.462721443900787	3	1	684ms					/local/path	0b950260cdafe91d6e8773dd929da33609a17e9b	312
+iget(file_name, overwrite = TRUE, count = 1000)	159.76ms	161.06ms	6.149120035145231	  1.43MB	0	4	0	650.5ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	312
+iput(file_name, overwrite = TRUE, count = 1000)	194.66ms	197.02ms	5.090066635029927	318.41KB	0	3	0	589.38ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	312
+iget(file_name, overwrite = TRUE, count = 1000)	330.98ms	342.55ms	2.9193101461061435	437.51KB	0	2	0	685.09ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	3913
+iput(file_name, overwrite = TRUE, count = 1000)	376.84ms	388.29ms	2.575379709575247	568.27KB	0	2	0	776.59ms					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	3913
+iget(file_name, overwrite = TRUE, count = 1000)	  4.03s	  4.03s	0.24847559927606602	  5.25MB	0.24847559927606602	1	1	  4.03s					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	48914
+iput(file_name, overwrite = TRUE, count = 1000)	  4.63s	  4.63s	0.2159139944197365	  5.25MB	0.2159139944197365	1	1	  4.63s					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	48914
+iget(file_name, overwrite = TRUE, count = 1000)	 48.61s	 48.61s	0.020571681656656394	 63.16MB	0.2880035431931895	1	14	 48.61s					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	588915
+iput(file_name, overwrite = TRUE, count = 1000)	 56.45s	 56.45s	0.017713340594844876	 63.24MB	0.24798676832782826	1	14	 56.45s					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	588915
+iget(file_name, overwrite = TRUE, count = 1000)	  9.48m	  9.48m	0.0017589106840266238	738.55MB	0.11784701582978378	1	67	  9.48m					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	6888916
+iput(file_name, overwrite = TRUE, count = 1000)	 11.02m	 11.02m	0.0015131293332356236	739.79MB	0.08170898399472368	1	54	 11.02m					/local/path	fcdb4aa76b9cfbf04d74dc16568c9b3a31792372	6888916

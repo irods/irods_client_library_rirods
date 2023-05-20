@@ -181,8 +181,8 @@ Finally, we can clean up Alice's home collection:
 
 ```{r clean}
 # delete object
-irm("foo.rds", trash = FALSE)
-irm("foo.csv", trash = FALSE)
+irm("foo.rds", force = TRUE)
+irm("foo.csv", force = TRUE)
 
 # check if objects are removed
 ils()

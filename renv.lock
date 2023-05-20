@@ -357,7 +357,7 @@
     },
     "httr2": {
       "Package": "httr2",
-      "Version": "0.2.2",
+      "Version": "0.2.3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -372,7 +372,7 @@
         "rlang",
         "withr"
       ],
-      "Hash": "5c09fe33064978ede54de42309c8b532"
+      "Hash": "193bb297368afbbb42dc85784a46b36e"
     },
     "hunspell": {
       "Package": "hunspell",
@@ -874,7 +874,7 @@
     },
     "waldo": {
       "Package": "waldo",
-      "Version": "0.5.0",
+      "Version": "0.5.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -887,7 +887,7 @@
         "rlang",
         "tibble"
       ],
-      "Hash": "57ddc85f4e22b2d4054f7db2962e3170"
+      "Hash": "2c993415154cdb94649d99ae138ff5e5"
     },
     "withr": {
       "Package": "withr",

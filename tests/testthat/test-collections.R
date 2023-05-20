@@ -9,19 +9,19 @@ with_mock_dir("add-data-collections", {
 
     # reference dataframe
     ref <- data.frame(
-      logical_path = paste0(lpath, "/", user, "/testthat", c("/a", "/x", "/test.rds")),
-      type = c("collection", "collection", "data_object")
+      logical_path = paste0(lpath, "/", user, "/testthat", c("/a", "/x")),
+      type = c("collection", "collection")
     )
 
     # check if collections are added
     expect_equal(ils(), ref)
 
     # remove dirs
-    irm("a", recursive = TRUE, force = FALSE)
+    irm("a", recursive = TRUE, force = TRUE)
     icd("./x")
-    irm("a", recursive = TRUE, force = FALSE)
+    irm("a", recursive = TRUE, force = TRUE)
     icd("..")
-    irm("x", recursive = TRUE, force = FALSE)
+    irm("x", recursive = TRUE, force = TRUE)
 
   })
 })
@@ -36,20 +36,17 @@ with_mock_dir("remove-objects", {
     iput("foo.csv", "foo.csv", overwrite = TRUE)
 
     # delete object "foo.csv"
-    expect_invisible(irm("foo.csv", force = FALSE))
-
-    # reference dataframe
-    ref <- data.frame(
-      logical_path = paste0(lpath, "/", user, "/testthat/test.rds"),
-      type = "data_object"
-    )
+    expect_invisible(irm("foo.csv", force = TRUE))
 
     # check if file is delete
-    expect_equal(ils(), ref)
+    expect_message(
+      ils(),
+      "This collection does not contain any objects or collections."
+    )
 
     # r objects
     x <- 1
     isaveRDS(x, "x.rds", overwrite = TRUE)
-    expect_invisible(irm("x.rds", trash = FALSE))
+    expect_invisible(irm("x.rds", force = TRUE))
   })
 })
