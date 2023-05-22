@@ -1,11 +1,11 @@
 expression	min	median	itr/sec	mem_alloc	gc/sec	n_itr	n_gc	total_time	result	memory	time	gc	src	ref	size
-iget(file_name, overwrite = TRUE, count = 1000)	179.47ms	180.48ms	5.413126153371331	  1.43MB	0	3	0	554.21ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	312
-iput(file_name, overwrite = TRUE, count = 1000)	233.9ms	238.33ms	4.125256296045196	315.59KB	0	3	0	727.23ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	312
-iget(file_name, overwrite = TRUE, count = 1000)	358.8ms	366ms	2.732260641715542	437.51KB	0	2	0	732ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	3913
-iput(file_name, overwrite = TRUE, count = 1000)	427.84ms	437.9ms	2.28362163745005	567.65KB	0	2	0	875.8ms					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	3913
-iget(file_name, overwrite = TRUE, count = 1000)	  4.43s	  4.43s	0.22576662574706705	  5.25MB	0.22576662574706705	1	1	  4.43s					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	48914
-iput(file_name, overwrite = TRUE, count = 1000)	  5.21s	  5.21s	0.1917420658982132	  5.25MB	0.1917420658982132	1	1	  5.21s					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	48914
-iget(file_name, overwrite = TRUE, count = 1000)	 53.74s	 53.74s	0.018606323864024468	 63.16MB	0.26048853409634254	1	14	 53.74s					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	588915
-iput(file_name, overwrite = TRUE, count = 1000)	  1.05m	  1.05m	0.015869692760118008	 63.24MB	0.2221756986416521	1	14	  1.05m					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	588915
-iget(file_name, overwrite = TRUE, count = 1000)	 10.45m	 10.45m	0.0015953673268386914	738.59MB	0.07817299901509588	1	49	 10.45m					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	6888916
-iput(file_name, overwrite = TRUE, count = 1000)	 12.19m	 12.19m	0.0013667550064052415	739.84MB	0.0888390754163407	1	65	 12.19m					/local/path	5d99bc07f9e62656a5c79a603c1fda8d42f4beaf	6888916
+iget(file_name, overwrite = TRUE, count = 1000)	172.9ms	176.35ms	5.683438510927613	  1.43MB	0	3	0	527.85ms					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	312
+iput(file_name, overwrite = TRUE, count = 1000)	218.49ms	229.06ms	4.3266035952738875	315.77KB	0	3	0	693.38ms					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	312
+iget(file_name, overwrite = TRUE, count = 1000)	340.98ms	345.31ms	2.895972243363922	438.13KB	0	2	0	690.61ms					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	3913
+iput(file_name, overwrite = TRUE, count = 1000)	407.68ms	408.15ms	2.4500589387557237	567.65KB	0	2	0	816.31ms					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	3913
+iget(file_name, overwrite = TRUE, count = 1000)	  4.27s	  4.27s	0.2342203913010895	  5.25MB	0.2342203913010895	1	1	  4.27s					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	48914
+iput(file_name, overwrite = TRUE, count = 1000)	  4.99s	  4.99s	0.20029751339578197	  5.25MB	0.20029751339578197	1	1	  4.99s					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	48914
+iget(file_name, overwrite = TRUE, count = 1000)	 51.71s	 51.71s	0.019337969665012895	 63.16MB	0.2707315753101805	1	14	 51.71s					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	588915
+iput(file_name, overwrite = TRUE, count = 1000)	  1.01m	  1.01m	0.016572196951593544	 63.24MB	0.23201075732230964	1	14	  1.01m					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	588915
+iget(file_name, overwrite = TRUE, count = 1000)	 10.32m	 10.32m	0.00161560860213931	738.57MB	0.07916482150482618	1	49	 10.32m					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	6888916
+iput(file_name, overwrite = TRUE, count = 1000)	 11.88m	 11.88m	0.001402303422729309	739.82MB	0.09114972247740509	1	65	 11.88m					/local/path	9cfc47818d8fb7162945bc2db8b84b5b47e8a9ff	6888916
