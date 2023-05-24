@@ -7,6 +7,7 @@ with_mock_dir("navigation", {
 
     # default dir
     expect_invisible(icd("."))
+    expect_equal((icd(".")), ipwd()) # icd invisibly returns same as ipwd
     expect_equal(ipwd(), dev_path)
 
     # go back on level lower
@@ -35,12 +36,33 @@ with_mock_dir("navigation", {
     # or for typos and permissions errors
     expect_error(icd(paste0(def_path , "/projecty")))
 
+    # whether trailing slash are removed
+    expect_invisible(icd("."))
+    expect_equal(ipwd(), proj_path)
+    expect_gt(nrow(ils()), 0)
+    expect_invisible(icd("./"))
+    expect_equal(ipwd(), proj_path)
+    expect_gt(nrow(ils()), 0)
+
     # clean-up
     irm(paste0(proj_path, "/test.rds"), force = TRUE)
 
     # return to default path
     icd(dev_path)
 
+  })
+})
+
+with_mock_dir("ils", {
+  test_that("ils works", {
+    # ils
+    icd("..") # move back to execute following test
+    expect_gt(nrow(ils()), 0)
+    expect_message(ils("projectx"))
+    expect_message(ils("/tempZone/home/rods/projectx"))
+    expect_error(ils("tempZone/home/rods/projectx"))
+    expect_error(ils("/projectx"))
+    icd("testthat") # move back up to testthat
   })
 })
 

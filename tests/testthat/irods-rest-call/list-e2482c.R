@@ -1,6 +1,6 @@
 structure(list(method = "GET", url = "/list?logical-path=%2FtempZone%2Fhome%2Frods%2Ftestthat&stat=1&permissions=1&metadata=1&offset=0&limit=100", 
     status_code = 200L, headers = structure(list(Server = "nginx/1.23.1", 
-        Date = "Sat, 20 May 2023 15:04:33 GMT", `Content-Length` = "705", 
+        Date = "Wed, 24 May 2023 07:10:19 GMT", `Content-Length` = "705", 
         Connection = "keep-alive", `Access-Control-Allow-Origin` = "*", 
         `Access-Control-Allow-Headers` = "*", `Access-Control-Allow-Methods` = "AUTHORIZATION,ACCEPT,GET,POST,OPTIONS,PUT,DELETE"), class = "httr2_headers"), 
     body = as.raw(c(0x7b, 0x22, 0x5f, 0x65, 0x6d, 0x62, 0x65, 
