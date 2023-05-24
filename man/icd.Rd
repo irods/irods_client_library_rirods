@@ -13,7 +13,8 @@ ipwd()
 \item{dir}{Collection to set as working directory.}
 }
 \value{
-The current working directory (invisibly in the case of \code{cd()}).
+Invisibly the current directory before the change (same convention as
+\code{setwd()}).
 }
 \description{
 \code{ipwd()} and \code{icd()} are the iRODS equivalents of \code{getwd()} and \code{setwd()}

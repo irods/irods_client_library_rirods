@@ -6,7 +6,8 @@
 #'
 #' @param dir Collection to set as working directory.
 #'
-#' @return The current working directory (invisibly in the case of `cd()`).
+#' @return Invisibly the current directory before the change (same convention as
+#'  `setwd()`).
 #' @export
 #'
 #' @examples
@@ -35,17 +36,22 @@
 #' }
 icd  <- function(dir) {
 
+  # remove trailing slash
+  dir <- gsub("/+$", "", dir)
+
+  # dir at start
+  current_dir <- local(current_dir, envir = .rirods)
+
   # get current dir
   if (dir  == ".") {
-    current_dir <- local(current_dir, envir = .rirods)
+    new_dir <- current_dir
   }
 
   # get level lower
   if (dir  == "..") {
-    current_dir <- local(current_dir, envir = .rirods)
-    current_dir <- sub(paste0("/", basename(current_dir)), "", current_dir)
-    if (current_dir == character(1))
-      current_dir <- "/"
+    new_dir <- sub(paste0("/", basename(current_dir)), "", current_dir)
+    if (new_dir == character(1))
+      new_dir <- "/"
   }
 
   # get requested dir
@@ -55,44 +61,46 @@ icd  <- function(dir) {
 
       if (grepl("^\\/", dir)) {
         # absolute path
-        current_dir <- dir
+        new_dir <- dir
       } else {
         # relative path
-        current_dir <- paste0(local(current_dir, envir = .rirods), "/", dir)
+        new_dir <- paste0(current_dir, "/", dir)
       }
 
     } else {
+
       if(grepl("^\\.{2}/", dir)) {
 
         # movement relative path
-        base_dir <- icd("..")
+        icd("..")
+        base_dir <- local(current_dir, envir = .rirods)
 
-        current_dir <- paste0(
+        new_dir <- paste0(
           base_dir,
           ifelse(base_dir == "/", "", "/"), sub("\\.\\./", "", dir)
         )
-      } else if(grepl("^\\.{1}/", dir)) {
-        # no movement relative path
-        base_dir <- icd(".")
 
-        current_dir <- paste0(
-          base_dir,
-          ifelse(base_dir == "/", "", "/"), sub("\\./", "", dir)
+      } else if(grepl("^\\.{1}/", dir)) {
+
+        # no movement relative path
+        new_dir <- paste0(
+          current_dir,
+          ifelse(current_dir == "/", "", "/"), sub("\\./", "", dir)
         )
       }
     }
 
-    # check if irods collection exists
-    if (!is_collection(current_dir))
+    # check if iRODS collection exists
+    if (!is_collection(new_dir))
       stop("This is not a directory (collection).", call. = FALSE)
 
-    current_dir
+    new_dir
   }
 
   # store internally
-  .rirods$current_dir <- current_dir
+  .rirods$current_dir <- new_dir
 
-  # return location
+  # return location invisibly
   invisible(current_dir)
 }
 
@@ -149,10 +157,13 @@ ils <- function(
 ) {
 
   # logical path
+  # logical path
   if (logical_path == ".") {
     lpath <- .rirods$current_dir
-  } else {
+  } else if (startsWith(logical_path, "/")) {
     lpath <- logical_path
+  } else {
+    lpath <- file.path(.rirods$current_dir, logical_path)
   }
 
   # flags to curl call
