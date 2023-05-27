@@ -93,7 +93,7 @@ imeta(
   "foo.rds", 
   "data_object", 
   operations = 
-    list(operation = "add", attribute = "foo", value = "bar", units = "baz")
+    data.frame(operation = "add", attribute = "foo", value = "bar", units = "baz")
 )
 
 # check if file is stored with associated metadata
