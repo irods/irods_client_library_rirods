@@ -119,11 +119,14 @@ ipwd <- function() .rirods$current_dir
 #' @param stat Whether stat information should be included. Defaults to `FALSE`.
 #' @param permissions Whether access control information should be included.
 #'    Defaults to `FALSE`.
-#' @param metadata Whether metadata information should be included. Defaults to `FALSE`.
+#' @param metadata Whether metadata information should be included. Defaults to
+#'  `FALSE`.
 #' @param offset Number of records to skip for pagination. Defaults to 0.
 #' @param limit Number of records to show per page. Defaults to 100.
-#' @param message Whether a message should be printed when the collection is empty.
-#' @param verbose Whether information should be printed about the HTTP request and response.
+#' @param message Whether a message should be printed when the collection is
+#'  empty. Defaults to `TRUE`.
+#' @param verbose Whether information should be printed about the HTTP request
+#'  and response. Defaults to `FALSE`.
 #'
 #' @return Dataframe with logical paths and, if requested, additional information.
 #' @export

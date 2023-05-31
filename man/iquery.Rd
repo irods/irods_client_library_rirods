@@ -30,7 +30,7 @@ sensitive. Defaults to \code{TRUE}.}
 \code{TRUE}.}
 
 \item{verbose}{Whether information should be printed about the HTTP request
-and response.}
+and response. Defaults to \code{FALSE}.}
 }
 \value{
 Invisibly, the HTTP response.

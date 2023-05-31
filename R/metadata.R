@@ -16,7 +16,8 @@
 #'   - `attribute`, with the name of the AVU.
 #'   - `value`, with the value of the AVU.
 #'   - `units`, with the unit of the AVU.
-#' @param verbose Whether information should be printed about the HTTP request and response.
+#' @param verbose Whether information should be printed about the HTTP request
+#'  and response. Defaults to `FALSE`.
 #'
 #' @return Invisibly, the HTTP response.
 #'
@@ -69,8 +70,19 @@
 #'  "foo.rds",
 #'  "data_object",
 #'  operations = list(
-#'    list(operation = "add", attribute = "foo4", value = "bar4"),
-#'    list(operation = "add", attribute = "foo5", value = "bar5")
+#'    list(operation = "add", attribute = "foo4", value = "bar4", units = "baz4"),
+#'    list(operation = "add", attribute = "foo5", value = "bar5", units = "baz5")
+#'  )
+#' )
+#'
+#' # list of lists are useful as AVUs don't have to contain all items and, e.g,
+#' # units can be left out
+#'imeta(
+#'  "foo.rds",
+#'  "data_object",
+#'  operations = list(
+#'    list(operation = "add", attribute = "foo6", value = "bar6"),
+#'    list(operation = "add", attribute = "foo7", value = "bar7", units = "baz7")
 #'  )
 #' )
 #'
@@ -150,7 +162,7 @@ imeta <- function(
 #' @param distinct Whether only distinct rows should be listed. Defaults to
 #'  `TRUE`.
 #' @param verbose Whether information should be printed about the HTTP request
-#'  and response.
+#'  and response. Defaults to `FALSE`.
 #'
 #' @return Invisibly, the HTTP response.
 #'

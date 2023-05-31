@@ -1,18 +1,19 @@
-# The administration interface to the iRODS
-#
-# @param action The action: add, modify, or remove.
-# @param target The subject of the action: user, zone, resource, childtoresc,
-#  childfromresc, token, group, rebalance, unusedAVUs, specificQuery.
-# @param arg2 arg2
-# @param arg3 arg3
-# @param arg4 arg4
-# @param arg5 arg5
-# @param arg6 arg6
-# @param arg7 arg7
-# @param verbose Show information about the http request and response.
-#
-# @return Invisible on success (200) otherwise http status.
-#
+#' The administration interface to the iRODS
+#'
+#' @param action The action: add, modify, or remove.
+#' @param target The subject of the action: user, zone, resource, childtoresc,
+#   childfromresc, token, group, rebalance, unusedAVUs, specificQuery.
+#' @param arg2 arg2
+#' @param arg3 arg3
+#' @param arg4 arg4
+#' @param arg5 arg5
+#' @param arg6 arg6
+#' @param arg7 arg7
+#' @param verbose Show information about the http request and response.
+#' Defaults to `FALSE`.
+#'
+#' @return Invisible on success (200) otherwise http status.
+#'
 iadmin <- function(
     action,
     target,
@@ -52,4 +53,3 @@ iadmin <- function(
 
   if (httr2::resp_status(resp) >= 400) invisible(NULL) else invisible(resp)
 }
-

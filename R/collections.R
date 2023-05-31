@@ -3,12 +3,14 @@
 #' This is the equivalent of `file.remove()`, but applied to an item inside iRODS.
 #'
 #' @param logical_path Path to the data object or collection to remove.
-#' @param force Whether the data object or collection should be deleted permanently.
-#'    If `FALSE`, it is sent to the trash collection.
+#' @param force Whether the data object or collection should be deleted
+#'    permanently. If `FALSE`, it is sent to the trash collection. Defaults to
+#'   `TRUE`.
 #' @param recursive If a collection is provided, whether its contents should also be
 #'    removed. If a collection is not empty and `recursive` is `FALSE`, it cannot
-#'    be deleted.
-#' @param verbose Whether information should be printed about the HTTP request and response.
+#'    be deleted. Defaults to `FALSE`.
+#' @param verbose Whether information should be printed about the HTTP request
+#'    and response. Defaults to `FALSE`.
 #'
 #' @return Invisibly the HTTP call.
 #' @export
@@ -63,8 +65,9 @@ irm <- function(logical_path, force = TRUE, recursive = FALSE,
 #'   working directory (see `ipwd()`).
 #' @param collection Whether a collection is being created. Defaults to `TRUE`.
 #' @param create_parent_collections Whether parent collections should be created
-#'   when necessary.
-#' @param verbose Whether information about the HTTP request and response should be printed.
+#'   when necessary. Defaults to `FALSE`.
+#' @param verbose Whether information about the HTTP request and response
+#'  should be printed. Defaults to `FALSE`.
 #'
 #' @return Invisibly the HTTP request.
 #' @export

@@ -6,7 +6,7 @@
 #'
 #' @param user iRODS user name (prompts user for user name if not supplied).
 #' @param password iRODS password (prompts user for password if not supplied).
-#' @param role iRODS role of user (defaults to "rodsuser").
+#' @param role iRODS role of user (defaults to `"rodsuser"`).
 #'
 #' @return Invisibly `NULL`.
 #' @export

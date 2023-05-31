@@ -18,9 +18,10 @@ working directory (see \code{ipwd()}).}
 \item{collection}{Whether a collection is being created. Defaults to \code{TRUE}.}
 
 \item{create_parent_collections}{Whether parent collections should be created
-when necessary.}
+when necessary. Defaults to \code{FALSE}.}
 
-\item{verbose}{Whether information about the HTTP request and response should be printed.}
+\item{verbose}{Whether information about the HTTP request and response
+should be printed. Defaults to \code{FALSE}.}
 }
 \value{
 Invisibly the HTTP request.

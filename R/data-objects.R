@@ -11,10 +11,12 @@
 #'    stored in the current working directory (see `ipwd()`).
 #' @param offset Offset in bytes into the data object. Defaults to 0.
 #' @param count Maximum number of bytes to write. Defaults to 2000.
-#' @param truncate Whether to truncate the object when opening it. Defaults to `TRUE`.
-#' @param verbose Whether to print information about the HTTP request and response.
-#' @param overwrite Whether the file in iRODS should be overwritten if it exists.
-#'     Defaults to `FALSE`.
+#' @param truncate Whether to truncate the object when opening it. Defaults to
+#'  `TRUE`.
+#' @param verbose Whether to print information about the HTTP request and
+#'  response. Defaults to `FALSE`.
+#' @param overwrite Whether the file in iRODS should be overwritten if it
+#'  exists. Defaults to `FALSE`.
 #'
 #' @return (Invisibly) the HTTP response.
 #' @export
@@ -214,11 +216,13 @@ local_to_irods_ <- function(
 #'   directory (see `getwd()`).
 #' @param offset Offset in bytes into the data object. Defaults to 0.
 #' @param count Maximum number of bytes to write. Defaults to 2000.
-#' @param verbose Whether information should be printed about the HTTP request and response.
+#' @param verbose Whether information should be printed about the HTTP request
+#'  and response. Defaults to `FALSE`.
 #' @param overwrite Whether the local file should be overwritten if it exists.
 #'    Defaults to `FALSE`.
 #'
-#' @return The R object in case of `ireadRDS()`, invisibly `NULL` in case of `iget()`.
+#' @return The R object in case of `ireadRDS()`, invisibly `NULL` in case of
+#'  `iget()`.
 #' @export
 #'
 #' @examples

@@ -11,7 +11,7 @@ iauth(user = NULL, password = NULL, role = "rodsuser")
 
 \item{password}{iRODS password (prompts user for password if not supplied).}
 
-\item{role}{iRODS role of user (defaults to "rodsuser").}
+\item{role}{iRODS role of user (defaults to \code{"rodsuser"}).}
 }
 \value{
 Invisibly \code{NULL}.

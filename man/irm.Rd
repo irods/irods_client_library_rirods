@@ -9,14 +9,16 @@ irm(logical_path, force = TRUE, recursive = FALSE, verbose = FALSE)
 \arguments{
 \item{logical_path}{Path to the data object or collection to remove.}
 
-\item{force}{Whether the data object or collection should be deleted permanently.
-If \code{FALSE}, it is sent to the trash collection.}
+\item{force}{Whether the data object or collection should be deleted
+permanently. If \code{FALSE}, it is sent to the trash collection. Defaults to
+\code{TRUE}.}
 
 \item{recursive}{If a collection is provided, whether its contents should also be
 removed. If a collection is not empty and \code{recursive} is \code{FALSE}, it cannot
-be deleted.}
+be deleted. Defaults to \code{FALSE}.}
 
-\item{verbose}{Whether information should be printed about the HTTP request and response.}
+\item{verbose}{Whether information should be printed about the HTTP request
+and response. Defaults to \code{FALSE}.}
 }
 \value{
 Invisibly the HTTP call.
