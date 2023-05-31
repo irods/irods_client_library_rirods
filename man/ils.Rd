@@ -24,15 +24,18 @@ By default this is the current working directory (see \code{ipwd()}).}
 \item{permissions}{Whether access control information should be included.
 Defaults to \code{FALSE}.}
 
-\item{metadata}{Whether metadata information should be included. Defaults to \code{FALSE}.}
+\item{metadata}{Whether metadata information should be included. Defaults to
+\code{FALSE}.}
 
 \item{offset}{Number of records to skip for pagination. Defaults to 0.}
 
 \item{limit}{Number of records to show per page. Defaults to 100.}
 
-\item{message}{Whether a message should be printed when the collection is empty.}
+\item{message}{Whether a message should be printed when the collection is
+empty. Defaults to \code{TRUE}.}
 
-\item{verbose}{Whether information should be printed about the HTTP request and response.}
+\item{verbose}{Whether information should be printed about the HTTP request
+and response. Defaults to \code{FALSE}.}
 }
 \value{
 Dataframe with logical paths and, if requested, additional information.

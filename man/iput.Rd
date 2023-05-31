@@ -36,12 +36,14 @@ stored in the current working directory (see \code{ipwd()}).}
 
 \item{count}{Maximum number of bytes to write. Defaults to 2000.}
 
-\item{truncate}{Whether to truncate the object when opening it. Defaults to \code{TRUE}.}
+\item{truncate}{Whether to truncate the object when opening it. Defaults to
+\code{TRUE}.}
 
-\item{verbose}{Whether to print information about the HTTP request and response.}
+\item{verbose}{Whether to print information about the HTTP request and
+response. Defaults to \code{FALSE}.}
 
-\item{overwrite}{Whether the file in iRODS should be overwritten if it exists.
-Defaults to \code{FALSE}.}
+\item{overwrite}{Whether the file in iRODS should be overwritten if it
+exists. Defaults to \code{FALSE}.}
 
 \item{x}{R object to save in iRODS.}
 }

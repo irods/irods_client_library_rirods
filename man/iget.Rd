@@ -33,13 +33,15 @@ directory (see \code{getwd()}).}
 
 \item{count}{Maximum number of bytes to write. Defaults to 2000.}
 
-\item{verbose}{Whether information should be printed about the HTTP request and response.}
+\item{verbose}{Whether information should be printed about the HTTP request
+and response. Defaults to \code{FALSE}.}
 
 \item{overwrite}{Whether the local file should be overwritten if it exists.
 Defaults to \code{FALSE}.}
 }
 \value{
-The R object in case of \code{ireadRDS()}, invisibly \code{NULL} in case of \code{iget()}.
+The R object in case of \code{ireadRDS()}, invisibly \code{NULL} in case of
+\code{iget()}.
 }
 \description{
 Transfer a file from iRODS to the local storage with \code{iget()} or

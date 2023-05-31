@@ -27,7 +27,8 @@ should be added to or removed from the metadata of the item.
 \item \code{units}, with the unit of the AVU.
 }}
 
-\item{verbose}{Whether information should be printed about the HTTP request and response.}
+\item{verbose}{Whether information should be printed about the HTTP request
+and response. Defaults to \code{FALSE}.}
 }
 \value{
 Invisibly, the HTTP response.
@@ -83,8 +84,19 @@ imeta(
  "foo.rds",
  "data_object",
  operations = list(
-   list(operation = "add", attribute = "foo4", value = "bar4"),
-   list(operation = "add", attribute = "foo5", value = "bar5")
+   list(operation = "add", attribute = "foo4", value = "bar4", units = "baz4"),
+   list(operation = "add", attribute = "foo5", value = "bar5", units = "baz5")
+ )
+)
+
+# list of lists are useful as AVUs don't have to contain all items and, e.g,
+# units can be left out
+imeta(
+ "foo.rds",
+ "data_object",
+ operations = list(
+   list(operation = "add", attribute = "foo6", value = "bar6"),
+   list(operation = "add", attribute = "foo7", value = "bar7", units = "baz7")
  )
 )
 

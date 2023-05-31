@@ -11,7 +11,7 @@ create_irods(host, zone_path, path = ".", overwrite = FALSE)
 
 \item{zone_path}{Path to the zone of the iRODS server (e.g., "/tempZone/home").}
 
-\item{path}{Path of project. Defaults to the top directory of the zone..}
+\item{path}{Path of project. Defaults to the top directory of the zone.}
 
 \item{overwrite}{Overwrite existing iRODS project file. Defaults to \code{FALSE}.}
 }

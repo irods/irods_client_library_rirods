@@ -6,7 +6,7 @@
 #'
 #' @param host URL of host.
 #' @param zone_path Path to the zone of the iRODS server (e.g., "/tempZone/home").
-#' @param path Path of project. Defaults to the top directory of the zone..
+#' @param path Path of project. Defaults to the top directory of the zone.
 #' @param overwrite Overwrite existing iRODS project file. Defaults to `FALSE`.
 #'
 #' @return Invisibly, the path to the iRODS project file.
