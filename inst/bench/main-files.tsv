@@ -1,11 +1,11 @@
 expression	min	median	itr/sec	mem_alloc	gc/sec	n_itr	n_gc	total_time	result	memory	time	gc	src	ref	size
-iget(file_name, overwrite = TRUE, count = 1000)	197.73ms	205.94ms	4.890607367314747	  1.44MB	0	3	0	613.42ms					irods/irods_client_library_rirods	HEAD	312
-iput(file_name, overwrite = TRUE, count = 1000)	268.88ms	269.91ms	3.704955560003899	315.59KB	1.8524777800019494	2	1	539.82ms					irods/irods_client_library_rirods	HEAD	312
-iget(file_name, overwrite = TRUE, count = 1000)	396.45ms	403.7ms	2.477090930798245	438.13KB	1.2385454653991226	2	1	807.4ms					irods/irods_client_library_rirods	HEAD	3913
-iput(file_name, overwrite = TRUE, count = 1000)	458.77ms	482.71ms	2.0716146386280907	567.65KB	1.0358073193140453	2	1	965.43ms					irods/irods_client_library_rirods	HEAD	3913
-iget(file_name, overwrite = TRUE, count = 1000)	  4.97s	  4.97s	0.20109525970042114	  5.25MB	0.6032857791012635	1	3	  4.97s					irods/irods_client_library_rirods	HEAD	48914
-iput(file_name, overwrite = TRUE, count = 1000)	  5.96s	  5.96s	0.16783695295414391	  5.25MB	0.5035108588624317	1	3	  5.96s					irods/irods_client_library_rirods	HEAD	48914
-iget(file_name, overwrite = TRUE, count = 1000)	  1.02m	  1.02m	0.01629224474532016	 63.16MB	0.26067591592512257	1	16	  1.02m					irods/irods_client_library_rirods	HEAD	588915
-iput(file_name, overwrite = TRUE, count = 1000)	  1.17m	  1.17m	0.014280872991628907	 63.25MB	0.22849396786606252	1	16	  1.17m					irods/irods_client_library_rirods	HEAD	588915
-iget(file_name, overwrite = TRUE, count = 1000)	 12.22m	 12.22m	0.001363412995347781	738.66MB	0.05862675879995459	1	43	 12.22m					irods/irods_client_library_rirods	HEAD	6888916
-iput(file_name, overwrite = TRUE, count = 1000)	 14.68m	 14.68m	0.0011353489159399738	739.9MB	0.08628651761143802	1	76	 14.68m					irods/irods_client_library_rirods	HEAD	6888916
+iget(file_name, overwrite = TRUE, count = 1000)	175.73ms	177.1ms	5.162684128115762	  1.44MB	0	3	0	581.09ms					irods/irods_client_library_rirods	HEAD	312
+iput(file_name, overwrite = TRUE, count = 1000)	231.92ms	252.66ms	3.957834395813198	315.59KB	1.978917197906599	2	1	505.33ms					irods/irods_client_library_rirods	HEAD	312
+iget(file_name, overwrite = TRUE, count = 1000)	360.3ms	368.62ms	2.7127895247139633	437.51KB	1.3563947623569816	2	1	737.25ms					irods/irods_client_library_rirods	HEAD	3913
+iput(file_name, overwrite = TRUE, count = 1000)	412.75ms	421.44ms	2.3728458326787063	567.64KB	1.1864229163393532	2	1	842.87ms					irods/irods_client_library_rirods	HEAD	3913
+iget(file_name, overwrite = TRUE, count = 1000)	  4.47s	  4.47s	0.22393253768533863	  5.25MB	0.6717976130560159	1	3	  4.47s					irods/irods_client_library_rirods	HEAD	48914
+iput(file_name, overwrite = TRUE, count = 1000)	  5.2s	  5.2s	0.1924751274210445	  5.25MB	0.5774253822631336	1	3	  5.2s					irods/irods_client_library_rirods	HEAD	48914
+iget(file_name, overwrite = TRUE, count = 1000)	 52.8s	 52.8s	0.018938036299919057	 63.16MB	0.3030085807987049	1	16	 52.8s					irods/irods_client_library_rirods	HEAD	588915
+iput(file_name, overwrite = TRUE, count = 1000)	  1.03m	  1.03m	0.016231248695427532	 63.25MB	0.2596999791268405	1	16	  1.03m					irods/irods_client_library_rirods	HEAD	588915
+iget(file_name, overwrite = TRUE, count = 1000)	 10.34m	 10.34m	0.0016113611709040196	738.58MB	0.06928853034887285	1	43	 10.34m					irods/irods_client_library_rirods	HEAD	6888916
+iput(file_name, overwrite = TRUE, count = 1000)	 12.08m	 12.08m	0.00137954585280103	739.84MB	0.10484548481287828	1	76	 12.08m					irods/irods_client_library_rirods	HEAD	6888916
