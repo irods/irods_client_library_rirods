@@ -17,7 +17,7 @@ imeta(
 \item{entity_type}{Type of item to add metadata to or remove it from.
 Options are 'data_object', 'collection' and 'user'.}
 
-\item{operations}{List of named lists of vectors representing operations.
+\item{operations}{List of named lists representing operations.
 The valid components of each of these lists or vectors are:
 \itemize{
 \item \code{operation}, with values 'add' or 'remove', depending on whether the AVU
@@ -36,7 +36,8 @@ Invisibly, the HTTP response.
 In iRODS, metadata is stored as attribute-value-units triples (AVUs), consisting
 of an attribute name, an attribute value and an optional unit.
 This function allows to chain several operations ('add' or 'remove') linked to
-specific AVUs.
+specific AVUs. Read more about metadata by looking at the iCommands
+equivalent \code{imeta} in the \href{https://docs.irods.org/master/icommands/metadata/}{iRODS Docs}.
 }
 \examples{
 if(interactive()) {
@@ -50,7 +51,7 @@ iauth()
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
 # store
-iput(foo, "foo.rds")
+isaveRDS(foo, "foo.rds")
 
 # check if file is stored
 ils()
@@ -59,24 +60,38 @@ ils()
 imeta(
  "foo.rds",
  "data_object",
- operations = list(
-    operation = "add",
-    attribute = "foo",
-    value = "bar",
-    units = "baz"
-    )
+ operations =
+  list(
+   list(operation = "add", attribute = "foo", value = "bar", units = "baz")
+ )
 )
 
+# `operations` can contain multiple tags supplied as a `data.frame`
+imeta(
+  "foo.rds",
+  "data_object",
+  operations = data.frame(
+    operation = c("add", "add"),
+    attribute = c("foo2", "foo3"),
+    value = c("bar2", "bar3"),
+    units = c("baz2", "baz3")
+ )
+)
+
+# or again as a list of lists
 imeta(
  "foo.rds",
  "data_object",
  operations = list(
-   list(operation = "add", attribute = "foo2", value = "bar2"),
-   list(operation = "add", attribute = "foo3", value = "bar3")
+   list(operation = "add", attribute = "foo4", value = "bar4"),
+   list(operation = "add", attribute = "foo5", value = "bar5")
  )
 )
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
 }
+}
+\references{
+https://docs.irods.org/master/icommands/metadata/
 }
