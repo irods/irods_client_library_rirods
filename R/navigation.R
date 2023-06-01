@@ -204,7 +204,10 @@ ils <- function(
 
 # reorder metadata if it exists
 metadata_reorder <- function(x) {
-  x$metadata <- Map(function(x) {x <- x[ ,c("attribute", "value", "units")]; x}, x$metadata)
+  x$metadata <- Map(
+    function(x) if (length(x) > 0) x[ ,c("attribute", "value", "units")] else x,
+    x$metadata
+  )
   x
 }
 

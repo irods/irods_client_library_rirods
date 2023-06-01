@@ -3,12 +3,13 @@
 #' In iRODS, metadata is stored as attribute-value-units triples (AVUs), consisting
 #' of an attribute name, an attribute value and an optional unit.
 #' This function allows to chain several operations ('add' or 'remove') linked to
-#' specific AVUs.
+#' specific AVUs. Read more about metadata by looking at the iCommands
+#' equivalent `imeta` in the [iRODS Docs](https://docs.irods.org/master/icommands/metadata/).
 #'
 #' @param logical_path Path to the data object or collection (or name of the user).
 #' @param entity_type Type of item to add metadata to or remove it from.
 #'   Options are 'data_object', 'collection' and 'user'.
-#' @param operations List of named lists of vectors representing operations.
+#' @param operations List of named lists representing operations.
 #'   The valid components of each of these lists or vectors are:
 #'   - `operation`, with values 'add' or 'remove', depending on whether the AVU
 #'  should be added to or removed from the metadata of the item.
@@ -18,6 +19,10 @@
 #' @param verbose Whether information should be printed about the HTTP request and response.
 #'
 #' @return Invisibly, the HTTP response.
+#'
+#' @references
+#' https://docs.irods.org/master/icommands/metadata/
+#'
 #' @export
 #'
 #' @examples
@@ -32,7 +37,7 @@
 #' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 #'
 #' # store
-#' iput(foo, "foo.rds")
+#' isaveRDS(foo, "foo.rds")
 #'
 #' # check if file is stored
 #' ils()
@@ -41,20 +46,31 @@
 #' imeta(
 #'  "foo.rds",
 #'  "data_object",
-#'  operations = list(
-#'     operation = "add",
-#'     attribute = "foo",
-#'     value = "bar",
-#'     units = "baz"
-#'     )
+#'  operations =
+#'   list(
+#'    list(operation = "add", attribute = "foo", value = "bar", units = "baz")
+#'  )
 #' )
 #'
+#' # `operations` can contain multiple tags supplied as a `data.frame`
+#' imeta(
+#'   "foo.rds",
+#'   "data_object",
+#'   operations = data.frame(
+#'     operation = c("add", "add"),
+#'     attribute = c("foo2", "foo3"),
+#'     value = c("bar2", "bar3"),
+#'     units = c("baz2", "baz3")
+#'  )
+#' )
+#'
+#' # or again as a list of lists
 #'imeta(
 #'  "foo.rds",
 #'  "data_object",
 #'  operations = list(
-#'    list(operation = "add", attribute = "foo2", value = "bar2"),
-#'    list(operation = "add", attribute = "foo3", value = "bar3")
+#'    list(operation = "add", attribute = "foo4", value = "bar4"),
+#'    list(operation = "add", attribute = "foo5", value = "bar5")
 #'  )
 #' )
 #'
@@ -74,13 +90,37 @@ imeta <- function(
   # define entity type
   entity_type <- match.arg(entity_type)
 
-  # check list depth if 1 add another layer
-  # TODO make a different check:
-  # operations should ALWAYS be a list of lists
-  # and those lists should have the right names inside.
-  # list of list => also a dataframe should be allowed
-  if (list_depth(operations) == 1)
-    operations <- list(operations)
+    # check for class `dataframe` and turn into list of lists
+  if (inherits(operations, "data.frame")) {
+    operations <- apply(operations, 1, as.list)
+  }
+
+  # check for names of `list` of lists
+  if (inherits(operations, "list")) {
+    content_operations <- unlist(operations, recursive = FALSE)
+    if (inherits(content_operations, "list")) {
+      operations_names <- unique(names(content_operations))
+      names_ref <- c("operation", "attribute", "value", "units")
+      if (!all(operations_names %in% names_ref)) {
+        names_msg <- paste0(paste0("\"", names_ref,  "\""), collapse = ", ")
+        stop("The supplied `operations` should have names that can include ",
+             names_msg, ".", call. = FALSE)
+      } else {
+        # check for operation to be one of "add" or "remove"
+        operations_ <- vapply(operations, "[[", character(1), "operation")
+        if (!all(operations_ %in% c("add", "remove"))) {
+          stop("The element \"operation\" of `operations` can contain \"add\"",
+               " or \"remove\".", call. = FALSE)
+        }
+      }
+    } else if (!is.null(content_operations)) {
+      stop("The supplied list of `operations` should contain a named `list`.",
+           call. = FALSE)
+    }
+  } else {
+    stop("The supplied `operations` should be of type `list` or `data.frame`.",
+         call. = FALSE)
+  }
 
   # data to be converted to json for body (double operation list important for boxing)
   json <- list(
@@ -95,30 +135,28 @@ imeta <- function(
   invisible(resp)
 }
 
-# measure depth of list (https://stackoverflow.com/questions/13432863/determine-level-of-nesting-in-r)
-list_depth <- function(this, thisdepth = 0) {
-  if(!is.list(this)) {
-    thisdepth
-  } else {
-    max(unlist(lapply(this, list_depth, thisdepth = thisdepth + 1)))
-  }
-}
-
-# TODO add some reference to documentation to how to query?
 #' Query data objects and collections in iRODS
 #'
-#' Use SQL-like expressions to query data objects and collections based on different properties.
+#' Use SQL-like expressions to query data objects and collections based on
+#' different properties. Read more about queries by looking at the iCommands
+#' equivalent `iquest` in the [iRODS Docs](https://docs.irods.org/master/icommands/user/#iquest).
 #'
 #' @param query GeneralQuery for searching the iCAT database.
 #' @param limit Maximum number of rows to return. Defaults to 100.
 #' @param offset Number of rows to skip for paging. Defaults to 0.
 #' @param type Type of query: 'general' (the default) or 'specific'.
-#' @param case_sensitive Whether the string matching in the query is case sensitive.
-#'   Defaults to `TRUE`.
-#' @param distinct Whether only distinct rows should be listed. Defaults to `TRUE`.
-#' @param verbose Whether information should be printed about the HTTP request and response.
+#' @param case_sensitive Whether the string matching in the query is case
+#'  sensitive. Defaults to `TRUE`.
+#' @param distinct Whether only distinct rows should be listed. Defaults to
+#'  `TRUE`.
+#' @param verbose Whether information should be printed about the HTTP request
+#'  and response.
 #'
 #' @return Invisibly, the HTTP response.
+#'
+#' @references
+#' https://docs.irods.org/master/icommands/user/#iquest
+#'
 #' @export
 #'
 #' @examples

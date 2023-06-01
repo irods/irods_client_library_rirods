@@ -23,18 +23,22 @@ iquery(
 
 \item{type}{Type of query: 'general' (the default) or 'specific'.}
 
-\item{case_sensitive}{Whether the string matching in the query is case sensitive.
-Defaults to \code{TRUE}.}
+\item{case_sensitive}{Whether the string matching in the query is case
+sensitive. Defaults to \code{TRUE}.}
 
-\item{distinct}{Whether only distinct rows should be listed. Defaults to \code{TRUE}.}
+\item{distinct}{Whether only distinct rows should be listed. Defaults to
+\code{TRUE}.}
 
-\item{verbose}{Whether information should be printed about the HTTP request and response.}
+\item{verbose}{Whether information should be printed about the HTTP request
+and response.}
 }
 \value{
 Invisibly, the HTTP response.
 }
 \description{
-Use SQL-like expressions to query data objects and collections based on different properties.
+Use SQL-like expressions to query data objects and collections based on
+different properties. Read more about queries by looking at the iCommands
+equivalent \code{iquest} in the \href{https://docs.irods.org/master/icommands/user/#iquest}{iRODS Docs}.
 }
 \examples{
 if(interactive()) {
@@ -48,4 +52,7 @@ iauth()
 iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/\%'")
 iquery("SELECT COLL_NAME, DATA_NAME WHERE META_DATA_ATTR_NAME LIKE 'foo\%'")
 }
+}
+\references{
+https://docs.irods.org/master/icommands/user/#iquest
 }
