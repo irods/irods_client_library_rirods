@@ -15,6 +15,8 @@ test_that("compare shell with R solution", {
   ) |>
     jsonlite::fromJSON()
 
+  # remove user first
+  iadmin(action = "remove", target = "user", arg2 = "bobby")
   # curl in R
   iadmin(action = "add", target = "user", arg2 = "bobby", arg3 = "rodsuser")
   R <- ils(logical_path = lpath)
