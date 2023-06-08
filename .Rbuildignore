@@ -7,6 +7,8 @@
 ^data-raw$
 ^inst/bench$
 ^dev$
+^inst/irods_demo/\.git$
+^inst/irods_demo/irods_client_zone_management_tool/\.git$
 ^LICENSE\.md$
 ^codecov\.yml$
 ^_pkgdown\.yml$

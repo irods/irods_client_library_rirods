@@ -66,7 +66,7 @@
 #' )
 #'
 #' # or again as a list of lists
-#'imeta(
+#' imeta(
 #'  "foo.rds",
 #'  "data_object",
 #'  operations = list(
@@ -77,7 +77,7 @@
 #'
 #' # list of lists are useful as AVUs don't have to contain all items and, e.g,
 #' # units can be left out
-#'imeta(
+#' imeta(
 #'  "foo.rds",
 #'  "data_object",
 #'  operations = list(

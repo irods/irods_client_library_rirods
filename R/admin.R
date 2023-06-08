@@ -1,5 +1,7 @@
 #' The administration interface to the iRODS
 #'
+#' Note that this function can only be used with admin rights.
+#'
 #' @param action The action: add, modify, or remove.
 #' @param target The subject of the action: user, zone, resource, childtoresc,
 #   childfromresc, token, group, rebalance, unusedAVUs, specificQuery.
@@ -10,10 +12,23 @@
 #' @param arg6 arg6
 #' @param arg7 arg7
 #' @param verbose Show information about the http request and response.
-#' Defaults to `FALSE`.
+#'  Defaults to `FALSE`.
 #'
-#' @return Invisible on success (200) otherwise http status.
+#' @return Invisible http status.
+#' @export
 #'
+#' @examples
+#' if (interactive()) {
+#'   # add user
+#'   iadmin(action = "add", target = "user", arg2 = "Bob", arg3 = "rodsuser")
+#'
+#'   # add user password
+#'   iadmin(action = "modify", target = "user", arg2 = "Bob", arg3 = "password",
+#'       arg4 = "pass")
+#'
+#'   # delete user
+#'   iadmin(action = "remove", target = "user", arg2 = "Bob")
+#' }
 iadmin <- function(
     action,
     target,
@@ -26,30 +41,19 @@ iadmin <- function(
     verbose = FALSE
   ) {
 
-  token <- local(token, envir = .rirods)
+  args <- list(
+    action = action,
+    target = target,
+    arg2 = arg2,
+    arg3 = arg3,
+    arg4 = arg4,
+    arg5 = arg5,
+    arg6 = arg6,
+    arg7 = arg7
+  )
 
-  # request
-  req <- httr2::request(find_irods_file("host")) |>
-    httr2::req_headers(Authorization = token) |>
-    httr2::req_url_query(
-      action = action,
-      target = target,
-      arg2 = arg2,
-      arg3 = arg3,
-      arg4 = arg4,
-      arg5 = arg5,
-      arg6 = arg6,
-      arg7 = arg7
-    ) |>
-    httr2::req_url_path_append("admin") |>
-    httr2::req_method("POST") |>
-    httr2::req_error(body = irods_errors, is_error = function(resp) FALSE)
+  # http call
+  resp <- irods_rest_call("admin", "POST", args, verbose)
 
-  # verbose request response status
-  if (isTRUE(verbose)) req <- httr2::req_verbose(req)
-
-  # response
-  resp <- httr2::req_perform(req)
-
-  if (httr2::resp_status(resp) >= 400) invisible(NULL) else invisible(resp)
+  invisible(resp)
 }
