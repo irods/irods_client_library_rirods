@@ -38,8 +38,8 @@ logic on the R side of the API without requiring access to the remote service.
 It does this by recording the API response as mock files. These mock files are 
 stored in several directories under `.tests/testthat/`. To enable testing
 against the real API one needs to remove these mock files. The helper 
-`remove_mock_files()` simplifies this task. This function is not exported and 
-needs to be sourced (e.g., using `devtools::load_all()`) and subsequently 
+`rirods:::remove_mock_files()` simplifies this task. This function is not exported and 
+needs to be called with triple colons `:::` or sourced (e.g., using `devtools::load_all()`) and subsequently 
 called.
 
 ## Prerequisites iRODS
@@ -53,12 +53,17 @@ https://github.com/irods/irods_client_rest_cpp.
 Launch a local demonstration iRODS service (including the REST API):
 
 ```{bash, eval=FALSE}
-# clone the repository
-git clone --recursive https://github.com/irods/irods_demo
+# clone the repository (and submodule "irods_demo")
+# or use `git submodule update --init` when already cloned without submodules
+git clone --recurse-submodules https://github.com/irods/irods_demo
 # start the REST API
 cd irods_demo
 docker-compose up -d nginx-reverse-proxy
 ```
+
+Alternatively, one can use the function `use_irods_demo()`.
+
+Note, that both options can only be used if Docker and the docker-compose plugin are installed.
 
 This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version). 
 No further configuration in R is needed for development (except for removing 
@@ -66,12 +71,11 @@ possible mock files). For example, to run the unit tests against this local
 server use: `devtools::test()`.
 
 For miscellaneous development tasks one can, furthermore, use the non-exported 
-function: `local_create_irods()`. This test fixture is almost the same as the
-exported function `create_irods()` except that it uses a temporary directory as 
-the working directory thereby preventing cluttering of the package source files.
-When restarting the R session (possibly with `CTRL + SHIFT + F10`) or running 
-`withr::deferred_run()` the working directory is restored to the 
-package directory. 
+function: `rirods:::local_create_irods()`. This test fixture is almost the same as the
+exported function `create_irods()` except that it uses an alternative directory
+(default to a temporary directory) as the working directory thereby preventing 
+cluttering of the package source files. The working directory can be restored to the 
+package directory by restarting the R session (possibly with `CTRL + SHIFT + F10`) or by running `withr::deferred_run()`. 
 
 ### Remote server
 

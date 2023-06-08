@@ -44,37 +44,30 @@ This package connects to the iRODS C++ REST API - https://github.com/irods/irods
 
 Launch a local demonstration iRODS service (including the REST API):
 
-```{bash, eval=FALSE}
-# clone the repository
-git clone --recursive https://github.com/irods/irods_demo
-# start the REST API
-cd irods_demo
-docker-compose up -d nginx-reverse-proxy
+```{r setup}
+# load
+library(rirods)
+# setup a mock iRODS server (https://github.com/irods/irods_demo)
+use_irods_demo("alice", "passWORD")
+```
+
+```{r rmirods, echo=FALSE}
+unlink(list.files(pattern = ".irods$"))
 ```
 
 This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version).
+
+These Docker containers are designed to easily stand up a **DEMONSTRATION** of the iRODS server. It is intended for education and exploration.
+
+**DO NOT USE IN PRODUCTION**
 
 ## Example Usage
 
 To connect to the REST API endpoint of your choice, load `rirods`, connect with `create_irods()`, and authenticate with your iRODS credentials:
 
 ```{r project}
-# load
-library(rirods)
-
 # connect
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
-```
-
-```{r admin, include=FALSE}
-# authenticate
-iauth("rods", "rods")
-
-# add user alice
-rirods:::iadmin(action = "add", target = "user", arg2 = "alice", arg3 = "rodsuser")
-
-# modify alice's password
-rirods:::iadmin(action = "modify", target = "user", arg2 = "alice", arg3 = "password", arg4  = "passWORD")
 ```
 
 ### authentication
@@ -188,15 +181,9 @@ irm("foo.csv", force = TRUE)
 ils()
 ```
 
-<!-- The user alice can also be removed again. -->
-
-```{r rmAlice, include=FALSE}
-# authenticate
-iauth("rods", "rods")
-
-# remove user alice
-rirods:::iadmin(action = "remove", target = "user", arg2 = "alice")
-
-# check if Alice is removed
-ils()
+```{r down}
+# close the server
+stop_irods_demo()
+# optionally remove the Docker images
+# irods:::remove_docker_images()
 ```
