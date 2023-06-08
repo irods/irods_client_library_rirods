@@ -28,16 +28,25 @@ https://github.com/irods/irods_client_rest_cpp.
 
 Launch a local demonstration iRODS service (including the REST API):
 
-``` bash
-# clone the repository
-git clone --recursive https://github.com/irods/irods_demo
-# start the REST API
-cd irods_demo
-docker-compose up -d nginx-reverse-proxy
+``` r
+# load
+library(rirods)
+# setup a mock iRODS server (https://github.com/irods/irods_demo)
+use_irods_demo("alice", "passWORD")
+#> 
+#> Do the following to connect with the iRODS demo server: 
+#> create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home") 
+#> iauth("alice", "passWORD")
 ```
 
 This will result in the demonstration REST API running at
 http://localhost/irods-rest/0.9.3 (or later version).
+
+These Docker containers are designed to easily stand up a
+**DEMONSTRATION** of the iRODS server. It is intended for education and
+exploration.
+
+**DO NOT USE IN PRODUCTION**
 
 ## Example Usage
 
@@ -46,9 +55,6 @@ connect with `create_irods()`, and authenticate with your iRODS
 credentials:
 
 ``` r
-# load
-library(rirods)
-
 # connect
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 ```
@@ -98,8 +104,20 @@ imeta(
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
-#>                   logical_path      metadata        type
-#> 1 /tempZone/home/alice/foo.rds foo, bar, baz data_object
+#> 
+#> ========
+#> metadata
+#> ========
+#> /tempZone/home/alice/foo.rds :
+#>  attribute value units
+#>        foo   bar   baz
+#> 
+#> 
+#> ==========
+#> iRODS Zone
+#> ==========
+#>                  logical_path        type
+#>  /tempZone/home/alice/foo.rds data_object
 ```
 
 ### read R objects
@@ -133,9 +151,13 @@ iput("foo.csv")
 
 # check whether it is stored
 ils()
-#>                   logical_path        type
-#> 1 /tempZone/home/alice/foo.csv data_object
-#> 2 /tempZone/home/alice/foo.rds data_object
+#> 
+#> ==========
+#> iRODS Zone
+#> ==========
+#>                  logical_path        type
+#>  /tempZone/home/alice/foo.csv data_object
+#>  /tempZone/home/alice/foo.rds data_object
 ```
 
 Later on somebody else might want to download this file again and store
@@ -197,4 +219,9 @@ ils()
 #> This collection does not contain any objects or collections.
 ```
 
-<!-- The user alice can also be removed again. -->
+``` r
+# close the server
+stop_irods_demo()
+# optionally remove the Docker images
+# irods:::remove_docker_images()
+```

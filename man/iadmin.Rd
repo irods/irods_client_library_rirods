@@ -37,8 +37,21 @@ iadmin(
 Defaults to \code{FALSE}.}
 }
 \value{
-Invisible on success (200) otherwise http status.
+Invisible http status.
 }
 \description{
-The administration interface to the iRODS
+Note that this function can only be used with admin rights.
+}
+\examples{
+if (interactive()) {
+  # add user
+  iadmin(action = "add", target = "user", arg2 = "Bob", arg3 = "rodsuser")
+
+  # add user password
+  iadmin(action = "modify", target = "user", arg2 = "Bob", arg3 = "password",
+      arg4 = "pass")
+
+  # delete user
+  iadmin(action = "remove", target = "user", arg2 = "Bob")
+}
 }
