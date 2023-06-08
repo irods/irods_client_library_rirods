@@ -3,9 +3,14 @@ AVUs
 CMD
 Codecov
 GeneralQuery
+Hostname
 IRODS
+arg
+childtoresc
 csv
+github
 hardcoding
+http
 https
 iCAT
 iCommands
@@ -13,5 +18,6 @@ iRODS
 icommands
 iquest
 irods
-rodsuser
+macOS
+mockfiles
 tempZone

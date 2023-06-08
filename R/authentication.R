@@ -61,7 +61,7 @@ get_token <- function(details, host) {
     httr2::req_url_path_append("auth") |>
     httr2::req_headers(Authorization = paste0("Basic ", secret)) |>
     httr2::req_method("POST") |>
-    httr2::req_error(body = irods_errors)
+    handle_irods_errors()
 
   # response
   httr2::req_perform(req) |>

@@ -29,6 +29,7 @@ Imports:
     httr2 (>= 0.2.2),
     testthat (>= 3.0.0),
     tools,
+    utils,
     withr
 Suggests: 
     httptest2,
