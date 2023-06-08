@@ -57,4 +57,13 @@
   <url>
     <loc>https://irods.github.io/irods_client_library_rirods/reference/irm.html</loc>
   </url>
+  <url>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/local_create_irods.html</loc>
+  </url>
+  <url>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/remove_mock_files.html</loc>
+  </url>
+  <url>
+    <loc>https://irods.github.io/irods_client_library_rirods/reference/use_irods_demo.html</loc>
+  </url>
 </urlset>

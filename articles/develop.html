@@ -100,8 +100,9 @@ of the API without requiring access to the remote service. It does this
 by recording the API response as mock files. These mock files are stored
 in several directories under <code>.tests/testthat/</code>. To enable
 testing against the real API one needs to remove these mock files. The
-helper <code>remove_mock_files()</code> simplifies this task. This
-function is not exported and needs to be sourced (e.g., using
+helper <code>rirods:::remove_mock_files()</code> simplifies this task.
+This function is not exported and needs to be called with triple colons
+<code>:::</code> or sourced (e.g., using
 <code><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">devtools::load_all()</a></code>) and subsequently called.</p>
 </div>
 <div class="section level2">
@@ -115,24 +116,29 @@ a local or remote iRODS C++ REST API service, version 0.9.3 or later -
 </h3>
 <p>Launch a local demonstration iRODS service (including the REST
 API):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone the repository</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--recursive</span> https://github.com/irods/irods_demo</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># start the REST API</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> irods_demo</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up <span class="at">-d</span> nginx-reverse-proxy</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone the repository (and submodule "irods_demo")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or use `git submodule update --init` when already cloned without submodules</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--recurse-submodules</span> https://github.com/irods/irods_demo</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># start the REST API</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> irods_demo</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up <span class="at">-d</span> nginx-reverse-proxy</span></code></pre></div>
+<p>Alternatively, one can use the function
+<code><a href="../reference/use_irods_demo.html">use_irods_demo()</a></code>.</p>
+<p>Note, that both options can only be used if Docker and the
+docker-compose plugin are installed.</p>
 <p>This will result in the demonstration REST API running at <a href="http://localhost/irods-rest/0.9.3" class="external-link uri">http://localhost/irods-rest/0.9.3</a> (or later version). No
 further configuration in R is needed for development (except for
 removing possible mock files). For example, to run the unit tests
 against this local server use: <code><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">devtools::test()</a></code>.</p>
 <p>For miscellaneous development tasks one can, furthermore, use the
-non-exported function: <code>local_create_irods()</code>. This test
-fixture is almost the same as the exported function
-<code><a href="../reference/create_irods.html">create_irods()</a></code> except that it uses a temporary directory as
-the working directory thereby preventing cluttering of the package
-source files. When restarting the R session (possibly with
-<code>CTRL + SHIFT + F10</code>) or running
-<code><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">withr::deferred_run()</a></code> the working directory is restored to
-the package directory.</p>
+non-exported function: <code>rirods:::local_create_irods()</code>. This
+test fixture is almost the same as the exported function
+<code><a href="../reference/create_irods.html">create_irods()</a></code> except that it uses an alternative directory
+(default to a temporary directory) as the working directory thereby
+preventing cluttering of the package source files. The working directory
+can be restored to the package directory by restarting the R session
+(possibly with <code>CTRL + SHIFT + F10</code>) or by running
+<code><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">withr::deferred_run()</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="remote-server">Remote server<a class="anchor" aria-label="anchor" href="#remote-server"></a>
@@ -193,7 +199,7 @@ user name under <code>DEV_USER</code>, and password under
 <p>Note that the unit tests are built against a clean server with only
 one user (i.e., <code>DEV_USER</code>). In addition, one should not
 forget to remove the mock files (e.g., with
-<code>remove_mock_files()</code>, see above) to test against the real
+<code><a href="../reference/remove_mock_files.html">remove_mock_files()</a></code>, see above) to test against the real
 server.</p>
 </div>
 </div>

@@ -96,22 +96,25 @@
 </h2>
 <p>This package connects to the iRODS C++ REST API - <a href="https://github.com/irods/irods_client_rest_cpp" class="external-link uri">https://github.com/irods/irods_client_rest_cpp</a>.</p>
 <p>Launch a local demonstration iRODS service (including the REST API):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone the repository</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--recursive</span> https://github.com/irods/irods_demo</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># start the REST API</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> irods_demo</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up <span class="at">-d</span> nginx-reverse-proxy</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/irods/irods_client_library_rirods" class="external-link">rirods</a></span><span class="op">)</span></span>
+<span><span class="co"># setup a mock iRODS server (https://github.com/irods/irods_demo)</span></span>
+<span><span class="fu"><a href="reference/use_irods_demo.html">use_irods_demo</a></span><span class="op">(</span><span class="st">"alice"</span>, <span class="st">"passWORD"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Do the following to connect with the iRODS demo server: </span></span>
+<span><span class="co">#&gt; create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home") </span></span>
+<span><span class="co">#&gt; iauth("alice", "passWORD")</span></span></code></pre></div>
 <p>This will result in the demonstration REST API running at <a href="http://localhost/irods-rest/0.9.3" class="external-link uri">http://localhost/irods-rest/0.9.3</a> (or later version).</p>
+<p>These Docker containers are designed to easily stand up a <strong>DEMONSTRATION</strong> of the iRODS server. It is intended for education and exploration.</p>
+<p><strong>DO NOT USE IN PRODUCTION</strong></p>
 </div>
 <div class="section level2">
 <h2 id="example-usage">Example Usage<a class="anchor" aria-label="anchor" href="#example-usage"></a>
 </h2>
 <p>To connect to the REST API endpoint of your choice, load <code>rirods</code>, connect with <code><a href="reference/create_irods.html">create_irods()</a></code>, and authenticate with your iRODS credentials:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># load</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/irods/irods_client_library_rirods" class="external-link">rirods</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># connect</span></span>
+<code class="sourceCode R"><span><span class="co"># connect</span></span>
 <span><span class="fu"><a href="reference/create_irods.html">create_irods</a></span><span class="op">(</span><span class="st">"http://localhost/irods-rest/0.9.3"</span>, <span class="st">"/tempZone/home"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="authentication">authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
@@ -151,8 +154,20 @@
 <span></span>
 <span><span class="co"># check if file is stored with associated metadata</span></span>
 <span><span class="fu"><a href="reference/ils.html">ils</a></span><span class="op">(</span>metadata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                   logical_path      metadata        type</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/alice/foo.rds foo, bar, baz data_object</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ========</span></span>
+<span><span class="co">#&gt; metadata</span></span>
+<span><span class="co">#&gt; ========</span></span>
+<span><span class="co">#&gt; /tempZone/home/alice/foo.rds :</span></span>
+<span><span class="co">#&gt;  attribute value units</span></span>
+<span><span class="co">#&gt;        foo   bar   baz</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ==========</span></span>
+<span><span class="co">#&gt; iRODS Zone</span></span>
+<span><span class="co">#&gt; ==========</span></span>
+<span><span class="co">#&gt;                  logical_path        type</span></span>
+<span><span class="co">#&gt;  /tempZone/home/alice/foo.rds data_object</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="read-r-objects">read R objects<a class="anchor" aria-label="anchor" href="#read-r-objects"></a>
@@ -181,9 +196,13 @@
 <span></span>
 <span><span class="co"># check whether it is stored</span></span>
 <span><span class="fu"><a href="reference/ils.html">ils</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                   logical_path        type</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/alice/foo.csv data_object</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/alice/foo.rds data_object</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ==========</span></span>
+<span><span class="co">#&gt; iRODS Zone</span></span>
+<span><span class="co">#&gt; ==========</span></span>
+<span><span class="co">#&gt;                  logical_path        type</span></span>
+<span><span class="co">#&gt;  /tempZone/home/alice/foo.csv data_object</span></span>
+<span><span class="co">#&gt;  /tempZone/home/alice/foo.rds data_object</span></span></code></pre></div>
 <p>Later on somebody else might want to download this file again and store it locally:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># retrieve it again later</span></span>
@@ -233,7 +252,11 @@
 <span><span class="co"># check if objects are removed</span></span>
 <span><span class="fu"><a href="reference/ils.html">ils</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; This collection does not contain any objects or collections.</span></span></code></pre></div>
-<!-- The user alice can also be removed again. -->
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># close the server</span></span>
+<span><span class="fu"><a href="reference/use_irods_demo.html">stop_irods_demo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># optionally remove the Docker images</span></span>
+<span><span class="co"># irods:::remove_docker_images()</span></span></code></pre></div>
 </div>
 </div>
 </div>
