@@ -2,7 +2,7 @@
 % Please edit documentation in R/collections.R
 \name{irm}
 \alias{irm}
-\title{Remove data objects or collections in iRODS.}
+\title{Remove Data Objects or Collections in iRODS}
 \usage{
 irm(logical_path, force = TRUE, recursive = FALSE, verbose = FALSE)
 }
@@ -24,27 +24,39 @@ and response. Defaults to \code{FALSE}.}
 Invisibly the HTTP call.
 }
 \description{
-This is the equivalent of \code{file.remove()}, but applied to an item inside iRODS.
+This is the equivalent of \code{\link[=file.remove]{file.remove()}}, but applied to an item inside iRODS.
 }
 \examples{
-if (interactive()) {
+\dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# demonstration server (requires Bash, Docker and Docker-compose)
+# use_irods_demo()
+
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
-# authentication
-iauth()
+# authenticate
+iauth("rods", "rods")
 
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
 # store
-iput(foo, "foo.rds")
+isaveRDS(foo, "foo.rds")
 
 # check if file is stored
 ils()
 
 # delete object
 irm("foo.rds", force = TRUE)
-iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo\%'")
+
+# check if file is deleted
+ils()
+
+# remove iRODS project file
+unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{\}) # examplesIf}
 }
+\seealso{
+\code{\link[=imkdir]{imkdir()}} for creating collections,
+\code{\link[=file.remove]{file.remove()}} for an R equivalent.
 }

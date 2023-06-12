@@ -26,7 +26,8 @@ install.packages(c("remotes", "bench", "readr", "knitr", "here", "dplyr",
 
 # install rirods
 if (startsWith(rirods_source, "/")) {
-  remotes::install_local(rirods_source)
+  install.packages("devtools")
+  devtools::install(rirods_source)
   rirods_source <- "/local/path"
 } else {
   remotes::install_github(
@@ -46,10 +47,10 @@ rirods::iauth("rods", "rods")
 # range
 rng <- 1:num
 # different sizes
-Map(
-  function(x) readr::write_csv(data.frame(1:(1*10^(1 + x))), paste0("x", x, ".csv")),
+invisible(Map(
+  function(x) invisible(readr::write_csv(data.frame(1:(1*10^(1 + x))), paste0("x", x, ".csv"))),
   rng
-)
+))
 
 timer_files <- function(file_name) {
 
@@ -91,10 +92,10 @@ timer_files <- function(file_name) {
 }
 
 # map over different file sizes with iput and iget commands
-timer_sizes1 <- Map(timer_files, rng)
+timer_sizes1 <- invisible(Map(timer_files, rng))
 
 # clean-up
-Map(function(x) {irm(paste0("x", x, ".csv"), force = TRUE)}, rng)
+invisible(Map(function(x) {irm(paste0("x", x, ".csv"), force = TRUE)}, rng))
 
 #output log
 readr::write_tsv(
@@ -141,7 +142,7 @@ timer_objects <- function(object_num) {
 }
 
 # map over different object sizes with isaveRDS and ireadRDS commands
-timer_sizes2 <- Map(timer_objects, rng)
+timer_sizes2 <- invisible(Map(timer_objects, rng))
 
 # clean-up
 irm("object.rds", force = TRUE)

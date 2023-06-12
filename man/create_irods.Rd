@@ -2,7 +2,7 @@
 % Please edit documentation in R/create-irods.R
 \name{create_irods}
 \alias{create_irods}
-\title{Generate IRODS project file}
+\title{Generate IRODS Project File}
 \usage{
 create_irods(host, zone_path, path = ".", overwrite = FALSE)
 }
@@ -22,10 +22,4 @@ Invisibly, the path to the iRODS project file.
 This will create an iRODS project file containing information about the
 iRODS server. Once the file has been created, future sessions
 connect again with the same iRODS server without further intervention.
-}
-\examples{
-if(interactive()) {
-# connect project to server
-create_irods("http://localhost/irods-rest/0.9.2", "/tempZone/home")
-}
 }

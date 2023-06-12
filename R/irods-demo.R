@@ -1,9 +1,7 @@
-#' Run Docker iRODS demonstration service
+#' Run Docker iRODS Demonstration Service
 #'
-#' Run an iRODS demonstration server as an Docker container instance.
-#' The functions `stop_irods_demo()` and `remove_docker_images()` are used to
-#' stop the containers, and subsequently remove the images. Note that calling
-#' `use_irods_demo()` consecutively will reset the server with a clean slate.
+#' Run an iRODS demonstration server with `use_irods_demo()` as a Docker
+#' container instance. The function `stop_irods_demo()` stops the containers.
 #'
 #' These functions are untested on Windows and macOS and require:
 #'  * `bash`
@@ -27,7 +25,7 @@
 #' if (interactive()) {
 #'
 #'   # launch docker irods_demo containers (and possibly download images) with
-#'   # default credentials.
+#'   # default credentials
 #'   use_irods_demo()
 #'
 #'   # same but then with "alice" as user and "PASSword" as password
@@ -48,41 +46,39 @@ use_irods_demo <- function(user = character(), pass = character(),
       docker_version == "" ||
       Sys.which("docker-compose") == "") {
     stop(
-      "Bash and Docker with the docker-compose plugin are required. ",
-      "Install bash and docker to commence. Alternatively, sudo rights ",
-      "are required for Docker: please check: ",
+      "Bash and Docker with the docker-compose plugin are required. \n",
+      "Install bash and docker to commence. Alternatively, sudo rights \n",
+      "are required for Docker: please check: \n",
       "https://docs.docker.com/engine/install/linux-postinstall/",
       call. = FALSE
     )
   }
 
-  # does irods_demo exist
-  irods_images <-
-    system("docker image ls | grep irods_demo_",
-           intern = TRUE,
-           ignore.stderr = TRUE)
-  irods_status <-
-    try(attr(irods_images, "status") == 1, silent = TRUE)
+  # do irods_demo images exist on this machine?
+  irods_images <- system2(
+    system.file(package = "rirods", "shell_scripts", "docker-images.sh"),
+    stdout = TRUE,
+    stderr = FALSE
+  )
 
   resp_user <- TRUE
-  if (isTRUE(irods_status) ||
+  if (length(irods_images) == 0 ||
       !all(grepl(paste0(irods_images_ref, collapse = "|"), irods_images))) {
-    resp_user <- utils::askYesNo(
-      paste0(
-        "The iRODS demo Docker containers are not build on this system.",
-        "Would you like it to be build?"
-      )
-    )
+    message("\nThe iRODS demo Docker containers are not built on this system. \n")
+    resp_user <-
+      utils::askYesNo("Would you like it to be built?", default = FALSE)
   }
 
   # launch irods_demo
   if (isTRUE(resp_user)) {
     start_irods(verbose, recreate)
+  } else {
+    stop("The iRODS server could not be started!", call. = FALSE)
   }
 
   if (length(user) != 0 && length(pass) != 0) {
     system2(
-      system.file(package = "rirods", "bash", "iadmin-docker-icommand.sh"),
+      system.file(package = "rirods", "shell_scripts", "iadmin-docker-icommand.sh"),
       c(user, pass),
       stdout = FALSE,
       stderr = FALSE
@@ -99,7 +95,7 @@ use_irods_demo <- function(user = character(), pass = character(),
     message(
       "\n",
       "Do the following to connect with the iRODS demo server: \n",
-      "create_irods(\"http://localhost/irods-rest/0.9.3\", \"tempZone/home\") \n",
+      "create_irods(\"http://localhost/irods-rest/0.9.3\", \"/tempZone/home\") \n",
       "iauth(\"", user, "\", \"", pass, "\")"
     )
   }
@@ -113,14 +109,51 @@ stop_irods_demo <- function() {
   system(paste0("cd ", path_to_demo(), " ; docker-compose down"))
   invisible()
 }
-#' @rdname use_irods_demo
+
+#' Predicate for iRODS Demonstration Service State
 #'
+#' A predicate to check whether you are running iRODS docker demo containers.
+#'
+#' @param ... Currently not implemented.
+#' @return Boolean whether or not connected to iRODS
+#' @export
+#'
+#' @examples
+#' is_irods_demo_running()
+is_irods_demo_running <- function(...) {
+
+  # check for client-icommand is not required (only needed for demo itself)
+  irods_container_ref <- paste0(irods_images_ref, "_1")
+  irods_container_ref <-
+    irods_container_ref[irods_container_ref != "irods_demo_irods-client-icommands_1"]
+  is_irods_demo_running_ <- function(x) {
+    system2(
+      system.file(package = "rirods", "shell_scripts", "docker-containers.sh"),
+      x,
+      stderr = NULL
+    )
+  }
+  irods_containers_state <-
+    vapply(
+      irods_container_ref,
+      is_irods_demo_running_,
+      integer(1)
+    )
+
+  if (sum(irods_containers_state) == 0) TRUE else FALSE
+}
+
+#' Remove Docker images from system
+#' @keywords internal
+#' @return Invisible
 remove_docker_images <- function() {
-  system("docker compose down", intern = TRUE)
-  system("docker system prune --force", intern = TRUE)
-  system(
-    paste0("docker image rm ", irods_images_ref, collapse = " && "),
-    intern = TRUE
+  if (is_irods_demo_running()) {
+    stop("Docker containers are still running. Stop them with ",
+         "`stop_irods_demo()` and proceed", call. = FALSE)
+  }
+  system2(
+    system.file(package = "rirods", "shell_scripts", "docker-images-remove.sh"),
+    paste0(irods_images_ref, collapse = ", ")
   )
   invisible()
 }
@@ -151,7 +184,7 @@ dry_run_irods <- function(user, pass, recreate) {
           "server. \nThe problem might be solved by rebooting the server. ",
           "\nThis action will destroy all content on the server!\n"
         )
-        recreate <- utils::askYesNo("Can I reboot the server?")
+        recreate <- utils::askYesNo("Can I reboot the server?", default = FALSE)
       }
 
       if (isTRUE(recreate)) {
@@ -163,28 +196,6 @@ dry_run_irods <- function(user, pass, recreate) {
       }
     }
   )
-}
-
-# check if containers are running
-is_irods_demo_running <- function() {
-  irods_container_ref <- paste0(irods_images_ref, "_1")
-  cmd <- paste0(
-    "docker container inspect -f '{{.State.Running}}' ",
-    irods_container_ref,
-    collapse = " ; "
-  )
-  is_up <-
-    suppressWarnings(system(
-      cmd,
-      intern = TRUE,
-      ignore.stderr = TRUE,
-      ignore.stdout = TRUE
-    ))
-  status_irods <- attr(is_up, "status")
-  if (is.null(status_irods))
-    TRUE
-  else
-    FALSE
 }
 
 # look up table for irods_demo images

@@ -25,7 +25,7 @@ https://github.com/irods/irods_client_library_rirods, and make a Pull Request.
 
 ## Prerequisites R
 
-The following R packages are required for development: `jsonlite`, `readr`, 
+The following R packages are required for development: `xml2`, `jsonlite`, `readr`, 
 `testthat` (>= 3.0.0) and `withr`, and `httr2` and `httptest2`. For convenience,
 one can also use `renv` () and `renv::restore()` to install all 
 dependencies. The `usethis` and the `devtools` packages are further 
@@ -36,11 +36,7 @@ these packages.
 Development of `rirods` relies on the `httptest2` which enables testing of the 
 logic on the R side of the API without requiring access to the remote service.
 It does this by recording the API response as mock files. These mock files are 
-stored in several directories under `.tests/testthat/`. To enable testing
-against the real API one needs to remove these mock files. The helper 
-`rirods:::remove_mock_files()` simplifies this task. This function is not exported and 
-needs to be called with triple colons `:::` or sourced (e.g., using `devtools::load_all()`) and subsequently 
-called.
+stored in several directories under `.tests/testthat/`.
 
 ## Prerequisites iRODS
 
@@ -61,20 +57,18 @@ cd irods_demo
 docker-compose up -d nginx-reverse-proxy
 ```
 
-Alternatively, one can use the function `use_irods_demo()`.
+Alternatively, one can use the R function `use_irods_demo()`.
 
-Note, that both options can only be used if Docker and the docker-compose plugin are installed.
+Note, that both options can only be used if Docker and the Docker-compose plugin are installed.
 
 This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version). 
 No further configuration in R is needed for development (except for removing 
 possible mock files). For example, to run the unit tests against this local 
 server use: `devtools::test()`.
 
-For miscellaneous development tasks one can, furthermore, use the non-exported 
-function: `rirods:::local_create_irods()`. This test fixture is almost the same as the
-exported function `create_irods()` except that it uses an alternative directory
-(default to a temporary directory) as the working directory thereby preventing 
-cluttering of the package source files. The working directory can be restored to the 
+For miscellaneous development tasks one can, furthermore, use: `local_create_irods()`. 
+This test fixture is almost the same as the exported function `create_irods()` except that it uses an alternative directory as the working directory thereby preventing 
+cluttering of the package source files (defaults to a temporary directory). The working directory can be restored to the 
 package directory by restarting the R session (possibly with `CTRL + SHIFT + F10`) or by running `withr::deferred_run()`. 
 
 ### Remote server
@@ -91,7 +85,7 @@ source("renv/activate.R")
 # level environment variables. One can use usethis::edit_r_environ() for this.
 # Store the key under "DEV_KEY_IRODS")
 
-# irods environment variables for development
+# iRODS environment variables for development
 Sys.setenv(DEV_HOST_IRODS = "nLO8T0IpHCT2kXklYE-IB0HjYpNkg5wN4ZKk7TPSvkwGf9FauDR-O5mVI-mmD2_zNFGLoaVcAgYl")
 Sys.setenv(DEV_ZONE_PATH_IRODS = "gunp5Ts08NHfpKAdbFCBuilVb7Wjnxojbt7bA1e-9Q")
 Sys.setenv(DEV_USER = "ZGlORquE2G6BIPS5JAcuPcngmBB6Wg")
@@ -134,6 +128,5 @@ and password under `DEV_PASS`.
 5) Restart the R sessions (possibly with `CTRL + SHIFT + F10`).
 
 Note that the unit tests are built against a clean server with only one user 
-(i.e., `DEV_USER`). In addition, one should not forget to remove the mock files
-(e.g., with `remove_mock_files()`, see above) to test against the real server.
+(i.e., `DEV_USER`). 
 

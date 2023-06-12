@@ -2,7 +2,7 @@
 % Please edit documentation in R/metadata.R
 \name{iquery}
 \alias{iquery}
-\title{Query data objects and collections in iRODS}
+\title{Query Data Objects and Collections in iRODS}
 \usage{
 iquery(
   query,
@@ -41,18 +41,38 @@ different properties. Read more about queries by looking at the iCommands
 equivalent \code{iquest} in the \href{https://docs.irods.org/master/icommands/user/#iquest}{iRODS Docs}.
 }
 \examples{
-if(interactive()) {
+\dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+is_irods_demo_running()
+
+# demonstration server (requires Bash, Docker and Docker-compose)
+# use_irods_demo()
+
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
 # authentication
-iauth()
+iauth("rods", "rods")
+
+# some data
+foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+
+# store
+isaveRDS(foo, "foo.rds")
 
 # search for objects by metadata
 iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/\%'")
 iquery("SELECT COLL_NAME, DATA_NAME WHERE META_DATA_ATTR_NAME LIKE 'foo\%'")
-}
+
+# delete object
+irm("foo.rds", force = TRUE)
+
+# remove iRODS project file
+unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{\}) # examplesIf}
 }
 \references{
 https://docs.irods.org/master/icommands/user/#iquest
+}
+\seealso{
+\code{\link[=imeta]{imeta()}}
 }

@@ -9,7 +9,7 @@ dev:
 	Rscript run-bench.R $@ $(shell pwd) $(shell cd ../.. && pwd) local $(MAX_NUM_FILESIZES)
 
 markdown:
-	Rscript -e "install.packages(knitr); knitr::knit(file.path(getwd(), 'README.Rmd'), file.path(getwd(), 'README.md'))"
+	Rscript -e "install.packages('knitr'); knitr::knit(file.path(getwd(), 'README.Rmd'), file.path(getwd(), 'README.md'))"
 
 clean:
 	rm -f main-files.tsv dev-files.tsv main-objects.tsv dev-objects.tsv

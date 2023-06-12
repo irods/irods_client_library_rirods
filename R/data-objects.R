@@ -1,14 +1,14 @@
-#' Save files and objects in iRODS
+#' Save Files and Objects in iRODS
 #'
-#' Store an object or file into iRODS. `iput()` should be used to transfer
-#' a file from the local storage to iRODS; `isaveRDS()` saves an R object from the
-#' current environment in iRODS in RDS format (see `saveRDS()`).
+#' Store an object or file into iRODS. [iput()] should be used to transfer
+#' a file from the local storage to iRODS; [isaveRDS()] saves an R object from
+#' the current environment in iRODS in RDS format (see [saveRDS()]).
 #'
 #' @param local_path Local path of file to be sent to iRODS.
 #' @param x R object to save in iRODS.
 #' @param logical_path Destination path in iRODS.
 #'    By default, the basename of `local_path` is used and the file is
-#'    stored in the current working directory (see `ipwd()`).
+#'    stored in the current working directory (see [ipwd()]).
 #' @param offset Offset in bytes into the data object. Defaults to 0.
 #' @param count Maximum number of bytes to write. Defaults to 2000.
 #' @param truncate Whether to truncate the object when opening it. Defaults to
@@ -19,28 +19,44 @@
 #'  exists. Defaults to `FALSE`.
 #'
 #' @return (Invisibly) the HTTP response.
+#' @seealso
+#'  [iget()] for obtaining files,
+#'  [ireadRDS()] for obtaining R objects from iRODS,
+#'  [saveRDS()] for an R equivalent.
 #' @export
 #'
-#' @examples
-#' if (interactive()) {
+#' @examplesIf is_irods_demo_running()
+#' is_irods_demo_running()
+#'
+#' # demonstration server (requires Bash, Docker and Docker-compose)
+#' # use_irods_demo()
+#'
 #' # connect project to server
-#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", TRUE)
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 #'
 #' # authenticate
-#' iauth()
+#' iauth("rods", "rods")
 #'
 #' # save the iris dataset as csv and send the file to iRODS
 #' library(readr)
 #' write_csv(iris, "iris.csv")
-#' iput("iris.csv", overwrite = TRUE)
+#' iput("iris.csv")
 #'
 #' # save with a different name
-#' iput("iris.csv", "irids_in_irods.csv", overwrite = TRUE)
+#' iput("iris.csv", "iris_in_irods.csv")
 #' ils()
 #'
 #' # send an R object to iRODS in RDS format
-#' isaveRDS(iris, "irids_in_rds.rds", overwrite = TRUE)
-#' }
+#' isaveRDS(iris, "iris_in_rds.rds")
+#'
+#' # delete objects
+#' irm("iris_in_irods.csv", force = TRUE)
+#' irm("iris_in_rds.rds", force = TRUE)
+#' irm("iris.csv", force = TRUE)
+#' unlink("iris.csv")
+#'
+#' # remove iRODS project file
+#' unlink(paste0(basename(getwd()), ".irods"))
 iput <- function(
     local_path,
     logical_path = basename(local_path),
@@ -205,15 +221,16 @@ local_to_irods_ <- function(
   irods_rest_call("stream", "PUT", args, verbose, object)
 }
 
-#' Retrieve file or object from iRODS
+#' Retrieve File or Object from iRODS
 #'
-#' Transfer a file from iRODS to the local storage with `iget()` or
-#' read an R object from an RDS file in iRODS with `ireadRDS()` (see `readRDS()`).
+#' Transfer a file from iRODS to the local storage with [iget()] or
+#' read an R object from an RDS file in iRODS with [ireadRDS()]
+#' (see [readRDS()]).
 #'
 #' @param logical_path Source path in iRODS.
 #' @param local_path Destination path in local storage. By default,
 #'   the basename of the logical path; the file will be stored in the current
-#'   directory (see `getwd()`).
+#'   directory (see [getwd()]).
 #' @param offset Offset in bytes into the data object. Defaults to 0.
 #' @param count Maximum number of bytes to write. Defaults to 2000.
 #' @param verbose Whether information should be printed about the HTTP request
@@ -223,23 +240,33 @@ local_to_irods_ <- function(
 #'
 #' @return The R object in case of `ireadRDS()`, invisibly `NULL` in case of
 #'  `iget()`.
+#' @seealso
+#'  [iput()] for sending files,
+#'  [isaveRDS()] for sending R objects to iRODS,
+#'  [readRDS()] for an R equivalent.
+#'
 #' @export
 #'
-#' @examples
-#' if (interactive()) {
-#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", TRUE)
+#' @examplesIf is_irods_demo_running()
+#' is_irods_demo_running()
+#'
+#' # demonstration server (requires Bash, Docker and Docker-compose)
+#' # use_irods_demo()
+#'
+#' # connect project to server
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 #'
 #' # authenticate
-#' iauth()
+#' iauth("rods", "rods")
 #'
 #' # save the iris dataset as csv and send the file to iRODS
 #' library(readr)
 #' write_csv(iris, "iris.csv")
-#' iput("iris.csv", overwrite = TRUE)
+#' iput("iris.csv")
 #'
 #' # bring the file back with a different name
-#' iget("iris.csv", "new_iris.csv", overwrite = TRUE)
-#' files.exists("new_iris.csv") # check that it has been transferred
+#' iget("iris.csv", "newer_iris.csv")
+#' file.exists("newer_iris.csv") # check that it has been transferred
 #'
 #' # send an R object to iRODS in RDS format
 #' isaveRDS(iris, "irids_in_rds.rds")
@@ -247,7 +274,16 @@ local_to_irods_ <- function(
 #' # read it back
 #' iris_again <- ireadRDS("irids_in_rds.rds")
 #' iris_again
-#' }
+#'
+#' # delete objects
+#' irm("irids_in_rds.rds", force = TRUE)
+#' irm("iris.csv", force = TRUE)
+#' unlink("iris.csv")
+#' unlink("newer_iris.csv")
+#'
+#' # remove iRODS project file
+#' unlink(paste0(basename(getwd()), ".irods"))
+#'
 iget <- function(
     logical_path,
     local_path = basename(logical_path),

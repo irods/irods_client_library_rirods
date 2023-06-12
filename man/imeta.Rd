@@ -2,7 +2,7 @@
 % Please edit documentation in R/metadata.R
 \name{imeta}
 \alias{imeta}
-\title{Add or remove metadata}
+\title{Add or Remove Metadata}
 \usage{
 imeta(
   logical_path,
@@ -17,14 +17,14 @@ imeta(
 \item{entity_type}{Type of item to add metadata to or remove it from.
 Options are 'data_object', 'collection' and 'user'.}
 
-\item{operations}{List of named lists representing operations.
+\item{operations}{List of named lists or \link{data.frame} representing operations.
 The valid components of each of these lists or vectors are:
 \itemize{
 \item \code{operation}, with values 'add' or 'remove', depending on whether the AVU
-should be added to or removed from the metadata of the item.
-\item \code{attribute}, with the name of the AVU.
-\item \code{value}, with the value of the AVU.
-\item \code{units}, with the unit of the AVU.
+should be added to or removed from the metadata of the item (required).
+\item \code{attribute}, with the name of the AVU (required).
+\item \code{value}, with the value of the AVU (required).
+\item \code{units}, with the unit of the AVU (optional).
 }}
 
 \item{verbose}{Whether information should be printed about the HTTP request
@@ -41,12 +41,17 @@ specific AVUs. Read more about metadata by looking at the iCommands
 equivalent \code{imeta} in the \href{https://docs.irods.org/master/icommands/metadata/}{iRODS Docs}.
 }
 \examples{
-if(interactive()) {
+\dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+is_irods_demo_running()
+
+# demonstration server (requires Bash, Docker and Docker-compose)
+# use_irods_demo()
+
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
 # authentication
-iauth()
+iauth("rods", "rods")
 
 # some data
 foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
@@ -59,12 +64,12 @@ ils()
 
 # add some metadata
 imeta(
- "foo.rds",
- "data_object",
- operations =
-  list(
-   list(operation = "add", attribute = "foo", value = "bar", units = "baz")
- )
+  "foo.rds",
+  "data_object",
+   operations =
+    list(
+     list(operation = "add", attribute = "foo", value = "bar", units = "baz")
+   )
 )
 
 # `operations` can contain multiple tags supplied as a `data.frame`
@@ -76,34 +81,42 @@ imeta(
     attribute = c("foo2", "foo3"),
     value = c("bar2", "bar3"),
     units = c("baz2", "baz3")
+   )
  )
-)
 
 # or again as a list of lists
 imeta(
- "foo.rds",
- "data_object",
- operations = list(
-   list(operation = "add", attribute = "foo4", value = "bar4", units = "baz4"),
-   list(operation = "add", attribute = "foo5", value = "bar5", units = "baz5")
- )
+  "foo.rds",
+  "data_object",
+  operations = list(
+    list(operation = "add", attribute = "foo4", value = "bar4", units = "baz4"),
+    list(operation = "add", attribute = "foo5", value = "bar5", units = "baz5")
+  )
 )
 
-# list of lists are useful as AVUs don't have to contain all items and, e.g,
-# units can be left out
+# list of lists are useful as AVUs don't have to contain units
 imeta(
- "foo.rds",
- "data_object",
- operations = list(
-   list(operation = "add", attribute = "foo6", value = "bar6"),
-   list(operation = "add", attribute = "foo7", value = "bar7", units = "baz7")
- )
+  "foo.rds",
+  "data_object",
+  operations = list(
+    list(operation = "add", attribute = "foo6", value = "bar6"),
+    list(operation = "add", attribute = "foo7", value = "bar7", units = "baz7")
+  )
 )
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
-}
+
+# delete object
+irm("foo.rds", force = TRUE)
+
+# remove iRODS project file
+unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{\}) # examplesIf}
 }
 \references{
 https://docs.irods.org/master/icommands/metadata/
+}
+\seealso{
+\code{\link[=iquery]{iquery()}}
 }

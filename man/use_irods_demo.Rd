@@ -3,8 +3,7 @@
 \name{use_irods_demo}
 \alias{use_irods_demo}
 \alias{stop_irods_demo}
-\alias{remove_docker_images}
-\title{Run Docker iRODS demonstration service}
+\title{Run Docker iRODS Demonstration Service}
 \usage{
 use_irods_demo(
   user = character(),
@@ -14,8 +13,6 @@ use_irods_demo(
 )
 
 stop_irods_demo()
-
-remove_docker_images()
 }
 \arguments{
 \item{user}{Character vector for user name (defaults to "rods" admin)}
@@ -32,10 +29,8 @@ the current instance.}
 Invisible
 }
 \description{
-Run an iRODS demonstration server as an Docker container instance.
-The functions \code{stop_irods_demo()} and \code{remove_docker_images()} are used to
-stop the containers, and subsequently remove the images. Note that calling
-\code{use_irods_demo()} consecutively will reset the server with a clean slate.
+Run an iRODS demonstration server with \code{use_irods_demo()} as a Docker
+container instance. The function \code{stop_irods_demo()} stops the containers.
 }
 \details{
 These functions are untested on Windows and macOS and require:
@@ -50,7 +45,7 @@ These functions are untested on Windows and macOS and require:
 if (interactive()) {
 
   # launch docker irods_demo containers (and possibly download images) with
-  # default credentials.
+  # default credentials
   use_irods_demo()
 
   # same but then with "alice" as user and "PASSword" as password

@@ -1,4 +1,4 @@
-#' The administration interface to the iRODS
+#' The Administration Interface to iRODS
 #'
 #' Note that this function can only be used with admin rights.
 #'
@@ -17,18 +17,31 @@
 #' @return Invisible http status.
 #' @export
 #'
-#' @examples
-#' if (interactive()) {
-#'   # add user
-#'   iadmin(action = "add", target = "user", arg2 = "Bob", arg3 = "rodsuser")
+#' @examplesIf is_irods_demo_running()
+#' is_irods_demo_running()
 #'
-#'   # add user password
-#'   iadmin(action = "modify", target = "user", arg2 = "Bob", arg3 = "password",
-#'       arg4 = "pass")
+#' # demonstration server (requires Bash, Docker and Docker-compose)
+#' # use_irods_demo()
 #'
-#'   # delete user
-#'   iadmin(action = "remove", target = "user", arg2 = "Bob")
-#' }
+#' # connect project to server
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#'
+#' # authentication
+#' iauth("rods", "rods")
+#'
+#' # add user
+#' iadmin(action = "add", target = "user", arg2 = "Bob", arg3 = "rodsuser")
+#'
+#' # add user password
+#' iadmin(action = "modify", target = "user", arg2 = "Bob", arg3 = "password",
+#'   arg4 = "pass")
+#'
+#' # delete user
+#' iadmin(action = "remove", target = "user", arg2 = "Bob")
+#'
+#' # remove iRODS project file
+#' unlink(paste0(basename(getwd()), ".irods"))
+#'
 iadmin <- function(
     action,
     target,

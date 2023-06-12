@@ -1,6 +1,6 @@
-#' Authentication service for the iRODS zone
+#' Authentication Service for an iRODS Zone
 #'
-#' Provides an authentication service for the iRODS zone. Using the function
+#' Provides an authentication service for an iRODS zone. Using the function
 #' without arguments results in a prompt asking for the user name and password
 #' thereby preventing hard-coding of sensitive information in scripts.
 #'
@@ -11,14 +11,25 @@
 #' @return Invisibly `NULL`.
 #' @export
 #'
-#' @examples
-#' if(interactive()) {
+#' @examplesIf is_irods_demo_running()
+#' is_irods_demo_running()
+#'
+#' # demonstration server (requires Bash, Docker and Docker-compose)
+#' # use_irods_demo()
+#'
 #' # connect project to server
 #' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#'
 #' # authenticate
-#' iauth()
-#' }
+#' iauth("rods", "rods")
+#'
+#' # remove iRODS project file
+#' unlink(paste0(basename(getwd()), ".irods"))
+#'
 iauth <- function(user = NULL, password = NULL, role = "rodsuser") {
+
+  # check connection
+  if (!is_connected_irods()) stop("Not connected to iRODS.", call. = FALSE)
 
   # ask for credentials
   if (is.null(user)) {

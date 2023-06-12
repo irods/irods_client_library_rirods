@@ -2,3 +2,54 @@ url: https://irods.github.io/irods_client_library_rirods/
 template:
   bootstrap: 5
 
+reference:
+- title: "Connecting and authentication"
+  desc: >
+    Functions for saving server details and authentication
+  contents:
+  - create_irods
+  - local_create_irods
+  - iauth
+  - is_connected_irods
+- title: "Navigating the iRODS Zone"
+  desc: >
+    Logical paths of iRODS and listing content of collections
+  contents:
+  - icd
+  - ipwd
+  - ils
+- title: "Managing collections"
+  desc: >
+    Creating and removing data objects and collections within iRODS
+  contents:
+  - irm
+  - imkdir
+- title: "Moving objects"
+  desc: >
+      Functions to transfer and download R objects and files to and from iRODS
+  contents:
+  - iput
+  - isaveRDS
+  - iget
+  - ireadRDS
+- title: "Metadata"
+  desc: >
+    Functions to annotate collections and data objects as well as discovery of
+    objects and collections in iRODS
+  contents:
+  - imeta
+  - iquery
+- title: "Demonstrating iRODS"
+  desc: >
+    Functions to demonstrate iRODS capabilities in a Docker container
+  contents:
+  - use_irods_demo
+  - stop_irods_demo
+  - is_irods_demo_running
+  - iadmin
+- title: "iRODS s3 class"
+  desc: >
+    Functions to coerce and print irods_df s3 class
+  contents:
+  - as.data.frame.irods_df
+  - print.irods_df
