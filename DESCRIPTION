@@ -2,13 +2,13 @@ Package: rirods
 Title: R Client for iRODS
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Martin", "Schobben", , "schobbenmartin@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-8560-0037")),
+    person("Martin", "Schobben", , "schobbenmartin@gmail.com", role = c("aut", 
+           "cre", "cph"), comment = c(ORCID = "0000-0001-8560-0037")),
+    person("Mariana", "Montes", role = "aut"),
     person("Terrell", "Russell", role = "ctb"),
     person("Christine", "Staiger", role = "ctb"),
     person("Ton", "Smeele", role = "ctb"),
-    person("Alan", "King", role = "ctb"),
-    person("Mariana", "Montes", role = "ctb")
+    person("Alan", "King", role = "ctb")
   )
 Description: The Integrated Rule-Oriented Data System 'iRODS'
     (<https://irods.org/>) open sourced data management software suite
@@ -27,7 +27,7 @@ Imports:
     askpass,
     base64enc,
     httr2 (>= 0.2.2),
-    testthat (>= 3.0.0),
+    methods,
     tools,
     utils,
     withr
@@ -37,7 +37,9 @@ Suggests:
     knitr,
     readr,
     rmarkdown,
-    spelling
+    spelling,
+    testthat (>= 3.0.0),
+    xml2
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

@@ -2,7 +2,7 @@
 % Please edit documentation in R/navigation.R
 \name{ils}
 \alias{ils}
-\title{List iRODS data objects and collections}
+\title{List iRODS Data Objects and Collections}
 \usage{
 ils(
   logical_path = ".",
@@ -17,7 +17,7 @@ ils(
 }
 \arguments{
 \item{logical_path}{Path to the collection whose contents are to be listed.
-By default this is the current working directory (see \code{ipwd()}).}
+By default this is the current working collection (see \code{\link[=ipwd]{ipwd()}}).}
 
 \item{stat}{Whether stat information should be included. Defaults to \code{FALSE}.}
 
@@ -45,20 +45,39 @@ List the contents of a collection, optionally with stat, metadata, and/or
 access control information for each element in the collection.
 }
 \examples{
-if(interactive()) {
+\dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+is_irods_demo_running()
+
+# demonstration server (requires Bash, Docker and Docker-compose)
+# use_irods_demo()
+
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
 # authenticate
-iauth()
+iauth("rods", "rods")
 
 # list home directory
 ils()
 
+# make collection
+imkdir("some_collection")
+
 # list a different directory
-ils('/tempZone/home/rods/some_collection')
+ils("/tempZone/home/rods/some_collection")
 
 # show metadata
 ils(metadata = TRUE)
+
+# delete `some_collection`
+irm("some_collection", force = TRUE, recursive = TRUE)
+
+# remove iRODS project file
+unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{\}) # examplesIf}
 }
+\seealso{
+\code{\link[=ipwd]{ipwd()}} for finding the working collection,
+\code{\link[=ipwd]{ipwd()}} for setting the working collection, and
+\code{\link[=list.files]{list.files()}} for an R equivalent.
 }

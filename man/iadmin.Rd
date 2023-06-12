@@ -2,7 +2,7 @@
 % Please edit documentation in R/admin.R
 \name{iadmin}
 \alias{iadmin}
-\title{The administration interface to the iRODS}
+\title{The Administration Interface to iRODS}
 \usage{
 iadmin(
   action,
@@ -43,15 +43,29 @@ Invisible http status.
 Note that this function can only be used with admin rights.
 }
 \examples{
-if (interactive()) {
-  # add user
-  iadmin(action = "add", target = "user", arg2 = "Bob", arg3 = "rodsuser")
+\dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+is_irods_demo_running()
 
-  # add user password
-  iadmin(action = "modify", target = "user", arg2 = "Bob", arg3 = "password",
-      arg4 = "pass")
+# demonstration server (requires Bash, Docker and Docker-compose)
+# use_irods_demo()
 
-  # delete user
-  iadmin(action = "remove", target = "user", arg2 = "Bob")
-}
+# connect project to server
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+
+# authentication
+iauth("rods", "rods")
+
+# add user
+iadmin(action = "add", target = "user", arg2 = "Bob", arg3 = "rodsuser")
+
+# add user password
+iadmin(action = "modify", target = "user", arg2 = "Bob", arg3 = "password",
+  arg4 = "pass")
+
+# delete user
+iadmin(action = "remove", target = "user", arg2 = "Bob")
+
+# remove iRODS project file
+unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{\}) # examplesIf}
 }

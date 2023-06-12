@@ -1,7 +1,7 @@
 ---
 output: 
   github_document:
-     md_extensions: [ 
+    md_extensions: [ 
       "-autolink_bare_uris" 
     ]
 ---
@@ -44,7 +44,11 @@ This package connects to the iRODS C++ REST API - https://github.com/irods/irods
 
 Launch a local demonstration iRODS service (including the REST API):
 
-```{r setup}
+```{r echo=FALSE}
+library(rirods)
+```
+
+```{r setup, eval=FALSE}
 # load
 library(rirods)
 # setup a mock iRODS server (https://github.com/irods/irods_demo)
@@ -52,7 +56,7 @@ use_irods_demo("alice", "passWORD")
 ```
 
 ```{r rmirods, echo=FALSE}
-unlink(list.files(pattern = ".irods$"))
+unlink(paste0(basename(getwd()), ".irods"))
 ```
 
 This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version).
@@ -181,7 +185,7 @@ irm("foo.csv", force = TRUE)
 ils()
 ```
 
-```{r down}
+```{r down, eval=FALSE}
 # close the server
 stop_irods_demo()
 # optionally remove the Docker images

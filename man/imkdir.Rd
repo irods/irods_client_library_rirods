@@ -2,20 +2,13 @@
 % Please edit documentation in R/collections.R
 \name{imkdir}
 \alias{imkdir}
-\title{Create a new collection in iRODS}
+\title{Create a New Collection in iRODS}
 \usage{
-imkdir(
-  logical_path,
-  collection = TRUE,
-  create_parent_collections = FALSE,
-  verbose = FALSE
-)
+imkdir(logical_path, create_parent_collections = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{logical_path}{Path to the collection to create, relative to the current
-working directory (see \code{ipwd()}).}
-
-\item{collection}{Whether a collection is being created. Defaults to \code{TRUE}.}
+working directory (see \code{\link[=ipwd]{ipwd()}}).}
 
 \item{create_parent_collections}{Whether parent collections should be created
 when necessary. Defaults to \code{FALSE}.}
@@ -27,20 +20,40 @@ should be printed. Defaults to \code{FALSE}.}
 Invisibly the HTTP request.
 }
 \description{
-This is the equivalent to \code{dir.create()}, but creating a collection in iRODS
+This is the equivalent to \code{\link[=dir.create]{dir.create()}}, but creating a collection in iRODS
 instead of a local directory.
 }
 \examples{
-if (interactive()) {
+\dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+is_irods_demo_running()
+
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
 # authentication
-iauth()
+iauth("rods", "rods")
 
+# list all object and collection in the current collection of iRODS
 ils()
+
+# create a new collection
 imkdir("new_collection")
+
+# check if it is there
 ils()
+
+# and move to the new directory
 icd("new_collection")
+
+# remove collection
+icd("..")
+irm("new_collection", force = TRUE, recursive = TRUE)
+
+# remove iRODS project file
+unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{\}) # examplesIf}
 }
+\seealso{
+\code{\link[=irm]{irm()}} for removing collections,
+\code{\link[=dir.create]{dir.create()}} for an R equivalent.
 }

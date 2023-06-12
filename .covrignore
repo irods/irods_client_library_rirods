@@ -1,2 +1,2 @@
-R/test-*.R
-R/admin.R
+R/dev-helpers.R
+R/irods-demo.R

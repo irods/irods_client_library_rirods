@@ -1,4 +1,4 @@
-#' Generate IRODS project file
+#' Generate IRODS Project File
 #'
 #' This will create an iRODS project file containing information about the
 #' iRODS server. Once the file has been created, future sessions
@@ -12,11 +12,6 @@
 #' @return Invisibly, the path to the iRODS project file.
 #' @export
 #'
-#' @examples
-#' if(interactive()) {
-#' # connect project to server
-#' create_irods("http://localhost/irods-rest/0.9.2", "/tempZone/home")
-#' }
 create_irods <- function(
     host,
     zone_path,
@@ -47,4 +42,59 @@ create_irods <- function(
 
   # path
   invisible(path)
+}
+
+#' Launch iRODS from Alternative Directory
+#'
+#' This function is useful during development as it prevents cluttering of the
+#' package source files.
+#'
+#' @param host Hostname of the iRODS server. Defaults to
+#'  "http://localhost/irods-rest/0.9.3".
+#' @param zone_path Zone path of the iRODS server. Defaults to "/tempZone/home".
+#' @param dir The directory to use. Default is a temporary directory.
+#' @param env Attach exit handlers to this environment. Defaults to the
+#'  parent frame (accessed through [parent.frame()]).
+#'
+#' @return Invisibly returns the original directory.
+#' @export
+#'
+local_create_irods <- function(
+    host = NULL,
+    zone_path = NULL,
+    dir = tempdir(),
+    env = parent.frame()
+) {
+
+  # default host
+  if (is.null(host)) {
+    if (Sys.getenv("DEV_KEY_IROD") != "") {
+      host <-
+        httr2::secret_decrypt(Sys.getenv("DEV_HOST_IRODS"), "DEV_KEY_IRODS")
+    } else {
+      host <- "http://localhost/irods-rest/0.9.3"
+    }
+  }
+
+  # defaults path
+  if (is.null(zone_path)) {
+    if (Sys.getenv("DEV_KEY_IROD") != "") {
+      zone_path <-
+        httr2::secret_decrypt(Sys.getenv("DEV_ZONE_PATH_IRODS"), "DEV_KEY_IRODS")
+    } else {
+      zone_path <- "/tempZone/home"
+    }
+  }
+
+  # to return to
+  old_dir <- getwd()
+
+  # change working directory
+  setwd(dir)
+  withr::defer(setwd(old_dir), envir = env)
+
+  # switch to new iRODS project
+  create_irods(host, zone_path, overwrite = TRUE)
+
+  invisible(dir)
 }

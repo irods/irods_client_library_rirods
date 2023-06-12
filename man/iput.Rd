@@ -3,7 +3,7 @@
 \name{iput}
 \alias{iput}
 \alias{isaveRDS}
-\title{Save files and objects in iRODS}
+\title{Save Files and Objects in iRODS}
 \usage{
 iput(
   local_path,
@@ -30,7 +30,7 @@ isaveRDS(
 
 \item{logical_path}{Destination path in iRODS.
 By default, the basename of \code{local_path} is used and the file is
-stored in the current working directory (see \code{ipwd()}).}
+stored in the current working directory (see \code{\link[=ipwd]{ipwd()}}).}
 
 \item{offset}{Offset in bytes into the data object. Defaults to 0.}
 
@@ -51,28 +51,47 @@ exists. Defaults to \code{FALSE}.}
 (Invisibly) the HTTP response.
 }
 \description{
-Store an object or file into iRODS. \code{iput()} should be used to transfer
-a file from the local storage to iRODS; \code{isaveRDS()} saves an R object from the
-current environment in iRODS in RDS format (see \code{saveRDS()}).
+Store an object or file into iRODS. \code{\link[=iput]{iput()}} should be used to transfer
+a file from the local storage to iRODS; \code{\link[=isaveRDS]{isaveRDS()}} saves an R object from
+the current environment in iRODS in RDS format (see \code{\link[=saveRDS]{saveRDS()}}).
 }
 \examples{
-if (interactive()) {
+\dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+is_irods_demo_running()
+
+# demonstration server (requires Bash, Docker and Docker-compose)
+# use_irods_demo()
+
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", TRUE)
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
 # authenticate
-iauth()
+iauth("rods", "rods")
 
 # save the iris dataset as csv and send the file to iRODS
 library(readr)
 write_csv(iris, "iris.csv")
-iput("iris.csv", overwrite = TRUE)
+iput("iris.csv")
 
 # save with a different name
-iput("iris.csv", "irids_in_irods.csv", overwrite = TRUE)
+iput("iris.csv", "iris_in_irods.csv")
 ils()
 
 # send an R object to iRODS in RDS format
-isaveRDS(iris, "irids_in_rds.rds", overwrite = TRUE)
+isaveRDS(iris, "iris_in_rds.rds")
+
+# delete objects
+irm("iris_in_irods.csv", force = TRUE)
+irm("iris_in_rds.rds", force = TRUE)
+irm("iris.csv", force = TRUE)
+unlink("iris.csv")
+
+# remove iRODS project file
+unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{\}) # examplesIf}
 }
+\seealso{
+\code{\link[=iget]{iget()}} for obtaining files,
+\code{\link[=ireadRDS]{ireadRDS()}} for obtaining R objects from iRODS,
+\code{\link[=saveRDS]{saveRDS()}} for an R equivalent.
 }

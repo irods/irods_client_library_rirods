@@ -2,7 +2,7 @@
 % Please edit documentation in R/authentication.R
 \name{iauth}
 \alias{iauth}
-\title{Authentication service for the iRODS zone}
+\title{Authentication Service for an iRODS Zone}
 \usage{
 iauth(user = NULL, password = NULL, role = "rodsuser")
 }
@@ -17,15 +17,24 @@ iauth(user = NULL, password = NULL, role = "rodsuser")
 Invisibly \code{NULL}.
 }
 \description{
-Provides an authentication service for the iRODS zone. Using the function
+Provides an authentication service for an iRODS zone. Using the function
 without arguments results in a prompt asking for the user name and password
 thereby preventing hard-coding of sensitive information in scripts.
 }
 \examples{
-if(interactive()) {
+\dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+is_irods_demo_running()
+
+# demonstration server (requires Bash, Docker and Docker-compose)
+# use_irods_demo()
+
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+
 # authenticate
-iauth()
-}
+iauth("rods", "rods")
+
+# remove iRODS project file
+unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{\}) # examplesIf}
 }

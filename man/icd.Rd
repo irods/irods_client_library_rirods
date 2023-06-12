@@ -3,7 +3,7 @@
 \name{icd}
 \alias{icd}
 \alias{ipwd}
-\title{Get or set current working directory in iRODS}
+\title{Get or Set Current Working Directory in iRODS}
 \usage{
 icd(dir)
 
@@ -17,17 +17,22 @@ Invisibly the current directory before the change (same convention as
 \code{setwd()}).
 }
 \description{
-\code{ipwd()} and \code{icd()} are the iRODS equivalents of \code{getwd()} and \code{setwd()}
+\code{ipwd()} and \code{icd()} are the iRODS equivalents of \code{\link[=getwd]{getwd()}} and \code{\link[=setwd]{setwd()}}
 respectively. For example, whereas \code{getwd()} returns the current working directory
 in the local system, \code{ipwd()} returns the current working directory in iRODS.
 }
 \examples{
-if(interactive()) {
+\dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+is_irods_demo_running()
+
+# demonstration server (requires Bash, Docker and Docker-compose)
+# use_irods_demo()
+
 # connect project to server
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
 # authenticate
-iauth()
+iauth("rods", "rods")
 
 # default dir
 icd(".")
@@ -44,5 +49,15 @@ ipwd()
 # absolute paths work as well
 icd("/tempZone/home/rods")
 ipwd()
+
+# back home
+icd("/tempZone/home")
+
+# remove iRODS project file
+unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{\}) # examplesIf}
 }
+\seealso{
+\code{\link[=setwd]{setwd()}} and \code{\link[=getwd]{getwd()}} for R equivalents,
+\code{\link[=ils]{ils()}} for listing collections and objects in iRODS.
 }

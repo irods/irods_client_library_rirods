@@ -1,6 +1,6 @@
-#' Remove data objects or collections in iRODS.
+#' Remove Data Objects or Collections in iRODS
 #'
-#' This is the equivalent of `file.remove()`, but applied to an item inside iRODS.
+#' This is the equivalent of [file.remove()], but applied to an item inside iRODS.
 #'
 #' @param logical_path Path to the data object or collection to remove.
 #' @param force Whether the data object or collection should be deleted
@@ -12,30 +12,41 @@
 #' @param verbose Whether information should be printed about the HTTP request
 #'    and response. Defaults to `FALSE`.
 #'
+#' @seealso
+#'  [imkdir()] for creating collections,
+#'  [file.remove()] for an R equivalent.
+#'
 #' @return Invisibly the HTTP call.
 #' @export
 #'
-#' @examples
-#' if (interactive()) {
+#' @examplesIf is_irods_demo_running()
+#' # demonstration server (requires Bash, Docker and Docker-compose)
+#' # use_irods_demo()
+#'
 #' # connect project to server
 #' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 #'
-#' # authentication
-#' iauth()
+#' # authenticate
+#' iauth("rods", "rods")
 #'
 #' # some data
 #' foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 #'
 #' # store
-#' iput(foo, "foo.rds")
+#' isaveRDS(foo, "foo.rds")
 #'
 #' # check if file is stored
 #' ils()
 #'
 #' # delete object
 #' irm("foo.rds", force = TRUE)
-#' iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#' }
+#'
+#' # check if file is deleted
+#' ils()
+#'
+#' # remove iRODS project file
+#' unlink(paste0(basename(getwd()), ".irods"))
+#'
 irm <- function(logical_path, force = TRUE, recursive = FALSE,
                 verbose = FALSE) {
 
@@ -56,48 +67,65 @@ irm <- function(logical_path, force = TRUE, recursive = FALSE,
   invisible(out)
 }
 
-#' Create a new collection in iRODS
+#' Create a New Collection in iRODS
 #'
-#' This is the equivalent to `dir.create()`, but creating a collection in iRODS
+#' This is the equivalent to [dir.create()], but creating a collection in iRODS
 #' instead of a local directory.
 #'
 #' @param logical_path Path to the collection to create, relative to the current
-#'   working directory (see `ipwd()`).
-#' @param collection Whether a collection is being created. Defaults to `TRUE`.
+#'   working directory (see [ipwd()]).
 #' @param create_parent_collections Whether parent collections should be created
 #'   when necessary. Defaults to `FALSE`.
 #' @param verbose Whether information about the HTTP request and response
 #'  should be printed. Defaults to `FALSE`.
 #'
+#' @seealso
+#'  [irm()] for removing collections,
+#'  [dir.create()] for an R equivalent.
+#'
 #' @return Invisibly the HTTP request.
 #' @export
 #'
-#' @examples
-#' if (interactive()) {
+#' @examplesIf is_irods_demo_running()
+#' is_irods_demo_running()
+#'
 #' # connect project to server
 #' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 #'
 #' # authentication
-#' iauth()
+#' iauth("rods", "rods")
 #'
+#' # list all object and collection in the current collection of iRODS
 #' ils()
+#'
+#' # create a new collection
 #' imkdir("new_collection")
+#'
+#' # check if it is there
 #' ils()
+#'
+#' # and move to the new directory
 #' icd("new_collection")
-#' }
-imkdir <- function(logical_path, collection = TRUE,
-                   create_parent_collections = FALSE, verbose = FALSE) {
-  # NOTE this function will be made into an internal function create_item()
-  # Then `imkdir()` will call this function with collection = TRUE
-  # and `itouch()` will call this function with collection = FALSE and create_parent_collections = FALSE
+#'
+#' # remove collection
+#' icd("..")
+#' irm("new_collection", force = TRUE, recursive = TRUE)
+#'
+#' # remove iRODS project file
+#' unlink(paste0(basename(getwd()), ".irods"))
+#'
+imkdir <- function(logical_path, create_parent_collections = FALSE, verbose = FALSE) {
 
   # expand logical path to absolute logical path
   logical_path <- get_absolute_lpath(logical_path)
 
   # flags to curl call
+  # `imkdir()` will call this API end-point with collection is 1 to create new
+  # collection, 0 does have no effect currently
+  # https://github.com/irods/irods_client_rest_cpp/issues/185
   args <- list(
     `logical-path` = logical_path,
-    collection = as.integer(collection),
+    collection = 1,
     `create-parent-collections` = as.integer(create_parent_collections)
   )
 

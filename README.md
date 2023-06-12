@@ -33,10 +33,6 @@ Launch a local demonstration iRODS service (including the REST API):
 library(rirods)
 # setup a mock iRODS server (https://github.com/irods/irods_demo)
 use_irods_demo("alice", "passWORD")
-#> 
-#> Do the following to connect with the iRODS demo server: 
-#> create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home") 
-#> iauth("alice", "passWORD")
 ```
 
 This will result in the demonstration REST API running at

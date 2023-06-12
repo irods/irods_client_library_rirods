@@ -1,3 +1,16 @@
+#' Internal function to coordinate iRODS REST call
+#'
+#' @param endpoint REST API end-point.
+#' @param verb The HTTP verb to be used (e.g. PUT).
+#' @param args The arguments to be set for the end-point.
+#' @param verbose Verbosity of the HTTP request.
+#' @param object Data to send along with HTTP request.
+#' @param error Whether status codes larger than 400 should be translated to
+#'  errors.
+#'
+#' @references https://github.com/irods/irods_demo/tree/main/irods_client_rest_cpp
+#' @keywords internal
+#' @return HTTP response
 irods_rest_call <- function(
     endpoint,
     verb,

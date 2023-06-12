@@ -1,6 +1,6 @@
-#' Get or set current working directory in iRODS
+#' Get or Set Current Working Directory in iRODS
 #'
-#' `ipwd()` and `icd()` are the iRODS equivalents of `getwd()` and `setwd()`
+#' `ipwd()` and `icd()` are the iRODS equivalents of [getwd()] and [setwd()]
 #' respectively. For example, whereas `getwd()` returns the current working directory
 #' in the local system, `ipwd()` returns the current working directory in iRODS.
 #'
@@ -8,15 +8,22 @@
 #'
 #' @return Invisibly the current directory before the change (same convention as
 #'  `setwd()`).
+#' @seealso
+#'  [setwd()] and [getwd()] for R equivalents,
+#'  [ils()] for listing collections and objects in iRODS.
 #' @export
 #'
-#' @examples
-#' if(interactive()) {
+#' @examplesIf is_irods_demo_running()
+#' is_irods_demo_running()
+#'
+#' # demonstration server (requires Bash, Docker and Docker-compose)
+#' # use_irods_demo()
+#'
 #' # connect project to server
 #' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 #'
 #' # authenticate
-#' iauth()
+#' iauth("rods", "rods")
 #'
 #' # default dir
 #' icd(".")
@@ -33,7 +40,13 @@
 #' # absolute paths work as well
 #' icd("/tempZone/home/rods")
 #' ipwd()
-#' }
+#'
+#' # back home
+#' icd("/tempZone/home")
+#'
+#' # remove iRODS project file
+#' unlink(paste0(basename(getwd()), ".irods"))
+#'
 icd  <- function(dir) {
 
   # remove trailing slash
@@ -109,13 +122,13 @@ icd  <- function(dir) {
 #' @export
 ipwd <- function() .rirods$current_dir
 
-#' List iRODS data objects and collections
+#' List iRODS Data Objects and Collections
 #'
 #' List the contents of a collection, optionally with stat, metadata, and/or
 #' access control information for each element in the collection.
 #'
 #' @param logical_path Path to the collection whose contents are to be listed.
-#'    By default this is the current working directory (see `ipwd()`).
+#'    By default this is the current working collection (see [ipwd()]).
 #' @param stat Whether stat information should be included. Defaults to `FALSE`.
 #' @param permissions Whether access control information should be included.
 #'    Defaults to `FALSE`.
@@ -129,25 +142,43 @@ ipwd <- function() .rirods$current_dir
 #'  and response. Defaults to `FALSE`.
 #'
 #' @return Dataframe with logical paths and, if requested, additional information.
+#' @seealso
+#'  [ipwd()] for finding the working collection,
+#'  [ipwd()] for setting the working collection, and
+#'  [list.files()] for an R equivalent.
+#'
 #' @export
 #'
-#' @examples
-#' if(interactive()) {
+#' @examplesIf is_irods_demo_running()
+#' is_irods_demo_running()
+#'
+#' # demonstration server (requires Bash, Docker and Docker-compose)
+#' # use_irods_demo()
+#'
 #' # connect project to server
 #' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 #'
 #' # authenticate
-#' iauth()
+#' iauth("rods", "rods")
 #'
 #' # list home directory
 #' ils()
 #'
+#' # make collection
+#' imkdir("some_collection")
+#'
 #' # list a different directory
-#' ils('/tempZone/home/rods/some_collection')
+#' ils("/tempZone/home/rods/some_collection")
 #'
 #' # show metadata
 #' ils(metadata = TRUE)
-#' }
+#'
+#' # delete `some_collection`
+#' irm("some_collection", force = TRUE, recursive = TRUE)
+#'
+#' # remove iRODS project file
+#' unlink(paste0(basename(getwd()), ".irods"))
+#'
 ils <- function(
     logical_path = ".",
     stat = FALSE,
@@ -188,7 +219,7 @@ ils <- function(
     check_type = FALSE,
     simplifyVector = TRUE
   )$`_embedded` |>
-  as.data.frame()
+  new_irods_df()
 
   # metadata reordering
   if (isTRUE(metadata)) {
@@ -196,13 +227,7 @@ ils <- function(
   }
 
   # output
-  if (nrow(out) == 0) {
-    if (isTRUE(message))
-      message("This collection does not contain any objects or collections.")
-    invisible(out)
-  } else {
-    out
-  }
+  out
 }
 
 # reorder metadata if it exists
