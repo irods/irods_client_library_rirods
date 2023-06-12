@@ -5,7 +5,7 @@ test_that("compare shell with R solution", {
 
   # curl in shell
   shell <- system2(
-    system.file(package = "rirods", "bash", "iauth.sh"),
+    system.file(package = "rirods", "shell_scripts", "iauth.sh"),
     c(user, pass, host),
     stdout = TRUE,
     stderr = FALSE

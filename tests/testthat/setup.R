@@ -81,4 +81,7 @@ if (inherits(tk, "try-error")) {
   .rirods$current_dir <- paste0(zone_path, user, "/testthat")
   # store token
   assign("token", "secret", envir = .rirods)
+} else {
+  # if there is a real server then the mock files will be removed
+  remove_mock_files()
 }

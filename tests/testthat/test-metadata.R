@@ -29,7 +29,7 @@ with_mock_dir("metadata-1", {
         type = "data_object"
       ),
       row.names = c(NA,-1L),
-      class = "data.frame"
+      class = "irods_df"
     )
 
     expect_equal(ils(metadata = TRUE), ref)
@@ -64,7 +64,7 @@ with_mock_dir("metadata-2", {
       type = "data_object"
     ),
     row.names = c(NA, -1L),
-    class = "data.frame"
+    class = "irods_df"
     )
 
     expect_equal(ils(metadata = TRUE), ref)
@@ -119,7 +119,7 @@ with_mock_dir("metadata-3", {
       type = c("data_object", "data_object")
     ),
     row.names = c(1L, 2L),
-    class = "data.frame"
+    class = "irods_df"
     )
 
     expect_equal(ils(metadata = TRUE), ref)
@@ -196,7 +196,7 @@ with_mock_dir("metadata-remove", {
       type = "data_object"
     ),
     row.names = c(NA, -1L),
-    class = "data.frame"
+    class = "irods_df"
     )
 
     expect_equal(ils(metadata = TRUE), ref)

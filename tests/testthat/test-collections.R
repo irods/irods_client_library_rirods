@@ -8,9 +8,13 @@ with_mock_dir("add-data-collections", {
     expect_invisible(imkdir("x/a", create_parent_collections = TRUE))
 
     # reference dataframe
-    ref <- data.frame(
-      logical_path = paste0(lpath, "/", user, "/testthat", c("/a", "/x")),
-      type = c("collection", "collection")
+    ref <- structure(
+      list(
+        logical_path = paste0(lpath, "/", user, "/testthat", c("/a", "/x")),
+        type = c("collection", "collection")
+      ),
+      row.names = c(1L, 2L),
+      class = "irods_df"
     )
 
     # check if collections are added
@@ -39,8 +43,8 @@ with_mock_dir("remove-objects", {
     expect_invisible(irm("foo.csv", force = TRUE))
 
     # check if file is delete
-    expect_message(
-      ils(),
+    expect_output(
+      print(ils()),
       "This collection does not contain any objects or collections."
     )
 

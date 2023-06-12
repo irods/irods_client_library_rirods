@@ -67,7 +67,7 @@ test_that("overwrite error works", {
 #
 #   # curl in shell
 #   system2(
-#     system.file(package = "rirods", "bash", "iput.sh"),
+#     system.file(package = "rirods", "shell_scripts", "iput.sh"),
 #     c(user, pass, host, paste0(def_path, "/testthat") , 0, 8192L),
 #     stdout = NULL,
 #     stderr = NULL
@@ -75,7 +75,7 @@ test_that("overwrite error works", {
 #
 #   # get back from shell
 #   system2(
-#     system.file(package = "rirods", "bash", "iget.sh"),
+#     system.file(package = "rirods", "shell_scripts", "iget.sh"),
 #     c(user, pass, host, paste0(def_path, "/testthat/foo.rds") , 0, 8192L),
 #     stdout = NULL,
 #     stderr = NULL
