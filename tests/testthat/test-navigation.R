@@ -39,10 +39,10 @@ with_mock_dir("navigation", {
     # whether trailing slash are removed
     expect_invisible(icd("."))
     expect_equal(ipwd(), proj_path)
-    expect_gt(nrow(ils()), 0)
+    expect_gt(nrow(as.data.frame(ils())), 0)
     expect_invisible(icd("./"))
     expect_equal(ipwd(), proj_path)
-    expect_gt(nrow(ils()), 0)
+    expect_gt(nrow(as.data.frame(ils())), 0)
 
     # clean-up
     irm(paste0(proj_path, "/test.rds"), force = TRUE)
@@ -57,9 +57,11 @@ with_mock_dir("ils", {
   test_that("ils works", {
     # ils
     icd("..") # move back to execute following test
-    expect_gt(nrow(ils()), 0)
-    expect_message(ils("projectx"))
-    expect_message(ils("/tempZone/home/rods/projectx"))
+    expect_gt(nrow(as.data.frame(ils())), 0)
+    expect_output(print(ils("projectx")),
+                  "This collection does not contain any objects or collections.")
+    expect_output(print(ils("/tempZone/home/rods/projectx")),
+                  "This collection does not contain any objects or collections.")
     expect_error(ils("tempZone/home/rods/projectx"))
     expect_error(ils("/projectx"))
     icd("testthat") # move back up to testthat
@@ -75,7 +77,7 @@ test_that("shell equals R solution", {
 
   # curl in shell
   shell <- system2(
-    system.file(package = "rirods", "bash", "ils.sh"),
+    system.file(package = "rirods", "shell_scripts", "ils.sh"),
     c(user, pass, host, def_path, 0, 0, 0, 0, 100),
     stdout = TRUE,
     stderr = FALSE
@@ -84,5 +86,5 @@ test_that("shell equals R solution", {
 
   # curl in R
   R <- ils(def_path)
-  expect_equal(R, shell$`_embedded`)
+  expect_equal(R, rirods:::new_irods_df(shell$`_embedded`))
 })
