@@ -38,8 +38,7 @@
 #' iauth("rods", "rods")
 #'
 #' # save the iris dataset as csv and send the file to iRODS
-#' library(readr)
-#' write_csv(iris, "iris.csv")
+#' write.csv(iris, "iris.csv")
 #' iput("iris.csv")
 #'
 #' # save with a different name
@@ -49,10 +48,12 @@
 #' # send an R object to iRODS in RDS format
 #' isaveRDS(iris, "iris_in_rds.rds")
 #'
-#' # delete objects
+#' # delete objects in iRODS
 #' irm("iris_in_irods.csv", force = TRUE)
 #' irm("iris_in_rds.rds", force = TRUE)
 #' irm("iris.csv", force = TRUE)
+#'
+#' # delete locally
 #' unlink("iris.csv")
 #'
 #' # remove iRODS project file
@@ -260,8 +261,7 @@ local_to_irods_ <- function(
 #' iauth("rods", "rods")
 #'
 #' # save the iris dataset as csv and send the file to iRODS
-#' library(readr)
-#' write_csv(iris, "iris.csv")
+#' write.csv(iris, "iris.csv")
 #' iput("iris.csv")
 #'
 #' # bring the file back with a different name
@@ -275,9 +275,11 @@ local_to_irods_ <- function(
 #' iris_again <- ireadRDS("irids_in_rds.rds")
 #' iris_again
 #'
-#' # delete objects
+#' # delete objects in iRODS
 #' irm("irids_in_rds.rds", force = TRUE)
 #' irm("iris.csv", force = TRUE)
+#'
+#' # delete locally
 #' unlink("iris.csv")
 #' unlink("newer_iris.csv")
 #'

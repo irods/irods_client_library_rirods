@@ -1,23 +1,23 @@
 Package: rirods
 Title: R Client for iRODS
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
-    person("Martin", "Schobben", , "schobbenmartin@gmail.com", role = c("aut", 
-           "cre", "cph"), comment = c(ORCID = "0000-0001-8560-0037")),
+    person("Martin", "Schobben", , "schobbenmartin@gmail.com", 
+           role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0001-8560-0037")),
     person("Mariana", "Montes", role = "aut"),
     person("Terrell", "Russell", role = "ctb"),
     person("Christine", "Staiger", role = "ctb"),
     person("Ton", "Smeele", role = "ctb"),
-    person("Alan", "King", role = "ctb")
-  )
-Description: The Integrated Rule-Oriented Data System 'iRODS'
-    (<https://irods.org/>) open sourced data management software suite
-    offer solutions which encompasses the whole data life cycle from data
-    generation, storage and recycling. The loosely constructed and highly
-    configurable architecture of iRODS frees the user from strict
-    formatting constrains and single-vendor solutions. This package
-    provides an R interface to iRODS' REST API, allowing you to manage
-    your data from your own machine.
+    person("Alan", "King", role = "ctb"))
+Description: The open sourced data management software 'Integrated Rule-Oriented 
+    Data System' (iRODS) offers solutions for the whole data life cycle 
+    (<https://irods.org/>). The loosely constructed and highly configurable 
+    architecture of 'iRODS' frees the user from strict formatting constraints 
+    and single-vendor solutions. This package provides an interface to the 
+    'iRODS' REST API, allowing you to manage your data and metadata in 'iRODS' 
+    with R. Storage of annotated files and R objects in 'iRODS' ensures 
+    findability, accessibility, interoperability, and reusability of data.
 License: MIT + file LICENSE
 URL: https://github.com/irods/irods_client_library_rirods
 BugReports: https://github.com/irods/irods_client_library_rirods/issues

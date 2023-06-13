@@ -62,8 +62,7 @@ create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 iauth("rods", "rods")
 
 # save the iris dataset as csv and send the file to iRODS
-library(readr)
-write_csv(iris, "iris.csv")
+write.csv(iris, "iris.csv")
 iput("iris.csv")
 
 # bring the file back with a different name
@@ -77,9 +76,11 @@ isaveRDS(iris, "irids_in_rds.rds")
 iris_again <- ireadRDS("irids_in_rds.rds")
 iris_again
 
-# delete objects
+# delete objects in iRODS
 irm("irids_in_rds.rds", force = TRUE)
 irm("iris.csv", force = TRUE)
+
+# delete locally
 unlink("iris.csv")
 unlink("newer_iris.csv")
 
