@@ -47,9 +47,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="connecting-and-authentication">Connecting and authentication<a class="anchor" aria-label="anchor" href="#connecting-and-authentication"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Functions for saving server details and authentication</p>
 
       
     </div><div id="" class="section level2">
@@ -61,78 +61,160 @@
           
           <code><a href="create_irods.html">create_irods()</a></code> 
         </dt>
-        <dd>Generate IRODS project file</dd>
-      </dl><dl><dt>
-          
-          <code><a href="iadmin.html">iadmin()</a></code> 
-        </dt>
-        <dd>The administration interface to the iRODS</dd>
-      </dl><dl><dt>
-          
-          <code><a href="iauth.html">iauth()</a></code> 
-        </dt>
-        <dd>Authentication service for the iRODS zone</dd>
-      </dl><dl><dt>
-          
-          <code><a href="icd.html">icd()</a></code> <code><a href="icd.html">ipwd()</a></code> 
-        </dt>
-        <dd>Get or set current working directory in iRODS</dd>
-      </dl><dl><dt>
-          
-          <code><a href="iget.html">iget()</a></code> <code><a href="iget.html">ireadRDS()</a></code> 
-        </dt>
-        <dd>Retrieve file or object from iRODS</dd>
-      </dl><dl><dt>
-          
-          <code><a href="ils.html">ils()</a></code> 
-        </dt>
-        <dd>List iRODS data objects and collections</dd>
-      </dl><dl><dt>
-          
-          <code><a href="imeta.html">imeta()</a></code> 
-        </dt>
-        <dd>Add or remove metadata</dd>
-      </dl><dl><dt>
-          
-          <code><a href="imkdir.html">imkdir()</a></code> 
-        </dt>
-        <dd>Create a new collection in iRODS</dd>
-      </dl><dl><dt>
-          
-          <code><a href="iput.html">iput()</a></code> <code><a href="iput.html">isaveRDS()</a></code> 
-        </dt>
-        <dd>Save files and objects in iRODS</dd>
-      </dl><dl><dt>
-          
-          <code><a href="iquery.html">iquery()</a></code> 
-        </dt>
-        <dd>Query data objects and collections in iRODS</dd>
-      </dl><dl><dt>
-          
-          <code><a href="irm.html">irm()</a></code> 
-        </dt>
-        <dd>Remove data objects or collections in iRODS.</dd>
+        <dd>Generate IRODS Project File</dd>
       </dl><dl><dt>
           
           <code><a href="local_create_irods.html">local_create_irods()</a></code> 
         </dt>
-        <dd>Launch iRODS from alternative directory</dd>
+        <dd>Launch iRODS from Alternative Directory</dd>
       </dl><dl><dt>
           
-          <code><a href="remove_mock_files.html">remove_mock_files()</a></code> 
+          <code><a href="iauth.html">iauth()</a></code> 
         </dt>
-        <dd>Remove http snapshots or mockfiles</dd>
+        <dd>Authentication Service for an iRODS Zone</dd>
       </dl><dl><dt>
           
-          <code><a href="use_irods_demo.html">use_irods_demo()</a></code> <code><a href="use_irods_demo.html">stop_irods_demo()</a></code> <code><a href="use_irods_demo.html">remove_docker_images()</a></code> 
+          <code><a href="is_connected_irods.html">is_connected_irods()</a></code> 
         </dt>
-        <dd>Run Docker iRODS demonstration service</dd>
+        <dd>Predicate for iRODS Connectivity</dd>
+      </dl></div><div class="section level2">
+      <h2 id="navigating-the-irods-zone">Navigating the iRODS Zone<a class="anchor" aria-label="anchor" href="#navigating-the-irods-zone"></a></h2>
+      
+      <p class="section-desc"></p><p>Logical paths of iRODS and listing content of collections</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="icd.html">icd()</a></code> <code><a href="icd.html">ipwd()</a></code> 
+        </dt>
+        <dd>Get or Set Current Working Directory in iRODS</dd>
+      </dl><dl><dt>
+          
+          <code><a href="ils.html">ils()</a></code> 
+        </dt>
+        <dd>List iRODS Data Objects and Collections</dd>
+      </dl></div><div class="section level2">
+      <h2 id="managing-collections">Managing collections<a class="anchor" aria-label="anchor" href="#managing-collections"></a></h2>
+      
+      <p class="section-desc"></p><p>Creating and removing data objects and collections within iRODS</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="irm.html">irm()</a></code> 
+        </dt>
+        <dd>Remove Data Objects or Collections in iRODS</dd>
+      </dl><dl><dt>
+          
+          <code><a href="imkdir.html">imkdir()</a></code> 
+        </dt>
+        <dd>Create a New Collection in iRODS</dd>
+      </dl></div><div class="section level2">
+      <h2 id="moving-objects">Moving objects<a class="anchor" aria-label="anchor" href="#moving-objects"></a></h2>
+      
+      <p class="section-desc"></p><p>Functions to transfer and download R objects and files to and from iRODS</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="iput.html">iput()</a></code> <code><a href="iput.html">isaveRDS()</a></code> 
+        </dt>
+        <dd>Save Files and Objects in iRODS</dd>
+      </dl><dl><dt>
+          
+          <code><a href="iget.html">iget()</a></code> <code><a href="iget.html">ireadRDS()</a></code> 
+        </dt>
+        <dd>Retrieve File or Object from iRODS</dd>
+      </dl></div><div class="section level2">
+      <h2 id="metadata">Metadata<a class="anchor" aria-label="anchor" href="#metadata"></a></h2>
+      
+      <p class="section-desc"></p><p>Functions to annotate collections and data objects as well as discovery of objects and collections in iRODS</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="imeta.html">imeta()</a></code> 
+        </dt>
+        <dd>Add or Remove Metadata</dd>
+      </dl><dl><dt>
+          
+          <code><a href="iquery.html">iquery()</a></code> 
+        </dt>
+        <dd>Query Data Objects and Collections in iRODS</dd>
+      </dl></div><div class="section level2">
+      <h2 id="demonstrating-irods">Demonstrating iRODS<a class="anchor" aria-label="anchor" href="#demonstrating-irods"></a></h2>
+      
+      <p class="section-desc"></p><p>Functions to demonstrate iRODS capabilities in a Docker container</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="use_irods_demo.html">use_irods_demo()</a></code> <code><a href="use_irods_demo.html">stop_irods_demo()</a></code> 
+        </dt>
+        <dd>Run Docker iRODS Demonstration Service</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_irods_demo_running.html">is_irods_demo_running()</a></code> 
+        </dt>
+        <dd>Predicate for iRODS Demonstration Service State</dd>
+      </dl><dl><dt>
+          
+          <code><a href="iadmin.html">iadmin()</a></code> 
+        </dt>
+        <dd>The Administration Interface to iRODS</dd>
+      </dl></div><div class="section level2">
+      <h2 id="irods-s-class">iRODS s3 class<a class="anchor" aria-label="anchor" href="#irods-s-class"></a></h2>
+      
+      <p class="section-desc"></p><p>Functions to coerce and print irods_df s3 class</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="as.data.frame.irods_df.html">as.data.frame(<i>&lt;irods_df&gt;</i>)</a></code> 
+        </dt>
+        <dd>Coerce to a Data Frame</dd>
+      </dl><dl><dt>
+          
+          <code><a href="print.irods_df.html">print(<i>&lt;irods_df&gt;</i>)</a></code> 
+        </dt>
+        <dd>Print Method for iRODS Data Frame Class.</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Martin Schobben.</p>
+  <p></p><p>Developed by Martin Schobben, Mariana Montes.</p>
 </div>
 
 <div class="pkgdown-footer-right">

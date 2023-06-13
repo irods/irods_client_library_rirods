@@ -3,7 +3,7 @@
 of an attribute name, an attribute value and an optional unit.
 This function allows to chain several operations ('add' or 'remove') linked to
 specific AVUs. Read more about metadata by looking at the iCommands
-equivalent imeta in the iRODS Docs."><title>Add or remove metadata — imeta • rirods</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Add or remove metadata — imeta"><meta property="og:description" content="In iRODS, metadata is stored as attribute-value-units triples (AVUs), consisting
+equivalent imeta in the iRODS Docs."><title>Add or Remove Metadata — imeta • rirods</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Add or Remove Metadata — imeta"><meta property="og:description" content="In iRODS, metadata is stored as attribute-value-units triples (AVUs), consisting
 of an attribute name, an attribute value and an optional unit.
 This function allows to chain several operations ('add' or 'remove') linked to
 specific AVUs. Read more about metadata by looking at the iCommands
@@ -51,7 +51,7 @@ equivalent imeta in the iRODS Docs."><!-- mathjax --><script src="https://cdnjs.
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Add or remove metadata</h1>
+      <img src="" class="logo" alt=""><h1>Add or Remove Metadata</h1>
       <small class="dont-index">Source: <a href="https://github.com/irods/irods_client_library_rirods/blob/HEAD/R/metadata.R" class="external-link"><code>R/metadata.R</code></a></small>
       <div class="d-none name"><code>imeta.Rd</code></div>
     </div>
@@ -86,12 +86,12 @@ Options are 'data_object', 'collection' and 'user'.</p></dd>
 
 
 <dt>operations</dt>
-<dd><p>List of named lists representing operations.
+<dd><p>List of named lists or <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> representing operations.
 The valid components of each of these lists or vectors are:</p><ul><li><p><code>operation</code>, with values 'add' or 'remove', depending on whether the AVU
-should be added to or removed from the metadata of the item.</p></li>
-<li><p><code>attribute</code>, with the name of the AVU.</p></li>
-<li><p><code>value</code>, with the value of the AVU.</p></li>
-<li><p><code>units</code>, with the unit of the AVU.</p></li>
+should be added to or removed from the metadata of the item (required).</p></li>
+<li><p><code>attribute</code>, with the name of the AVU (required).</p></li>
+<li><p><code>value</code>, with the value of the AVU (required).</p></li>
+<li><p><code>units</code>, with the unit of the AVU (optional).</p></li>
 </ul></dd>
 
 
@@ -110,15 +110,24 @@ and response. Defaults to <code>FALSE</code>.</p></dd>
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>https://docs.irods.org/master/icommands/metadata/</p>
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="iquery.html">iquery()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="is_irods_demo_running.html">is_irods_demo_running</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># demonstration server (requires Bash, Docker and Docker-compose)</span></span></span>
+<span class="r-in"><span><span class="co"># use_irods_demo()</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># connect project to server</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="create_irods.html">create_irods</a></span><span class="op">(</span><span class="st">"http://localhost/irods-rest/0.9.3"</span>, <span class="st">"/tempZone/home"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># authentication</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="iauth.html">iauth</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="iauth.html">iauth</a></span><span class="op">(</span><span class="st">"rods"</span>, <span class="st">"rods"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># some data</span></span></span>
 <span class="r-in"><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -128,15 +137,21 @@ and response. Defaults to <code>FALSE</code>.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># check if file is stored</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="ils.html">ils</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==========</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iRODS Zone</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==========</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 logical_path        type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  /tempZone/home/rods/foo.rds data_object</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># add some metadata</span></span></span>
 <span class="r-in"><span><span class="fu">imeta</span><span class="op">(</span></span></span>
-<span class="r-in"><span> <span class="st">"foo.rds"</span>,</span></span>
-<span class="r-in"><span> <span class="st">"data_object"</span>,</span></span>
-<span class="r-in"><span> operations <span class="op">=</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo"</span>, value <span class="op">=</span> <span class="st">"bar"</span>, units <span class="op">=</span> <span class="st">"baz"</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"foo.rds"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"data_object"</span>,</span></span>
+<span class="r-in"><span>   operations <span class="op">=</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo"</span>, value <span class="op">=</span> <span class="st">"bar"</span>, units <span class="op">=</span> <span class="st">"baz"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `operations` can contain multiple tags supplied as a `data.frame`</span></span></span>
@@ -148,33 +163,57 @@ and response. Defaults to <code>FALSE</code>.</p></dd>
 <span class="r-in"><span>    attribute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foo2"</span>, <span class="st">"foo3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bar2"</span>, <span class="st">"bar3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"baz2"</span>, <span class="st">"baz3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># or again as a list of lists</span></span></span>
 <span class="r-in"><span><span class="fu">imeta</span><span class="op">(</span></span></span>
-<span class="r-in"><span> <span class="st">"foo.rds"</span>,</span></span>
-<span class="r-in"><span> <span class="st">"data_object"</span>,</span></span>
-<span class="r-in"><span> operations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo4"</span>, value <span class="op">=</span> <span class="st">"bar4"</span>, units <span class="op">=</span> <span class="st">"baz4"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo5"</span>, value <span class="op">=</span> <span class="st">"bar5"</span>, units <span class="op">=</span> <span class="st">"baz5"</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"foo.rds"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"data_object"</span>,</span></span>
+<span class="r-in"><span>  operations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo4"</span>, value <span class="op">=</span> <span class="st">"bar4"</span>, units <span class="op">=</span> <span class="st">"baz4"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo5"</span>, value <span class="op">=</span> <span class="st">"bar5"</span>, units <span class="op">=</span> <span class="st">"baz5"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># list of lists are useful as AVUs don't have to contain all items and, e.g,</span></span></span>
-<span class="r-in"><span><span class="co"># units can be left out</span></span></span>
+<span class="r-in"><span><span class="co"># list of lists are useful as AVUs don't have to contain units</span></span></span>
 <span class="r-in"><span><span class="fu">imeta</span><span class="op">(</span></span></span>
-<span class="r-in"><span> <span class="st">"foo.rds"</span>,</span></span>
-<span class="r-in"><span> <span class="st">"data_object"</span>,</span></span>
-<span class="r-in"><span> operations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo6"</span>, value <span class="op">=</span> <span class="st">"bar6"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo7"</span>, value <span class="op">=</span> <span class="st">"bar7"</span>, units <span class="op">=</span> <span class="st">"baz7"</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"foo.rds"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"data_object"</span>,</span></span>
+<span class="r-in"><span>  operations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo6"</span>, value <span class="op">=</span> <span class="st">"bar6"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"foo7"</span>, value <span class="op">=</span> <span class="st">"bar7"</span>, units <span class="op">=</span> <span class="st">"baz7"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># check if file is stored with associated metadata</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="ils.html">ils</a></span><span class="op">(</span>metadata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> metadata</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /tempZone/home/rods/foo.rds :</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  attribute value units</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        foo   bar   baz</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       foo2  bar2  baz2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       foo3  bar3  baz3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       foo4  bar4  baz4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       foo5  bar5  baz5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       foo6  bar6      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       foo7  bar7  baz7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==========</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iRODS Zone</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==========</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 logical_path        type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  /tempZone/home/rods/foo.rds data_object</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># delete object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="irm.html">irm</a></span><span class="op">(</span><span class="st">"foo.rds"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># remove iRODS project file</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="st">".irods"</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -182,7 +221,7 @@ and response. Defaults to <code>FALSE</code>.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Martin Schobben.</p>
+  <p></p><p>Developed by Martin Schobben, Mariana Montes.</p>
 </div>
 
 <div class="pkgdown-footer-right">
