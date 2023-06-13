@@ -38,7 +38,8 @@ empty. Defaults to \code{TRUE}.}
 and response. Defaults to \code{FALSE}.}
 }
 \value{
-Dataframe with logical paths and, if requested, additional information.
+Dataframe with logical paths and, if requested, additional
+information.
 }
 \description{
 List the contents of a collection, optionally with stat, metadata, and/or

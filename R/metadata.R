@@ -200,9 +200,18 @@ imeta <- function(
 #' # store
 #' isaveRDS(foo, "foo.rds")
 #'
+#' # add metadata
+#' imeta(
+#'   "foo.rds",
+#'   "data_object",
+#'   operations =
+#'     list(
+#'       list(operation = "add", attribute = "bar", value = "baz")
+#'   )
+#' )
+#'
 #' # search for objects by metadata
-#' iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
-#' iquery("SELECT COLL_NAME, DATA_NAME WHERE META_DATA_ATTR_NAME LIKE 'foo%'")
+#' iquery("SELECT COLL_NAME, DATA_NAME WHERE META_DATA_ATTR_NAME LIKE 'bar%'")
 #'
 #' # delete object
 #' irm("foo.rds", force = TRUE)

@@ -9,6 +9,8 @@ arg
 childtoresc
 cpp
 csv
+devtools
+findability
 github
 hardcoding
 http
@@ -21,4 +23,6 @@ iquest
 irods
 macOS
 mockfiles
+reusability
 tempZone
+usethis

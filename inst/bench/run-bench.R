@@ -22,7 +22,7 @@ renv::init(bare = TRUE)
 
 # install dependencies
 install.packages(c("remotes", "bench", "readr", "knitr", "here", "dplyr",
-                   "ggplot2", "readr", "tidyr"))
+                   "ggplot2", "readr", "tidyr", "xml2", "jsonlite"))
 
 # install rirods
 if (startsWith(rirods_source, "/")) {
