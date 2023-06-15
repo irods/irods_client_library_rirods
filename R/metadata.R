@@ -96,9 +96,6 @@
 #' # delete object
 #' irm("foo.rds", force = TRUE)
 #'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
-#'
 imeta <- function(
     logical_path,
     entity_type = c("data_object", "collection", "user"),
@@ -215,9 +212,6 @@ imeta <- function(
 #'
 #' # delete object
 #' irm("foo.rds", force = TRUE)
-#'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
 #'
 iquery <- function(
     query,

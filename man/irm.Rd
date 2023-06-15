@@ -51,9 +51,6 @@ irm("foo.rds", force = TRUE)
 
 # check if file is deleted
 ils()
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{

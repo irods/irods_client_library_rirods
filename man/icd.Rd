@@ -52,9 +52,6 @@ ipwd()
 
 # back home
 icd("/tempZone/home")
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{

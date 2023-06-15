@@ -74,9 +74,6 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE META_DATA_ATTR_NAME LIKE 'bar\%'")
 
 # delete object
 irm("foo.rds", force = TRUE)
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
 \dontshow{\}) # examplesIf}
 }
 \references{

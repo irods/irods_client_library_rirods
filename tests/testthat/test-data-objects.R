@@ -13,8 +13,8 @@ with_mock_dir("small-data-objects", {
     expect_equal(dfr, ireadRDS("dfr.rds",  overwrite = TRUE))
     expect_invisible(irm("dfr.rds", force = TRUE))
     # external files
-    expect_invisible(iput("dfr.csv",  overwrite = TRUE))
-    expect_invisible(iget("dfr.csv",  overwrite = TRUE))
+    expect_invisible(iput("dfr.csv", "dfr.csv",  overwrite = TRUE))
+    expect_invisible(iget("dfr.csv", "dfr.csv", overwrite = TRUE))
     expect_equal(dfr, read.csv("dfr.csv"))
     expect_invisible(irm("dfr.csv", force = TRUE))
     unlink("dfr.csv")
@@ -33,34 +33,50 @@ with_mock_dir("large-data-objects", {
     expect_equal(mt, ireadRDS("mt.rds",  overwrite = TRUE))
     expect_invisible(irm("mt.rds", force = TRUE))
     # external files
-    expect_invisible(iput("mt.csv",  overwrite = TRUE))
+    expect_invisible(iput("mt.csv", "mt.csv", overwrite = TRUE))
     expect_equal(file.size("mt.csv"), ils(stat = TRUE)$status_information$size)
-    expect_invisible(iget("mt.csv",  overwrite = TRUE))
+    expect_invisible(iget("mt.csv", "mt.csv", overwrite = TRUE))
     expect_invisible(irm("mt.csv", force = TRUE))
   })
 },
 simplify = FALSE
 )
 
-test_that("overwrite error works", {
+with_mock_dir("overwrite-data-objects-errors", {
+  test_that("overwrite error works", {
 
-  # no actual http call is made in these instances
-
-  # overwrite error on iRODS
-  test <- "test"
-  expect_error(
-    iput(
-      test,
-      path = paste0(lpath, "/", user, "/testthat")
+    # save file on iRODS
+    expect_no_error(
+      iput(
+        local_path = "foo.csv",
+        logical_path = "foo.csv",
+        overwrite = TRUE
+      )
     )
-  )
 
-  # overwrite error locally
-  test_file <- tempfile(fileext = ".csv")
-  expect_error(iget(basename(test_file), path = dirname(test_file)))
+    # overwrite error on iRODS
+    expect_error(
+      iput(
+        local_path = "foo.csv",
+        logical_path = "foo.csv"
+      ),
+      "Set `overwrite = TRUE`"
+    )
 
-})
+    # overwrite error locally
+    expect_error(
+      iget(
+        logical_path = "foo.csv",
+        local_path = "foo.csv"
+      ),
+      "Set `overwrite = TRUE`"
+    )
 
+    expect_invisible(irm("foo.csv", force = TRUE))
+  })
+},
+simplify = FALSE
+)
 # test_that("shell equals R solution", {
 #
 #   # currently mocking does not work

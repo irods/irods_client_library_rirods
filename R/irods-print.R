@@ -46,9 +46,6 @@
 #' # delete object
 #' irm("foo.rds", force = TRUE)
 #'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
-#'
 print.irods_df <- function (x, ..., digits = NULL,
                             quote = FALSE, right = TRUE, row.names = FALSE,
                             max = NULL) {

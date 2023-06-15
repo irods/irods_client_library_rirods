@@ -1,3 +1,3 @@
-test_that("irods file generation works", {
-  expect_true(file.exists("testthat.irods"))
+test_that("iRODS configuration file generation works", {
+  expect_true(has_irods_conf())
 })

@@ -44,9 +44,6 @@
 #' # check if file is deleted
 #' ils()
 #'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
-#'
 irm <- function(logical_path, force = TRUE, recursive = FALSE,
                 verbose = FALSE) {
 
@@ -110,9 +107,6 @@ irm <- function(logical_path, force = TRUE, recursive = FALSE,
 #' # remove collection
 #' icd("..")
 #' irm("new_collection", force = TRUE, recursive = TRUE)
-#'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
 #'
 imkdir <- function(logical_path, create_parent_collections = FALSE, verbose = FALSE) {
 

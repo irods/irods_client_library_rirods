@@ -109,9 +109,6 @@ ils(metadata = TRUE)
 
 # delete object
 irm("foo.rds", force = TRUE)
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
 \dontshow{\}) # examplesIf}
 }
 \references{

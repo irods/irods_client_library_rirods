@@ -62,7 +62,7 @@ use_irods_demo("alice", "passWORD")
 ```
 
 ```{r rmirods, echo=FALSE}
-unlink(paste0(basename(getwd()), ".irods"))
+unlink(rirods:::path_to_irods_conf())
 ```
 
 This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version).
@@ -146,7 +146,7 @@ library(readr)
 write_csv(foo, "foo.csv")
 
 # send file
-iput("foo.csv")
+iput("foo.csv", "foo.csv")
 
 # check whether it is stored
 ils()
@@ -160,7 +160,7 @@ Later on somebody else might want to download this file again and store it local
 
 ```{r csv, eval=requireNamespace("readr") & is_irods_demo_running()}
 # retrieve it again later
-iget("foo.csv")
+iget("foo.csv", "foo.csv")
 read_csv("foo.csv")
 ```
 

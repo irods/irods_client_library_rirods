@@ -206,3 +206,59 @@ irods_images_ref <- c(
   "irods_demo_irods-client-rest-cpp",
   "irods_demo_nginx-reverse-proxy"
 )
+
+#' Launch iRODS from Alternative Directory
+#'
+#' This function is useful during development as it prevents cluttering of the
+#' package source files.
+#'
+#' @param host Hostname of the iRODS server. Defaults to
+#'  "http://localhost/irods-rest/0.9.3".
+#' @param zone_path Zone path of the iRODS server. Defaults to "/tempZone/home".
+#' @param dir The directory to use. Default is a temporary directory.
+#' @param env Attach exit handlers to this environment. Defaults to the
+#'  parent frame (accessed through [parent.frame()]).
+#'
+#' @return Invisibly returns the original directory.
+#' @keywords internal
+#'
+local_create_irods <- function(
+    host = NULL,
+    zone_path = NULL,
+    dir = tempdir(),
+    env = parent.frame()
+) {
+
+  # default host
+  if (is.null(host)) {
+    if (Sys.getenv("DEV_KEY_IROD") != "") {
+      host <-
+        httr2::secret_decrypt(Sys.getenv("DEV_HOST_IRODS"), "DEV_KEY_IRODS")
+    } else {
+      host <- "http://localhost/irods-rest/0.9.3"
+    }
+  }
+
+  # defaults path
+  if (is.null(zone_path)) {
+    if (Sys.getenv("DEV_KEY_IROD") != "") {
+      zone_path <-
+        httr2::secret_decrypt(Sys.getenv("DEV_ZONE_PATH_IRODS"), "DEV_KEY_IRODS")
+    } else {
+      zone_path <- "/tempZone/home"
+    }
+  }
+
+  # to return to
+  old_dir <- getwd()
+
+  # change working directory
+  setwd(dir)
+  withr::defer(setwd(old_dir), envir = env)
+
+  # switch to new iRODS project
+  create_irods(host, zone_path, overwrite = TRUE)
+  withr::defer(unlink(path_to_irods_conf()), envir = env)
+
+  invisible(dir)
+}

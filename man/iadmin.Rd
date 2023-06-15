@@ -64,8 +64,5 @@ iadmin(action = "modify", target = "user", arg2 = "Bob", arg3 = "password",
 
 # delete user
 iadmin(action = "remove", target = "user", arg2 = "Bob")
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
 \dontshow{\}) # examplesIf}
 }

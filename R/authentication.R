@@ -23,13 +23,7 @@
 #' # authenticate
 #' iauth("rods", "rods")
 #'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
-#'
 iauth <- function(user = NULL, password = NULL, role = "rodsuser") {
-
-  # check connection
-  if (!is_connected_irods()) stop("Not connected to iRODS.", call. = FALSE)
 
   # ask for credentials
   if (is.null(user)) {
@@ -77,4 +71,19 @@ get_token <- function(details, host) {
   # response
   httr2::req_perform(req) |>
     httr2::resp_body_string()
+}
+
+#' Predicate for iRODS Connectivity
+#'
+#' A predicate to check whether you are currently connected to an iRODS server.
+#'
+#' @param ... Currently not implemented.
+#' @return Boolean whether or not a connection to iRODS exists.
+#' @export
+#'
+#' @examples
+#' is_connected_irods()
+is_connected_irods <- function(...) {
+
+  if (is.null(.rirods$token)) FALSE else TRUE
 }

@@ -59,8 +59,5 @@ irods_zone[basename(irods_zone$logical_path) == "foo.rds", "metadata"]
 
 # delete object
 irm("foo.rds", force = TRUE)
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
 \dontshow{\}) # examplesIf}
 }

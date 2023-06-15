@@ -51,9 +51,6 @@
 #' # delete object
 #' irm("foo.rds", force = TRUE)
 #'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
-#'
 as.data.frame.irods_df <- function(x, ...) {
   class(x) <- "data.frame"
   x
