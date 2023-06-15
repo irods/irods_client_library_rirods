@@ -27,9 +27,15 @@ if (Sys.getenv("DEV_KEY_IRODS") != "") {
 # try to run the server
 tk <- try({
 
+  # set user config directory to temporary location
+  withr::local_envvar(
+    R_USER_CONFIG_DIR = tempdir(),
+    .local_envir = teardown_env()
+  )
+
   # switch to new iRODS project
   create_irods(host, lpath, overwrite = TRUE)
-  withr::defer(unlink("testthat.irods"), teardown_env())
+  withr::defer(unlink(path_to_irods_conf()), teardown_env())
 
   # creates a csv file of foo
   foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))

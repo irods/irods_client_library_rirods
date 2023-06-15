@@ -11,4 +11,3 @@ remove_mock_files <- function() {
   unlink(file.path(pt, mockers), recursive = TRUE)
   invisible(file.path(pt, mockers))
 }
-

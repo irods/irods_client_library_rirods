@@ -7,7 +7,7 @@
 \usage{
 iget(
   logical_path,
-  local_path = basename(logical_path),
+  local_path,
   offset = 0,
   count = 2000L,
   verbose = FALSE,
@@ -25,9 +25,7 @@ ireadRDS(
 \arguments{
 \item{logical_path}{Source path in iRODS.}
 
-\item{local_path}{Destination path in local storage. By default,
-the basename of the logical path; the file will be stored in the current
-directory (see \code{\link[=getwd]{getwd()}}).}
+\item{local_path}{Destination path in local storage.}
 
 \item{offset}{Offset in bytes into the data object. Defaults to 0.}
 
@@ -52,6 +50,9 @@ read an R object from an RDS file in iRODS with \code{\link[=ireadRDS]{ireadRDS(
 \dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 is_irods_demo_running()
 
+\dontshow{
+.old_wd <- setwd(tempdir())
+}
 # demonstration server (requires Bash, Docker and Docker-compose)
 # use_irods_demo()
 
@@ -63,7 +64,7 @@ iauth("rods", "rods")
 
 # save the iris dataset as csv and send the file to iRODS
 write.csv(iris, "iris.csv")
-iput("iris.csv")
+iput("iris.csv", "iris.csv")
 
 # bring the file back with a different name
 iget("iris.csv", "newer_iris.csv")
@@ -80,16 +81,13 @@ iris_again
 irm("irids_in_rds.rds", force = TRUE)
 irm("iris.csv", force = TRUE)
 
-# delete locally
-unlink("iris.csv")
-unlink("newer_iris.csv")
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
+\dontshow{
+setwd(.old_wd)
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=iput]{iput()}} for sending files,
 \code{\link[=isaveRDS]{isaveRDS()}} for sending R objects to iRODS,
-\code{\link[=readRDS]{readRDS()}} for an R equivalent.
+\code{\link[=saveRDS]{saveRDS()}} for an R equivalent.
 }

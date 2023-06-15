@@ -1,7 +1,7 @@
 .Rproj.user
 docs
 inst/doc
-dev/dev_history.R
+dev/
 *.irods
 /doc/
 /Meta/

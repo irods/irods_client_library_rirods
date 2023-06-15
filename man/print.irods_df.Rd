@@ -80,9 +80,6 @@ print(irods_zone, row.names = TRUE)
 
 # delete object
 irm("foo.rds", force = TRUE)
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{

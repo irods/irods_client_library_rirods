@@ -44,9 +44,6 @@
 #' # back home
 #' icd("/tempZone/home")
 #'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
-#'
 icd  <- function(dir) {
 
   # remove trailing slash
@@ -177,9 +174,6 @@ ipwd <- function() .rirods$current_dir
 #' # delete `some_collection`
 #' irm("some_collection", force = TRUE, recursive = TRUE)
 #'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
-#'
 ils <- function(
     logical_path = ".",
     stat = FALSE,
@@ -191,7 +185,6 @@ ils <- function(
     verbose = FALSE
 ) {
 
-  # logical path
   # logical path
   if (logical_path == ".") {
     lpath <- .rirods$current_dir
@@ -220,7 +213,7 @@ ils <- function(
     check_type = FALSE,
     simplifyVector = TRUE
   )$`_embedded` |>
-  new_irods_df()
+    new_irods_df()
 
   # metadata reordering
   if (isTRUE(metadata)) {
@@ -239,4 +232,3 @@ metadata_reorder <- function(x) {
   )
   x
 }
-

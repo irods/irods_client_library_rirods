@@ -65,8 +65,8 @@ No further configuration in R is needed for development (except for removing
 possible mock files). For example, to run the unit tests against this local 
 server use: `devtools::test()`.
 
-For miscellaneous development tasks one can, furthermore, use: `local_create_irods()`. 
-This test fixture is almost the same as the exported function `create_irods()` except that it uses an alternative directory as the working directory thereby preventing 
+For miscellaneous development tasks one can, furthermore, use: `usethis::local_project`. 
+This test fixture uses an alternative directory as the working directory thereby preventing 
 cluttering of the package source files (defaults to a temporary directory). The working directory can be restored to the 
 package directory by restarting the R session (possibly with `CTRL + SHIFT + F10`) or by running `withr::deferred_run()`. 
 

@@ -2,24 +2,29 @@
 % Please edit documentation in R/create-irods.R
 \name{create_irods}
 \alias{create_irods}
-\title{Generate IRODS Project File}
+\title{Generate IRODS Configuration File}
 \usage{
-create_irods(host, zone_path, path = ".", overwrite = FALSE)
+create_irods(host, zone_path, overwrite = FALSE)
 }
 \arguments{
 \item{host}{URL of host.}
 
-\item{zone_path}{Path to the zone of the iRODS server (e.g., "/tempZone/home").}
+\item{zone_path}{Path to the zone of the iRODS server
+(e.g., "/tempZone/home").}
 
-\item{path}{Path of project. Defaults to the top directory of the zone.}
-
-\item{overwrite}{Overwrite existing iRODS project file. Defaults to \code{FALSE}.}
+\item{overwrite}{Overwrite existing iRODS configuration file. Defaults to
+\code{FALSE}.}
 }
 \value{
-Invisibly, the path to the iRODS project file.
+Invisibly, the path to the iRODS configuration file.
 }
 \description{
-This will create an iRODS project file containing information about the
+This will create an iRODS configuration file containing information about the
 iRODS server. Once the file has been created, future sessions
 connect again with the same iRODS server without further intervention.
+}
+\details{
+The configuration file is located in the user-specific configuration
+directory. This destination is set with R_USER_CONFIG_DIR if set. Otherwise,
+it follows platform conventions (see also \code{\link[rappdirs:user_data_dir]{rappdirs::user_config_dir()}}).
 }

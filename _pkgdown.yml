@@ -8,7 +8,6 @@ reference:
     Functions for saving server details and authentication
   contents:
   - create_irods
-  - local_create_irods
   - iauth
   - is_connected_irods
 - title: "Navigating the iRODS Zone"

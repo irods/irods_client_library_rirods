@@ -67,5 +67,6 @@ jobs:
           Rscript -e "install.packages('knitr'); knitr::knit(file.path(getwd(), 'README.Rmd'), file.path(getwd(), 'README.md'))"
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git pull --rebase
           git commit ${BENCH_PATH[*]/.Rmd/.md/.tsv} -m 'Benchmark results' || echo "No changes to commit"
           git push origin || echo "No changes to commit"

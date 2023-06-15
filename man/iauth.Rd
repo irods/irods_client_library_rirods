@@ -33,8 +33,5 @@ create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 
 # authenticate
 iauth("rods", "rods")
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
 \dontshow{\}) # examplesIf}
 }

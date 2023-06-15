@@ -1,6 +1,7 @@
 AVU
 AVUs
 CMD
+CONFIG
 Codecov
 GeneralQuery
 Hostname
@@ -10,7 +11,6 @@ childtoresc
 cpp
 csv
 devtools
-findability
 github
 hardcoding
 http
@@ -23,6 +23,9 @@ iquest
 irods
 macOS
 mockfiles
+findability
+accessibility
 reusability
+interoperability
 tempZone
 usethis

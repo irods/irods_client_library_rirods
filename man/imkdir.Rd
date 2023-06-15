@@ -48,9 +48,6 @@ icd("new_collection")
 # remove collection
 icd("..")
 irm("new_collection", force = TRUE, recursive = TRUE)
-
-# remove iRODS project file
-unlink(paste0(basename(getwd()), ".irods"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{

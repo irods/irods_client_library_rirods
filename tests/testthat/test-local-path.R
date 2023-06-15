@@ -1,7 +1,3 @@
-test_that("warm about potential overwrite", {
-  expect_error(stop_local_overwrite(FALSE, "testthat.irods"))
-})
-
 test_that("files can be chunked", {
 
   # test object to be split

@@ -37,7 +37,7 @@ with_mock_dir("remove-objects", {
     skip_if(.rirods$token == "secret", "IRODS server unavailable")
 
     # store
-    iput("foo.csv", overwrite = TRUE)
+    iput("foo.csv", "foo.csv", overwrite = TRUE)
 
     # delete object "foo.csv"
     expect_invisible(irm("foo.csv", force = TRUE))

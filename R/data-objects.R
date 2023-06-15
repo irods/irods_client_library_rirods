@@ -7,8 +7,6 @@
 #' @param local_path Local path of file to be sent to iRODS.
 #' @param x R object to save in iRODS.
 #' @param logical_path Destination path in iRODS.
-#'    By default, the basename of `local_path` is used and the file is
-#'    stored in the current working directory (see [ipwd()]).
 #' @param offset Offset in bytes into the data object. Defaults to 0.
 #' @param count Maximum number of bytes to write. Defaults to 2000.
 #' @param truncate Whether to truncate the object when opening it. Defaults to
@@ -22,12 +20,15 @@
 #' @seealso
 #'  [iget()] for obtaining files,
 #'  [ireadRDS()] for obtaining R objects from iRODS,
-#'  [saveRDS()] for an R equivalent.
+#'  [readRDS()] for an R equivalent.
 #' @export
 #'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
 #'
+#' \dontshow{
+#' .old_wd <- setwd(tempdir())
+#' }
 #' # demonstration server (requires Bash, Docker and Docker-compose)
 #' # use_irods_demo()
 #'
@@ -39,7 +40,7 @@
 #'
 #' # save the iris dataset as csv and send the file to iRODS
 #' write.csv(iris, "iris.csv")
-#' iput("iris.csv")
+#' iput("iris.csv", "iris.csv")
 #'
 #' # save with a different name
 #' iput("iris.csv", "iris_in_irods.csv")
@@ -53,17 +54,15 @@
 #' irm("iris_in_rds.rds", force = TRUE)
 #' irm("iris.csv", force = TRUE)
 #'
-#' # delete locally
-#' unlink("iris.csv")
-#'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
+#' \dontshow{
+#' setwd(.old_wd)
+#' }
 iput <- function(
     local_path,
-    logical_path = basename(local_path),
+    logical_path,
     offset = 0,
     count = 2000L,
-    truncate = "true",
+    truncate = TRUE,
     verbose = FALSE,
     overwrite = FALSE
   ) {
@@ -86,7 +85,7 @@ iput <- function(
     logical_path = logical_path,
     offset = offset,
     count = count,
-    truncate = truncate,
+    truncate = tolower(as.character(truncate)),
     verbose = verbose
   )
 
@@ -100,7 +99,7 @@ isaveRDS <- function(
     logical_path,
     offset = 0,
     count = 2000L,
-    truncate = "true",
+    truncate = TRUE,
     verbose = FALSE,
     overwrite = FALSE
 ) {
@@ -125,7 +124,7 @@ isaveRDS <- function(
     logical_path = logical_path,
     offset = offset,
     count = count,
-    truncate = truncate,
+    truncate = tolower(as.character(truncate)),
     verbose = verbose
   )
 
@@ -229,9 +228,7 @@ local_to_irods_ <- function(
 #' (see [readRDS()]).
 #'
 #' @param logical_path Source path in iRODS.
-#' @param local_path Destination path in local storage. By default,
-#'   the basename of the logical path; the file will be stored in the current
-#'   directory (see [getwd()]).
+#' @param local_path Destination path in local storage.
 #' @param offset Offset in bytes into the data object. Defaults to 0.
 #' @param count Maximum number of bytes to write. Defaults to 2000.
 #' @param verbose Whether information should be printed about the HTTP request
@@ -244,13 +241,16 @@ local_to_irods_ <- function(
 #' @seealso
 #'  [iput()] for sending files,
 #'  [isaveRDS()] for sending R objects to iRODS,
-#'  [readRDS()] for an R equivalent.
+#'  [saveRDS()] for an R equivalent.
 #'
 #' @export
 #'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
 #'
+#' \dontshow{
+#' .old_wd <- setwd(tempdir())
+#' }
 #' # demonstration server (requires Bash, Docker and Docker-compose)
 #' # use_irods_demo()
 #'
@@ -262,7 +262,7 @@ local_to_irods_ <- function(
 #'
 #' # save the iris dataset as csv and send the file to iRODS
 #' write.csv(iris, "iris.csv")
-#' iput("iris.csv")
+#' iput("iris.csv", "iris.csv")
 #'
 #' # bring the file back with a different name
 #' iget("iris.csv", "newer_iris.csv")
@@ -279,16 +279,12 @@ local_to_irods_ <- function(
 #' irm("irids_in_rds.rds", force = TRUE)
 #' irm("iris.csv", force = TRUE)
 #'
-#' # delete locally
-#' unlink("iris.csv")
-#' unlink("newer_iris.csv")
-#'
-#' # remove iRODS project file
-#' unlink(paste0(basename(getwd()), ".irods"))
-#'
+#' \dontshow{
+#' setwd(.old_wd)
+#' }
 iget <- function(
     logical_path,
-    local_path = basename(logical_path),
+    local_path,
     offset = 0,
     count = 2000L,
     verbose = FALSE,
