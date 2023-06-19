@@ -1,6 +1,6 @@
 structure(list(method = "GET", url = "/stream?logical-path=%2FtempZone%2Fhome%2Frods%2Ftestthat%2Fmt.csv&offset=38718&count=2037", 
     status_code = 200L, headers = structure(list(Server = "nginx/1.23.1", 
-        Date = "Mon, 12 Jun 2023 19:20:38 GMT", `Content-Length` = "2037", 
+        Date = "Mon, 19 Jun 2023 02:41:00 GMT", `Content-Length` = "2037", 
         Connection = "keep-alive", `Access-Control-Allow-Origin` = "*", 
         `Access-Control-Allow-Headers` = "*", `Access-Control-Allow-Methods` = "AUTHORIZATION,ACCEPT,GET,POST,OPTIONS,PUT,DELETE"), class = "httr2_headers"), 
     body = as.raw(c(0x39, 0x36, 0x34, 0x0a, 0x37, 0x39, 0x36, 
