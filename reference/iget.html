@@ -14,7 +14,7 @@ read an R object from an RDS file in iRODS with ireadRDS()
     
     <a class="navbar-brand me-2" href="../index.html">rirods</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,6 +30,9 @@ read an R object from an RDS file in iRODS with ireadRDS()
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/develop.html">Developing rirods</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -62,7 +65,7 @@ read an R object from an RDS file in iRODS with <code>ireadRDS()</code>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">iget</span><span class="op">(</span></span>
 <span>  <span class="va">logical_path</span>,</span>
-<span>  local_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">logical_path</span><span class="op">)</span>,</span>
+<span>  <span class="va">local_path</span>,</span>
 <span>  offset <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  count <span class="op">=</span> <span class="fl">2000L</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -85,9 +88,7 @@ read an R object from an RDS file in iRODS with <code>ireadRDS()</code>
 
 
 <dt>local_path</dt>
-<dd><p>Destination path in local storage. By default,
-the basename of the logical path; the file will be stored in the current
-directory (see <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>).</p></dd>
+<dd><p>Destination path in local storage.</p></dd>
 
 
 <dt>offset</dt>
@@ -119,7 +120,7 @@ Defaults to <code>FALSE</code>.</p></dd>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="iput.html">iput()</a></code> for sending files,
 <code><a href="iput.html">isaveRDS()</a></code> for sending R objects to iRODS,
-<code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code> for an R equivalent.</p></div>
+<code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> for an R equivalent.</p></div>
     </div>
 
     <div class="section level2">
@@ -127,6 +128,9 @@ Defaults to <code>FALSE</code>.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="is_irods_demo_running.html">is_irods_demo_running</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="va">.old_wd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="co"># demonstration server (requires Bash, Docker and Docker-compose)</span></span></span>
 <span class="r-in"><span><span class="co"># use_irods_demo()</span></span></span>
 <span class="r-in"><span></span></span>
@@ -137,9 +141,8 @@ Defaults to <code>FALSE</code>.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="iauth.html">iauth</a></span><span class="op">(</span><span class="st">"rods"</span>, <span class="st">"rods"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># save the iris dataset as csv and send the file to iRODS</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_csv</a></span><span class="op">(</span><span class="va">iris</span>, <span class="st">"iris.csv"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="iput.html">iput</a></span><span class="op">(</span><span class="st">"iris.csv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">iris</span>, <span class="st">"iris.csv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="iput.html">iput</a></span><span class="op">(</span><span class="st">"iris.csv"</span>, <span class="st">"iris.csv"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># bring the file back with a different name</span></span></span>
 <span class="r-in"><span><span class="fu">iget</span><span class="op">(</span><span class="st">"iris.csv"</span>, <span class="st">"newer_iris.csv"</span><span class="op">)</span></span></span>
@@ -304,14 +307,13 @@ Defaults to <code>FALSE</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 149          6.2         3.4          5.4         2.3  virginica</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 150          5.9         3.0          5.1         1.8  virginica</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># delete objects</span></span></span>
+<span class="r-in"><span><span class="co"># delete objects in iRODS</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="irm.html">irm</a></span><span class="op">(</span><span class="st">"irids_in_rds.rds"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="irm.html">irm</a></span><span class="op">(</span><span class="st">"iris.csv"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"iris.csv"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"newer_iris.csv"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># remove iRODS project file</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="st">".irods"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">.old_wd</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

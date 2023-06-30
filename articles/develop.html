@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rirods</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,9 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/develop.html">Developing rirods</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -86,20 +89,20 @@ and make a Pull Request.</p>
 <div class="section level2">
 <h2 id="prerequisites-r">Prerequisites R<a class="anchor" aria-label="anchor" href="#prerequisites-r"></a>
 </h2>
-<p>The following R packages are required for development:
+<p>The following R packages are furthermore required for development:
 <code>xml2</code>, <code>jsonlite</code>, <code>readr</code>,
-<code>testthat</code> (&gt;= 3.0.0) and <code>withr</code>, and
-<code>httr2</code> and <code>httptest2</code>. For convenience, one can
-also use <code>renv</code> () and <code><a href="https://rstudio.github.io/renv/reference/restore.html" class="external-link">renv::restore()</a></code> to
-install all dependencies. The <code>usethis</code> and the
-<code>devtools</code> packages are further suggestions to streamline
-development. See <a href="https://devtools.r-lib.org/" class="external-link uri">https://devtools.r-lib.org/</a> and <a href="https://usethis.r-lib.org/" class="external-link uri">https://usethis.r-lib.org/</a> for common development tasks
-and setups covered by these packages.</p>
+<code>testthat</code> (&gt;= 3.0.0), <code>knitr</code>,
+<code>rmarkdown</code>, <code>spelling</code>, and
+<code>httptest2</code>. For convenience, one can also use
+<code>renv</code> () and <code><a href="https://rstudio.github.io/renv/reference/restore.html" class="external-link">renv::restore()</a></code> to install all
+dependencies. The <code>usethis</code> and the <code>devtools</code>
+packages are further suggestions to streamline development. See <a href="https://devtools.r-lib.org/" class="external-link">devtools</a> and <a href="https://usethis.r-lib.org/" class="external-link">usethis</a> for common development
+tasks and setups covered by these packages.</p>
 <p>Development of <code>rirods</code> relies on the
 <code>httptest2</code> which enables testing of the logic on the R side
 of the API without requiring access to the remote service. It does this
 by recording the API response as mock files. These mock files are stored
-in several directories under <code>.tests/testthat/</code>.</p>
+in several directories under <code>tests/testthat/</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="prerequisites-irods">Prerequisites iRODS<a class="anchor" aria-label="anchor" href="#prerequisites-irods"></a>
@@ -122,14 +125,14 @@ API):</p>
 <code><a href="../reference/use_irods_demo.html">use_irods_demo()</a></code>.</p>
 <p>Note, that both options can only be used if Docker and the
 Docker-compose plugin are installed.</p>
-<p>This will result in the demonstration REST API running at <a href="http://localhost/irods-rest/0.9.3" class="external-link uri">http://localhost/irods-rest/0.9.3</a> (or later version). No
+<p>This will result in the demonstration REST API running at
+<code>http://localhost/irods-rest/0.9.3</code> (or later version). No
 further configuration in R is needed for development (except for
 removing possible mock files). For example, to run the unit tests
 against this local server use: <code><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">devtools::test()</a></code>.</p>
 <p>For miscellaneous development tasks one can, furthermore, use:
-<code><a href="../reference/local_create_irods.html">local_create_irods()</a></code>. This test fixture is almost the same
-as the exported function <code><a href="../reference/create_irods.html">create_irods()</a></code> except that it uses
-an alternative directory as the working directory thereby preventing
+<code><a href="https://usethis.r-lib.org/reference/proj_utils.html" class="external-link">usethis::local_project</a></code>. This test fixture uses an
+alternative directory as the working directory thereby preventing
 cluttering of the package source files (defaults to a temporary
 directory). The working directory can be restored to the package
 directory by restarting the R session (possibly with
