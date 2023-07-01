@@ -5,3 +5,5 @@ dev/
 *.irods
 /doc/
 /Meta/
+NEWS.md
+CRAN-SUBMISSION

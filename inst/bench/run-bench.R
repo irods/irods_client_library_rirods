@@ -59,7 +59,7 @@ timer_files <- function(file_name) {
 
   # time execution
   time_iput <- bench::mark(
-    iput(file_name, overwrite = TRUE, count = 1000),
+    iput(file_name, file_name, overwrite = TRUE, count = 1000),
     max_iterations = 100,
     filter_gc = FALSE
   )
@@ -72,7 +72,7 @@ timer_files <- function(file_name) {
 
   # time execution
   time_iget <- bench::mark(
-    iget(file_name, overwrite = TRUE, count = 1000),
+    iget(file_name, file_name, overwrite = TRUE, count = 1000),
     max_iterations = 100,
     filter_gc = FALSE
   )

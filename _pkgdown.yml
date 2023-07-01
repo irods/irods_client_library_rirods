@@ -52,3 +52,8 @@ reference:
   contents:
   - as.data.frame.irods_df
   - print.irods_df
+
+news:
+ releases:
+  - text: "Version 0.1.1"
+    href: https://fairelabs.github.io/iRODS4R/posts/rirods-0-1-1/
