@@ -33,7 +33,7 @@
 #' # use_irods_demo()
 #'
 #' # connect project to server
-#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", TRUE)
 #'
 #' # authenticate
 #' iauth("rods", "rods")
@@ -243,6 +243,20 @@ local_to_irods_ <- function(
 #'  [isaveRDS()] for sending R objects to iRODS,
 #'  [saveRDS()] for an R equivalent.
 #'
+#' Transfer a file from iRODS to the local storage with `iget()` or
+#' read an R object from an RDS file in iRODS with `ireadRDS()` (see `readRDS()`).
+#'
+#' @param logical_path Source path in iRODS.
+#' @param local_path Destination path in local storage. By default,
+#'   the basename of the logical path; the file will be stored in the current
+#'   directory (see `getwd()`).
+#' @param offset Offset in bytes into the data object. Defaults to 0.
+#' @param count Maximum number of bytes to write. Defaults to 2000.
+#' @param verbose Whether information should be printed about the HTTP request and response.
+#' @param overwrite Whether the local file should be overwritten if it exists.
+#'    Defaults to `FALSE`.
+#'
+#' @return The R object in case of `ireadRDS()`, invisibly `NULL` in case of `iget()`.
 #' @export
 #'
 #' @examplesIf is_irods_demo_running()

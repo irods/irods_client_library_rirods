@@ -171,12 +171,25 @@ imeta <- function(
 #' @param verbose Whether information should be printed about the HTTP request
 #'  and response. Defaults to `FALSE`.
 #'
-#' @return Invisibly, the HTTP response.
+#' @return A dataframe with one row per result and one column per requested attribute,
+#'   with "size" and "time" columns parsed to the right type.
 #' @seealso [imeta()]
 #'
 #' @references
 #'  https://docs.irods.org/master/icommands/user/#iquest
 #'
+#' Use SQL-like expressions to query data objects and collections based on different properties.
+#'
+#' @param query GeneralQuery for searching the iCAT database.
+#' @param limit Maximum number of rows to return. Defaults to 100.
+#' @param offset Number of rows to skip for paging. Defaults to 0.
+#' @param type Type of query: 'general' (the default) or 'specific'.
+#' @param case_sensitive Whether the string matching in the query is case sensitive.
+#'   Defaults to `TRUE`.
+#' @param distinct Whether only distinct rows should be listed. Defaults to `TRUE`.
+#' @param verbose Whether information should be printed about the HTTP request and response.
+#'
+#' @return Invisibly, the HTTP response.
 #' @export
 #'
 #' @examplesIf is_irods_demo_running()
@@ -243,6 +256,30 @@ iquery <- function(
     check_type = FALSE,
     simplifyVector = TRUE
   )$`_embedded`
+
+  try(
+    {
+      column_names <- strsplit(
+        gsub(
+          "SELECT ([A-Z_, ]+)( WHERE .+)?",
+          "\\1",
+          toupper(query)
+        ), ", "
+      )[[1]]
+      colnames(out) <- column_names
+      out <- as.data.frame(out)
+
+      for (col in column_names) {
+        if (endsWith(col, "TIME")) {
+          out[[col]] <- as.POSIXct(as.numeric(out[[col]]), origin = "1970-01-01")
+        } else if (endsWith(col, "SIZE")) {
+          out[[col]] <- as.numeric(out[[col]])
+        }
+      }
+
+    },
+    silent = TRUE
+  )
 
   out
 }

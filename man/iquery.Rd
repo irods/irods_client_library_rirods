@@ -23,16 +23,17 @@ iquery(
 
 \item{type}{Type of query: 'general' (the default) or 'specific'.}
 
-\item{case_sensitive}{Whether the string matching in the query is case
-sensitive. Defaults to \code{TRUE}.}
+\item{case_sensitive}{Whether the string matching in the query is case sensitive.
+Defaults to \code{TRUE}.}
 
-\item{distinct}{Whether only distinct rows should be listed. Defaults to
-\code{TRUE}.}
+\item{distinct}{Whether only distinct rows should be listed. Defaults to \code{TRUE}.}
 
-\item{verbose}{Whether information should be printed about the HTTP request
-and response. Defaults to \code{FALSE}.}
+\item{verbose}{Whether information should be printed about the HTTP request and response.}
 }
 \value{
+A dataframe with one row per result and one column per requested attribute,
+with "size" and "time" columns parsed to the right type.
+
 Invisibly, the HTTP response.
 }
 \description{
@@ -78,6 +79,8 @@ irm("foo.rds", force = TRUE)
 }
 \references{
 https://docs.irods.org/master/icommands/user/#iquest
+
+Use SQL-like expressions to query data objects and collections based on different properties.
 }
 \seealso{
 \code{\link[=imeta]{imeta()}}
