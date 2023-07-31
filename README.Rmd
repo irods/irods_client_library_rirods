@@ -20,7 +20,7 @@ knitr::opts_knit$set(
 )
 ```
 
-# rirods
+# rirods <img src="man/figures/logo.png" align="right" />
 
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/irods/irods_client_library_rirods/branch/main/graph/badge.svg)](https://app.codecov.io/gh/irods/irods_client_library_rirods?branch=main)
@@ -67,7 +67,7 @@ unlink(rirods:::path_to_irods_conf())
 
 This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version).
 
-These Docker containers are designed to easily stand up a **DEMONSTRATION** of the iRODS server. It is intended for education and exploration.
+These Docker containers are designed to easily stand up a **DEMONSTRATION** of the iRODS server. It is intended for education and exploration. (See also `vignette("demo")`.)
 
 **DO NOT USE IN PRODUCTION**
 
@@ -80,7 +80,7 @@ To connect to the REST API endpoint of your choice, load `rirods`, connect with 
 create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 ```
 
-### authentication
+### Authentication
 
 In this example Alice is a user of iRODS and she can authenticate herself with `iauth()`. This prompts a dialog where you can enter your username and password without hardcoding this information in your scripts.
 
@@ -94,7 +94,7 @@ iauth() # or iauth("alice", "passWORD")
 iauth("alice", "passWORD")
 ```
 
-### save R objects
+### Save R objects
 
 Suppose Alice would like to upload an R object from her current R session to an iRODS collection. For this, use the `isaveRDS()` command:
 
@@ -109,7 +109,7 @@ ipwd()
 isaveRDS(foo, "foo.rds")
 ```
 
-### metadata
+### Metadata
 
 To truly appreciate the strength of iRODS, we can add some metadata that describes the data object "foo":
 
@@ -126,7 +126,9 @@ imeta(
 ils(metadata = TRUE)
 ```
 
-### read R objects
+For more on using metadata, check out `vignette("metadata")`.
+
+### Read R objects
 
 If Alice wanted to copy the foo R object from an iRODS collection to her current R session, she would use `ireadRDS()`:
 
@@ -135,7 +137,7 @@ If Alice wanted to copy the foo R object from an iRODS collection to her current
 ireadRDS("foo.rds")
 ```
 
-### csv
+### Other file formats
 
 Possibly Alice does not want a native R object to be stored on iRODS but a file type that can be accessed by other programs. For this, use the `iput()` command:
 
@@ -164,7 +166,7 @@ iget("foo.csv", "foo.csv")
 read_csv("foo.csv")
 ```
 
-### query
+### Query
 
 By adding metadata you and others can more easily discover data in future projects. Objects can be searched with General Queries and `iquery()`:
 
@@ -178,7 +180,9 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
 ```
 
-### cleanup
+For more on querying, check out `vignette("metadata")`.
+
+### Cleanup
 
 Finally, we can clean up Alice's home collection:
 

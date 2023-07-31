@@ -1,6 +1,7 @@
 url: https://irods.github.io/irods_client_library_rirods/
 template:
   bootstrap: 5
+  bootswatch: minty
 
 reference:
 - title: "Connecting and authentication"
