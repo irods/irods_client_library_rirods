@@ -25,14 +25,15 @@ ireadRDS(
 \arguments{
 \item{logical_path}{Source path in iRODS.}
 
-\item{local_path}{Destination path in local storage.}
+\item{local_path}{Destination path in local storage. By default,
+the basename of the logical path; the file will be stored in the current
+directory (see \code{getwd()}).}
 
 \item{offset}{Offset in bytes into the data object. Defaults to 0.}
 
 \item{count}{Maximum number of bytes to write. Defaults to 2000.}
 
-\item{verbose}{Whether information should be printed about the HTTP request
-and response. Defaults to \code{FALSE}.}
+\item{verbose}{Whether information should be printed about the HTTP request and response.}
 
 \item{overwrite}{Whether the local file should be overwritten if it exists.
 Defaults to \code{FALSE}.}
@@ -40,6 +41,8 @@ Defaults to \code{FALSE}.}
 \value{
 The R object in case of \code{ireadRDS()}, invisibly \code{NULL} in case of
 \code{iget()}.
+
+The R object in case of \code{ireadRDS()}, invisibly \code{NULL} in case of \code{iget()}.
 }
 \description{
 Transfer a file from iRODS to the local storage with \code{\link[=iget]{iget()}} or
@@ -90,4 +93,7 @@ setwd(.old_wd)
 \code{\link[=iput]{iput()}} for sending files,
 \code{\link[=isaveRDS]{isaveRDS()}} for sending R objects to iRODS,
 \code{\link[=saveRDS]{saveRDS()}} for an R equivalent.
+
+Transfer a file from iRODS to the local storage with \code{iget()} or
+read an R object from an RDS file in iRODS with \code{ireadRDS()} (see \code{readRDS()}).
 }

@@ -212,8 +212,17 @@ ils <- function(
     out,
     check_type = FALSE,
     simplifyVector = TRUE
-  )$`_embedded` |>
-    new_irods_df()
+  )$`_embedded`
+  if (isTRUE(stat)) {
+    converted_last_write_time <- as.POSIXct(
+      as.numeric(out$status_information$last_write_time),
+      origin = "1970-01-01")
+    out$status_information$last_write_time <- converted_last_write_time
+    if ("size" %in% colnames(out$status_information)) {
+      out$status_information$size <- as.numeric(out$status_information$size)
+    }
+  }
+  out <- new_irods_df(out)
 
   # metadata reordering
   if (isTRUE(metadata)) {

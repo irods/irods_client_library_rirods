@@ -160,10 +160,8 @@ with_mock_dir("metadata-query", {
   test_that("metadata query works" , {
 
     # reference dataframe
-    ref <- c(
-      paste0(lpath, "/", user, "/testthat"),
-      "test.rds"
-    ) |> matrix(ncol = 2)
+    ref <- data.frame(COLL_NAME = paste0(lpath, "/", user, "/testthat"),
+               DATA_NAME = "test.rds")
 
     # query
     iq <- iquery(
@@ -171,6 +169,23 @@ with_mock_dir("metadata-query", {
     )
 
     expect_equal(iq, ref)
+
+  })
+  test_that("metadata query columns are ok" , {
+
+    # query
+    iq <- iquery(
+      paste0("SELECT COLL_NAME, DATA_NAME, DATA_SIZE, COLL_CREATE_TIME WHERE COLL_NAME LIKE '", lpath, "/%'")
+    )
+
+    expect_equal(
+      colnames(iq),
+      c("COLL_NAME", "DATA_NAME", "DATA_SIZE", "COLL_CREATE_TIME")
+      )
+    expect_type(iq$COLL_NAME, "character")
+    expect_type(iq$DATA_NAME, "character")
+    expect_type(iq$DATA_SIZE, "double")
+    expect_s3_class(iq$COLL_CREATE_TIME, "POSIXct")
 
   })
 })
