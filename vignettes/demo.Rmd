@@ -1,0 +1,98 @@
+---
+title: "Use iRODS demo"
+author: "Mariana Montes"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Use iRODS demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(httptest2)
+library(rirods)
+start_vignette("demo")
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval=is_irods_demo_running()
+)
+```
+
+If you don't have access to an iRODS server with the [iRODS REST API](https://github.com/irods/irods_client_rest_cpp) installed,
+you can still try it out with a local demo on Linux or [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) (using Linux inside Windows).
+
+As initial requirements, you need bash, docker and the docker-compose plugin in your Linux distribution. You can check if they are installed like so (the command should provide the path to where your version is installed):
+
+```sh
+which bash
+which docker
+which docker-compose
+```
+
+You should also start a Docker daemon in your Linux session, for example:
+
+```sh
+sudo dockerd
+```
+
+Make sure you don't need `sudo` for `docker`, though, by [adding yourself to the `docker` group](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user). You can check that this is the case by running `docker run hello-world` on the command line.
+
+If you use WSL, you can start RStudio Server with `sudo rstudio-server start` and run it from your browser (http://localhost:8787). [The Posit site](https://posit.co/download/rstudio-server/) has installation instructions for R and RStudio Server in Linux.
+
+Then, in your script or console, load `{rirods}` and run `use_irods_demo()`:
+
+```{r eval=FALSE}
+library(rirods)
+use_irods_demo()
+```
+
+The first time you run it it may ask you questions to guiding through generating the first docker image. Once you get the message shown above, you can create the configuration file (if it doesn't exist yet) and authenticate. Here we authenticate with the default "rods" account, but you could have another account as well; remember that running `iauth()` will open an interactive dialog to provide a username and password.
+
+```{r}
+create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", overwrite = TRUE)
+iauth("rods", "rods")
+ils()
+```
+
+If you have any issues running the demo, check:
+
+- that you are working from Linux (or WSL2)
+- that you have `docker`, and `docker-compose` installed
+- that you don't need `sudo` permissions to run `docker`
+- that you have (re-)installed the package locally _after_ checking all these to be true (and restarted R)
+- that you use the same username and password in `use_irods_demo()` and in `iauth()`.
+
+If you still have problems, please report them in the [Issues of the repository](https://github.com/irods/irods_client_library_rirods/issues) and we'll try to help you.
+
+## Using the development version
+
+If instead of installing `{rirods}` with `install.packages()` you want to use a development version, you need to make sure you have the appropriate submodules to run the demo. Instead of installing with `devtools::install_github()`, clone the [repository](https://github.com/irods/irods_client_library_rirods) (or a fork thereof) and update all submodules:
+
+```sh
+git clone git@github.com:irods/irods_client_library_rirods.git # clone your fork instead
+cd irods_client_library_rirods.git # go to the repository
+git submodule update --init inst/irods_demo # update the demo submodule
+cd inst/irods_demo # update the sub-submodule
+git submodule update --init irods_client_zone_management_tool
+```
+
+Only then, from R, install the package with `devtools::install()` (either from the project of the package or providing the path to the package).
+
+If you have any issues running the demo, check:
+
+- that you are working from Linux (or WSL2)
+- that you have `docker`, and `docker-compose` installed
+- that you don't need `sudo` permissions to run `docker`
+- that "inst/irods_demo" inside the package repository contains files
+- that "irods_client_zone_management_tool" in "inst/irods_demo" also contains files
+- that you have installed the package locally _after_ checking all these to be true (and restarted R)
+
+If you still have problems, please report them in the [Issues of the repository](https://github.com/irods/irods_client_library_rirods/issues) and we'll try to help you.
+
+```{r, include=FALSE}
+end_vignette()
+```
+

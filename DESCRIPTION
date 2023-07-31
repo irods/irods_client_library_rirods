@@ -35,7 +35,9 @@ Imports:
 Suggests: 
     httptest2,
     jsonlite,
+    kableExtra,
     knitr,
+    purrr,
     readr,
     rmarkdown,
     spelling,
