@@ -63,161 +63,161 @@ The results are based on the HEAD of the main branch on the iRODS organization r
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 312 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 177.1ms </td>
-   <td style="text-align:right;"> 1.44MB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 171.25ms </td>
+   <td style="text-align:right;"> 1.53MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 312 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 252.66ms </td>
-   <td style="text-align:right;"> 315.59KB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 208.95ms </td>
+   <td style="text-align:right;"> 324.98KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 3913 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 368.62ms </td>
-   <td style="text-align:right;"> 437.51KB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 339.25ms </td>
+   <td style="text-align:right;"> 467.76KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 3913 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 421.44ms </td>
-   <td style="text-align:right;"> 567.64KB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 458.89ms </td>
+   <td style="text-align:right;"> 491.24KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 48914 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 4.47s </td>
-   <td style="text-align:right;"> 5.25MB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 4.19s </td>
+   <td style="text-align:right;"> 5.58MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 48914 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 5.2s </td>
-   <td style="text-align:right;"> 5.25MB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 4.88s </td>
+   <td style="text-align:right;"> 5.58MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 588915 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 52.8s </td>
-   <td style="text-align:right;"> 63.16MB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 50.39s </td>
+   <td style="text-align:right;"> 67.08MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 588915 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 1.03m </td>
-   <td style="text-align:right;"> 63.25MB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 59.31s </td>
+   <td style="text-align:right;"> 67.16MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 6888916 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 10.34m </td>
-   <td style="text-align:right;"> 738.58MB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 9.97m </td>
+   <td style="text-align:right;"> 784.41MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 6888916 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 12.08m </td>
-   <td style="text-align:right;"> 739.84MB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 11.76m </td>
+   <td style="text-align:right;"> 785.64MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 312 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 179.12ms </td>
-   <td style="text-align:right;"> 1.44MB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 170.83ms </td>
+   <td style="text-align:right;"> 1.23MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 312 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 261.75ms </td>
-   <td style="text-align:right;"> 318.42KB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 209.19ms </td>
+   <td style="text-align:right;"> 325.16KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 3913 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 356.22ms </td>
-   <td style="text-align:right;"> 437.51KB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 344.93ms </td>
+   <td style="text-align:right;"> 466.21KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 3913 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 447.14ms </td>
-   <td style="text-align:right;"> 567.64KB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 403.4ms </td>
+   <td style="text-align:right;"> 491.24KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 48914 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 4.4s </td>
-   <td style="text-align:right;"> 5.25MB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 4.23s </td>
+   <td style="text-align:right;"> 5.58MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 48914 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 5.12s </td>
-   <td style="text-align:right;"> 5.25MB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 4.95s </td>
+   <td style="text-align:right;"> 5.58MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 588915 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 53.3s </td>
-   <td style="text-align:right;"> 63.16MB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 51.01s </td>
+   <td style="text-align:right;"> 67.08MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 588915 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 1.03m </td>
-   <td style="text-align:right;"> 63.24MB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 59.26s </td>
+   <td style="text-align:right;"> 67.17MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 6888916 </td>
-   <td style="text-align:right;"> iget(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 10.37m </td>
-   <td style="text-align:right;"> 738.59MB </td>
+   <td style="text-align:right;"> iget(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 9.94m </td>
+   <td style="text-align:right;"> 784.41MB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 6888916 </td>
-   <td style="text-align:right;"> iput(file_name, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 12.11m </td>
-   <td style="text-align:right;"> 739.83MB </td>
+   <td style="text-align:right;"> iput(file_name, file_name, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 11.75m </td>
+   <td style="text-align:right;"> 785.65MB </td>
   </tr>
 </tbody>
 </table>
@@ -250,160 +250,160 @@ The results are based on the HEAD of the main branch on the iRODS organization r
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 1152 </td>
    <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 220ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
+   <td style="text-align:right;"> 212ms </td>
+   <td style="text-align:right;"> 84KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 1152 </td>
    <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
-   <td style="text-align:right;"> 175ms </td>
-   <td style="text-align:right;"> 70.7KB </td>
+   <td style="text-align:right;"> 586ms </td>
+   <td style="text-align:right;"> 85.8KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 4752 </td>
    <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 216ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
+   <td style="text-align:right;"> 209ms </td>
+   <td style="text-align:right;"> 84KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 4752 </td>
    <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
-   <td style="text-align:right;"> 174ms </td>
-   <td style="text-align:right;"> 67KB </td>
+   <td style="text-align:right;"> 172ms </td>
+   <td style="text-align:right;"> 82.1KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 40752 </td>
    <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 219ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
+   <td style="text-align:right;"> 209ms </td>
+   <td style="text-align:right;"> 84KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 40752 </td>
    <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
-   <td style="text-align:right;"> 174ms </td>
-   <td style="text-align:right;"> 67KB </td>
+   <td style="text-align:right;"> 172ms </td>
+   <td style="text-align:right;"> 82.1KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 400752 </td>
    <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 218ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
+   <td style="text-align:right;"> 210ms </td>
+   <td style="text-align:right;"> 84KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 400752 </td>
    <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
-   <td style="text-align:right;"> 175ms </td>
-   <td style="text-align:right;"> 67KB </td>
+   <td style="text-align:right;"> 172ms </td>
+   <td style="text-align:right;"> 82.1KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 4000752 </td>
    <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 214ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
+   <td style="text-align:right;"> 207ms </td>
+   <td style="text-align:right;"> 84KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> irods/irods_client_library_rirods </td>
    <td style="text-align:right;"> HEAD </td>
    <td style="text-align:right;"> 4000752 </td>
    <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
-   <td style="text-align:right;"> 185ms </td>
-   <td style="text-align:right;"> 67KB </td>
+   <td style="text-align:right;"> 171ms </td>
+   <td style="text-align:right;"> 82.1KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 1152 </td>
    <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 223ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
+   <td style="text-align:right;"> 205ms </td>
+   <td style="text-align:right;"> 84KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 1152 </td>
    <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
-   <td style="text-align:right;"> 184ms </td>
-   <td style="text-align:right;"> 73.6KB </td>
+   <td style="text-align:right;"> 183ms </td>
+   <td style="text-align:right;"> 88.6KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 4752 </td>
    <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 222ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
+   <td style="text-align:right;"> 205ms </td>
+   <td style="text-align:right;"> 84KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 4752 </td>
    <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
-   <td style="text-align:right;"> 186ms </td>
-   <td style="text-align:right;"> 67KB </td>
+   <td style="text-align:right;"> 168ms </td>
+   <td style="text-align:right;"> 82.1KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 40752 </td>
    <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 216ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
+   <td style="text-align:right;"> 210ms </td>
+   <td style="text-align:right;"> 84KB </td>
   </tr>
   <tr>
    <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
    <td style="text-align:right;"> 40752 </td>
+   <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
+   <td style="text-align:right;"> 168ms </td>
+   <td style="text-align:right;"> 82.1KB </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> /local/path </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
+   <td style="text-align:right;"> 400752 </td>
+   <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 207ms </td>
+   <td style="text-align:right;"> 84KB </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> /local/path </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
+   <td style="text-align:right;"> 400752 </td>
+   <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
+   <td style="text-align:right;"> 169ms </td>
+   <td style="text-align:right;"> 82.1KB </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> /local/path </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
+   <td style="text-align:right;"> 4000752 </td>
+   <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
+   <td style="text-align:right;"> 207ms </td>
+   <td style="text-align:right;"> 84KB </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> /local/path </td>
+   <td style="text-align:right;"> ec8381c3356e47d9c90619a745c570c125173202 </td>
+   <td style="text-align:right;"> 4000752 </td>
    <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
    <td style="text-align:right;"> 177ms </td>
-   <td style="text-align:right;"> 67KB </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
-   <td style="text-align:right;"> 400752 </td>
-   <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 216ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
-   <td style="text-align:right;"> 400752 </td>
-   <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
-   <td style="text-align:right;"> 179ms </td>
-   <td style="text-align:right;"> 67KB </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
-   <td style="text-align:right;"> 4000752 </td>
-   <td style="text-align:right;"> isaveRDS(object, &quot;&quot;object.rds&quot;&quot;, overwrite = TRUE, count = 1000) </td>
-   <td style="text-align:right;"> 217ms </td>
-   <td style="text-align:right;"> 70.4KB </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> /local/path </td>
-   <td style="text-align:right;"> 8d7093ace7591a2f29558ec140e87b14a06a4e9c </td>
-   <td style="text-align:right;"> 4000752 </td>
-   <td style="text-align:right;"> ireadRDS(&quot;&quot;object.rds&quot;&quot;, count = 1000) </td>
-   <td style="text-align:right;"> 177ms </td>
-   <td style="text-align:right;"> 67KB </td>
+   <td style="text-align:right;"> 82.1KB </td>
   </tr>
 </tbody>
 </table>

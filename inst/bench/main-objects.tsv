@@ -1,11 +1,11 @@
 expression	min	median	itr/sec	mem_alloc	gc/sec	n_itr	n_gc	total_time	result	memory	time	gc	src	ref	size
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	215ms	220ms	4.482555034941101	70.4KB	0	3	0	669ms					irods/irods_client_library_rirods	HEAD	1152
-ireadRDS(""object.rds"", count = 1000)	174ms	175ms	5.608789395894751	70.7KB	0	3	0	535ms					irods/irods_client_library_rirods	HEAD	1152
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	212ms	216ms	4.647094594401117	70.4KB	0	3	0	646ms					irods/irods_client_library_rirods	HEAD	4752
-ireadRDS(""object.rds"", count = 1000)	174ms	174ms	5.731348123552378	67KB	0	3	0	523ms					irods/irods_client_library_rirods	HEAD	4752
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	217ms	219ms	4.3919644329324345	70.4KB	0	3	0	683ms					irods/irods_client_library_rirods	HEAD	40752
-ireadRDS(""object.rds"", count = 1000)	174ms	174ms	5.706569368774861	67KB	0	3	0	526ms					irods/irods_client_library_rirods	HEAD	40752
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	216ms	218ms	4.498755776344494	70.4KB	1.4995852587814977	3	1	667ms					irods/irods_client_library_rirods	HEAD	400752
-ireadRDS(""object.rds"", count = 1000)	174ms	175ms	5.692060396268823	67KB	0	3	0	527ms					irods/irods_client_library_rirods	HEAD	400752
-isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	214ms	214ms	4.6387375470589784	70.4KB	0	3	0	647ms					irods/irods_client_library_rirods	HEAD	4000752
-ireadRDS(""object.rds"", count = 1000)	174ms	185ms	5.409816891720983	67KB	0	3	0	555ms					irods/irods_client_library_rirods	HEAD	4000752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	211ms	212ms	4.700601560991775	84KB	0	3	0	638ms					irods/irods_client_library_rirods	HEAD	1152
+ireadRDS(""object.rds"", count = 1000)	586ms	586ms	1.7053153597956814	85.8KB	0	1	0	586ms					irods/irods_client_library_rirods	HEAD	1152
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	209ms	209ms	4.750577123426463	84KB	0	3	0	632ms					irods/irods_client_library_rirods	HEAD	4752
+ireadRDS(""object.rds"", count = 1000)	171ms	172ms	5.832582258580732	82.1KB	0	3	0	514ms					irods/irods_client_library_rirods	HEAD	4752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	206ms	209ms	4.639741171610889	84KB	0	3	0	647ms					irods/irods_client_library_rirods	HEAD	40752
+ireadRDS(""object.rds"", count = 1000)	170ms	172ms	5.734841384700543	82.1KB	0	3	0	523ms					irods/irods_client_library_rirods	HEAD	40752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	207ms	210ms	4.7455414715088775	84KB	0	3	0	632ms					irods/irods_client_library_rirods	HEAD	400752
+ireadRDS(""object.rds"", count = 1000)	172ms	172ms	5.819618176334198	82.1KB	0	3	0	515ms					irods/irods_client_library_rirods	HEAD	400752
+isaveRDS(object, ""object.rds"", overwrite = TRUE, count = 1000)	207ms	207ms	4.747770498395299	84KB	0	3	0	632ms					irods/irods_client_library_rirods	HEAD	4000752
+ireadRDS(""object.rds"", count = 1000)	170ms	171ms	5.800886509301653	82.1KB	0	3	0	517ms					irods/irods_client_library_rirods	HEAD	4000752
