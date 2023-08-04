@@ -141,12 +141,11 @@ ils("data")
 ```
 
 Note that the file name need not stay the same in the local and iRODS systems.
-Now, let's say that we have processed our data with some linear regression modelling and plotting.
+Now, let's say that we have processed our data with some linear regression modelling.
 
 ```{r}
 m <- lm(y ~ x, data = fake_data)
 m
-p <- plot(fake_data)
 ```
 
 We could certainly store the output locally, but we could also decide to only store it in iRODS if we save it in RDS format. So let's save it in the "analysis" collection.
@@ -157,7 +156,6 @@ change_state()
 
 ```{r}
 isaveRDS(m, "analysis/linear_model.rds")
-isaveRDS(p, "analysis/plot.rds")
 ils("analysis")
 dir("analysis") # nothing was saved locally
 ```

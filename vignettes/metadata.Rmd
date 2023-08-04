@@ -76,7 +76,7 @@ ils()
 ```
 
 For illustration purposes, we'll create some data objects (i.e. files).
-First, we simulate a study with a small dataframe, a scatterplot and a linear model.
+First, we simulate a study with a small dataframe and a linear model.
 
 ```{r}
 set.seed(1234)
@@ -84,10 +84,9 @@ fake_data <- data.frame(x = rnorm(20, mean = 1))
 fake_data$y <- fake_data$x * 2 + 3 - rnorm(20, sd = 0.6)
 m <- lm(y ~ x, data = fake_data)
 m
-p <- plot(fake_data)
 ```
 
-Then we store the dataframe as csv and the plot and linear model as RDS objects on iRODS. The csv file must be stored locally first, but the other two can be directly streamed to iRODS.
+Then we store the dataframe as csv and the linear model as RDS objects on iRODS. The csv file must be stored locally first, but the other two can be directly streamed to iRODS.
 
 ```{r, include=FALSE}
 change_state()
@@ -96,13 +95,11 @@ change_state()
 ```{r}
 data_path <- "data.csv"
 lm_path <- "analysis/linear_model.rds"
-plot_path <- "analysis/plot.rds"
 write.csv(fake_data, data_path) # write locally
 iput(data_path, data_path) # transfer to iRODS
 imkdir("analysis") # create directory
 # save directly as rds
 isaveRDS(m, lm_path)
-isaveRDS(p, plot_path)
 ```
 
 If we add `metadata=TRUE` to the `ils()` call, we will see that these new data objects have no metadata attached to them.
@@ -178,9 +175,9 @@ change_state()
 
 ```{r, message=FALSE, results="hide"}
 file_md <- data.frame(
-  path = c(data_path, lm_path, plot_path),
-  type = c("dataframe", "lm", "scatterplot"),
-  responsible = c("abby", "bob", "bob")
+  path = c(data_path, lm_path),
+  type = c("dataframe", "lm"),
+  responsible = c("abby", "bob")
 )
 pmap(file_md, function(path, type, responsible) {
   imeta(path, operations = list(
