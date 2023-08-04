@@ -19,7 +19,9 @@ Description: The open sourced data management software 'Integrated Rule-Oriented
     with R. Storage of annotated files and R objects in 'iRODS' ensures 
     findability, accessibility, interoperability, and reusability of data.
 License: MIT + file LICENSE
-URL: https://github.com/irods/irods_client_library_rirods
+URL: 
+    https://github.com/irods/irods_client_library_rirods,
+    https://rirods.irods4r.org
 BugReports: https://github.com/irods/irods_client_library_rirods/issues
 Depends: 
     R (>= 4.1)
@@ -50,3 +52,4 @@ Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+SystemRequirements: iRODS C++ REST API 0.9.3 (https://github.com/irods/irods_client_rest_cpp)

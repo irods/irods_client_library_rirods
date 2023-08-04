@@ -1,7 +1,9 @@
 url: https://irods.github.io/irods_client_library_rirods/
 template:
   bootstrap: 5
-  bootswatch: minty
+  bslib:
+    bg: "#ffffff"
+    fg: "#005e56"
 
 reference:
 - title: "Connecting and authentication"

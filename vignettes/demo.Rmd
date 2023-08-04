@@ -40,7 +40,7 @@ sudo dockerd
 
 Make sure you don't need `sudo` for `docker`, though, by [adding yourself to the `docker` group](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user). You can check that this is the case by running `docker run hello-world` on the command line.
 
-If you use WSL, you can start RStudio Server with `sudo rstudio-server start` and run it from your browser (http://localhost:8787). [The Posit site](https://posit.co/download/rstudio-server/) has installation instructions for R and RStudio Server in Linux.
+If you use WSL, you can start RStudio Server with `sudo rstudio-server start` and run it from your browser (`http://localhost:8787`). [The Posit site](https://posit.co/download/rstudio-server/) has installation instructions for R and RStudio Server in Linux.
 
 Then, in your script or console, load `{rirods}` and run `use_irods_demo()`:
 
