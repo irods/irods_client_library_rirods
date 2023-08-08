@@ -29,7 +29,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">rirods</a>
 
@@ -92,7 +92,7 @@
                         <h4 data-toc-skip class="author">Mariana
 Montes</h4>
             
-            <h4 data-toc-skip class="date">2023-07-31</h4>
+            <h4 data-toc-skip class="date">2023-08-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/irods/irods_client_library_rirods/blob/HEAD/vignettes/metadata.Rmd" class="external-link"><code>vignettes/metadata.Rmd</code></a></small>
       <div class="d-none name"><code>metadata.Rmd</code></div>
@@ -114,8 +114,8 @@ demo server; our home directory “/tempZone/home/rods” is empty, as
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; This collection does not contain any objects or collections.</span></span></code></pre></div>
 <p>For illustration purposes, we’ll create some data objects
-(i.e. files). First, we simulate a study with a small dataframe, a
-scatterplot and a linear model.</p>
+(i.e. files). First, we simulate a study with a small dataframe and a
+linear model.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="va">fake_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span>, mean <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
@@ -128,22 +128,18 @@ scatterplot and a linear model.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt; (Intercept)            x  </span></span>
-<span><span class="co">#&gt;       3.249        2.130</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fake_data</span><span class="op">)</span></span></code></pre></div>
-<p><img src="metadata_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<p>Then we store the dataframe as csv and the plot and linear model as
-RDS objects on iRODS. The csv file must be stored locally first, but the
+<span><span class="co">#&gt;       3.249        2.130</span></span></code></pre></div>
+<p>Then we store the dataframe as csv and the linear model as RDS
+objects on iRODS. The csv file must be stored locally first, but the
 other two can be directly streamed to iRODS.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="st">"data.csv"</span></span>
 <span><span class="va">lm_path</span> <span class="op">&lt;-</span> <span class="st">"analysis/linear_model.rds"</span></span>
-<span><span class="va">plot_path</span> <span class="op">&lt;-</span> <span class="st">"analysis/plot.rds"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">fake_data</span>, <span class="va">data_path</span><span class="op">)</span> <span class="co"># write locally</span></span>
 <span><span class="fu"><a href="../reference/iput.html">iput</a></span><span class="op">(</span><span class="va">data_path</span>, <span class="va">data_path</span><span class="op">)</span> <span class="co"># transfer to iRODS</span></span>
 <span><span class="fu"><a href="../reference/imkdir.html">imkdir</a></span><span class="op">(</span><span class="st">"analysis"</span><span class="op">)</span> <span class="co"># create directory</span></span>
 <span><span class="co"># save directly as rds</span></span>
-<span><span class="fu"><a href="../reference/iput.html">isaveRDS</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">lm_path</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/iput.html">isaveRDS</a></span><span class="op">(</span><span class="va">p</span>, <span class="va">plot_path</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/iput.html">isaveRDS</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">lm_path</span><span class="op">)</span></span></code></pre></div>
 <p>If we add <code>metadata=TRUE</code> to the <code><a href="../reference/ils.html">ils()</a></code> call,
 we will see that these new data objects have no metadata attached to
 them.</p>
@@ -174,16 +170,12 @@ them.</p>
 <span><span class="co">#&gt; /tempZone/home/rods/analysis/linear_model.rds :</span></span>
 <span><span class="co">#&gt; list()</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/analysis/plot.rds :</span></span>
-<span><span class="co">#&gt; list()</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt;                                   logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds data_object</span></span>
-<span><span class="co">#&gt;          /tempZone/home/rods/analysis/plot.rds data_object</span></span></code></pre></div>
+<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds data_object</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="metadata-in-irods">Metadata in iRODS<a class="anchor" aria-label="anchor" href="#metadata-in-irods"></a>
@@ -299,9 +291,9 @@ one <code><a href="../reference/imeta.html">imeta()</a></code> call per item, or
 function such as <code>purrr:::pmap()</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file_md</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">data_path</span>, <span class="va">lm_path</span>, <span class="va">plot_path</span><span class="op">)</span>,</span>
-<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dataframe"</span>, <span class="st">"lm"</span>, <span class="st">"scatterplot"</span><span class="op">)</span>,</span>
-<span>  responsible <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"abby"</span>, <span class="st">"bob"</span>, <span class="st">"bob"</span><span class="op">)</span></span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">data_path</span>, <span class="va">lm_path</span><span class="op">)</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dataframe"</span>, <span class="st">"lm"</span><span class="op">)</span>,</span>
+<span>  responsible <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"abby"</span>, <span class="st">"bob"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu">pmap</span><span class="op">(</span><span class="va">file_md</span>, <span class="kw">function</span><span class="op">(</span><span class="va">path</span>, <span class="va">type</span>, <span class="va">responsible</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="../reference/imeta.html">imeta</a></span><span class="op">(</span><span class="va">path</span>, operations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -346,18 +338,12 @@ function such as <code>purrr:::pmap()</code>:</p>
 <span><span class="co">#&gt;         size                20 observations</span></span>
 <span><span class="co">#&gt;         type                lm             </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/analysis/plot.rds :</span></span>
-<span><span class="co">#&gt;    attribute       value units</span></span>
-<span><span class="co">#&gt;  responsible         bob      </span></span>
-<span><span class="co">#&gt;         type scatterplot      </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt;                                   logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds data_object</span></span>
-<span><span class="co">#&gt;          /tempZone/home/rods/analysis/plot.rds data_object</span></span></code></pre></div>
+<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds data_object</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="collections">Collections<a class="anchor" aria-label="anchor" href="#collections"></a>
@@ -414,8 +400,7 @@ to:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/iquery.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                      COLL_NAME        DATA_NAME</span></span>
 <span><span class="co">#&gt; 1          /tempZone/home/rods         data.csv</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/rods/analysis linear_model.rds</span></span>
-<span><span class="co">#&gt; 3 /tempZone/home/rods/analysis         plot.rds</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 /tempZone/home/rods/analysis linear_model.rds</span></span></code></pre></div>
 <p>The output is a dataframe with one row per result and one column per
 information piece we requested (in this case the name of the collection
 “COLL_NAME” and the name of the data object “DATA_NAME”). Note how the
@@ -427,8 +412,7 @@ well as the value of said metadata item (“META_COLL_ATTR_VALUE”).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/iquery.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME, META_COLL_ATTR_VALUE WHERE META_COLL_ATTR_NAME LIKE 'data%'"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                      COLL_NAME        DATA_NAME META_COLL_ATTR_VALUE</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds             data.csv</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/rods/analysis         plot.rds             data.csv</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds             data.csv</span></span></code></pre></div>
 <p>We could also retrieve other type of information such as the size of
 a data object or the creation/modification time of a collection, a data
 object or their metadata. For instance, the query below filters the data
@@ -454,8 +438,7 @@ whose parent collection name ends in “analysis” and that are less than
 <code class="sourceCode R"><span><span class="va">iq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/iquery.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME, DATA_CREATE_TIME, DATA_SIZE WHERE COLL_NAME LIKE '%analysis' AND DATA_SIZE &lt; '8000'"</span><span class="op">)</span></span>
 <span><span class="va">iq</span></span>
 <span><span class="co">#&gt;                      COLL_NAME        DATA_NAME    DATA_CREATE_TIME DATA_SIZE</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds 2023-07-31 23:01:52      3926</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/rods/analysis         plot.rds 2023-07-31 23:01:52        27</span></span>
+<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds 2023-08-08 11:05:19      3926</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">iq</span><span class="op">$</span><span class="va">DATA_CREATE_TIME</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "POSIXct" "POSIXt"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">iq</span><span class="op">$</span><span class="va">DATA_SIZE</span><span class="op">)</span></span>
@@ -615,11 +598,9 @@ their logical paths:</p>
 <code class="sourceCode R"><span><span class="va">iq</span><span class="op">$</span><span class="va">PATH</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">iq</span><span class="op">$</span><span class="va">COLL_NAME</span>, <span class="va">iq</span><span class="op">$</span><span class="va">DATA_NAME</span><span class="op">)</span></span>
 <span><span class="va">iq</span></span>
 <span><span class="co">#&gt;                      COLL_NAME        DATA_NAME    DATA_CREATE_TIME DATA_SIZE</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds 2023-07-31 23:01:52      3926</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/rods/analysis         plot.rds 2023-07-31 23:01:52        27</span></span>
+<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds 2023-08-08 11:05:19      3926</span></span>
 <span><span class="co">#&gt;                                            PATH</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis/linear_model.rds</span></span>
-<span><span class="co">#&gt; 2         /tempZone/home/rods/analysis/plot.rds</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis/linear_model.rds</span></span></code></pre></div>
 <p>Now you are ready to describe all your data with iRODS metadata and
 find anything and everything with <code><a href="../reference/ils.html">ils()</a></code> and
 <code><a href="../reference/iquery.html">iquery()</a></code>.</p>

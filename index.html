@@ -43,7 +43,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="index.html">rirods</a>
 
@@ -99,7 +99,8 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="rirods">rirods<a class="anchor" aria-label="anchor" href="#rirods"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="rirods-">rirods 
+<a class="anchor" aria-label="anchor" href="#rirods-"></a>
 </h1>
 </div>
 <!-- badges: start -->
@@ -124,7 +125,7 @@
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># setup a mock iRODS server (https://github.com/irods/irods_demo)</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">use_irods_demo</span>(<span class="st">"alice"</span>, <span class="st">"passWORD"</span>)</span></code></pre></div>
 <p>This will result in the demonstration REST API running at <a href="http://localhost/irods-rest/0.9.3" class="external-link uri">http://localhost/irods-rest/0.9.3</a> (or later version).</p>
-<p>These Docker containers are designed to easily stand up a <strong>DEMONSTRATION</strong> of the iRODS server. It is intended for education and exploration.</p>
+<p>These Docker containers are designed to easily stand up a <strong>DEMONSTRATION</strong> of the iRODS server. It is intended for education and exploration. (See also <code><a href="articles/demo.html">vignette("demo")</a></code>.)</p>
 <p><strong>DO NOT USE IN PRODUCTION</strong></p>
 </div>
 <div class="section level2">
@@ -134,14 +135,14 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># connect</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">create_irods</span>(<span class="st">"http://localhost/irods-rest/0.9.3"</span>, <span class="st">"/tempZone/home"</span>)</span></code></pre></div>
 <div class="section level3">
-<h3 id="authentication">authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
+<h3 id="authentication">Authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
 </h3>
 <p>In this example Alice is a user of iRODS and she can authenticate herself with <code><a href="reference/iauth.html">iauth()</a></code>. This prompts a dialog where you can enter your username and password without hardcoding this information in your scripts.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># login as alice with password "passWORD"</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">iauth</span>() <span class="co"># or iauth("alice", "passWORD")</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="save-r-objects">save R objects<a class="anchor" aria-label="anchor" href="#save-r-objects"></a>
+<h3 id="save-r-objects">Save R objects<a class="anchor" aria-label="anchor" href="#save-r-objects"></a>
 </h3>
 <p>Suppose Alice would like to upload an R object from her current R session to an iRODS collection. For this, use the <code><a href="reference/iput.html">isaveRDS()</a></code> command:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># some data</span></span>
@@ -155,7 +156,7 @@
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">isaveRDS</span>(foo, <span class="st">"foo.rds"</span>)</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="metadata">metadata<a class="anchor" aria-label="anchor" href="#metadata"></a>
+<h3 id="metadata">Metadata<a class="anchor" aria-label="anchor" href="#metadata"></a>
 </h3>
 <p>To truly appreciate the strength of iRODS, we can add some metadata that describes the data object “foo”:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add some metadata</span></span>
@@ -182,9 +183,10 @@
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ==========</span></span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  logical_path        type</span></span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  /tempZone/home/alice/foo.rds data_object</span></span></code></pre></div>
+<p>For more on using metadata, check out <code><a href="articles/metadata.html">vignette("metadata")</a></code>.</p>
 </div>
 <div class="section level3">
-<h3 id="read-r-objects">read R objects<a class="anchor" aria-label="anchor" href="#read-r-objects"></a>
+<h3 id="read-r-objects">Read R objects<a class="anchor" aria-label="anchor" href="#read-r-objects"></a>
 </h3>
 <p>If Alice wanted to copy the foo R object from an iRODS collection to her current R session, she would use <code><a href="reference/iget.html">ireadRDS()</a></code>:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># retrieve in native R format</span></span>
@@ -195,7 +197,7 @@
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 9 z</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="csv">csv<a class="anchor" aria-label="anchor" href="#csv"></a>
+<h3 id="other-file-formats">Other file formats<a class="anchor" aria-label="anchor" href="#other-file-formats"></a>
 </h3>
 <p>Possibly Alice does not want a native R object to be stored on iRODS but a file type that can be accessed by other programs. For this, use the <code><a href="reference/iput.html">iput()</a></code> command:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
@@ -235,23 +237,24 @@
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     9 z</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="query">query<a class="anchor" aria-label="anchor" href="#query"></a>
+<h3 id="query">Query<a class="anchor" aria-label="anchor" href="#query"></a>
 </h3>
 <p>By adding metadata you and others can more easily discover data in future projects. Objects can be searched with General Queries and <code><a href="reference/iquery.html">iquery()</a></code>:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look for objects in the home collection with a wildcard `%`</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">iquery</span>(<span class="st">"SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1]                   [,2]     </span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] "/tempZone/home/alice" "foo.csv"</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,] "/tempZone/home/alice" "foo.rds"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              COLL_NAME DATA_NAME</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 /tempZone/home/alice   foo.csv</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 /tempZone/home/alice   foo.rds</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># or for data objects with a name that starts with "foo"</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">iquery</span>(<span class="st">"SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'"</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1]                   [,2]     </span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] "/tempZone/home/alice" "foo.csv"</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,] "/tempZone/home/alice" "foo.rds"</span></span></code></pre></div>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              COLL_NAME DATA_NAME</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 /tempZone/home/alice   foo.csv</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 /tempZone/home/alice   foo.rds</span></span></code></pre></div>
+<p>For more on querying, check out <code><a href="articles/metadata.html">vignette("metadata")</a></code>.</p>
 </div>
 <div class="section level3">
-<h3 id="cleanup">cleanup<a class="anchor" aria-label="anchor" href="#cleanup"></a>
+<h3 id="cleanup">Cleanup<a class="anchor" aria-label="anchor" href="#cleanup"></a>
 </h3>
 <p>Finally, we can clean up Alice’s home collection:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># delete object</span></span>

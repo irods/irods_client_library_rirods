@@ -29,7 +29,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">rirods</a>
 
@@ -92,7 +92,7 @@
                         <h4 data-toc-skip class="author">Mariana
 Montes</h4>
             
-            <h4 data-toc-skip class="date">2023-07-31</h4>
+            <h4 data-toc-skip class="date">2023-08-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/irods/irods_client_library_rirods/blob/HEAD/vignettes/icommands.Rmd" class="external-link"><code>vignettes/icommands.Rmd</code></a></small>
       <div class="d-none name"><code>icommands.Rmd</code></div>
@@ -210,8 +210,8 @@ that the item was last modified and the size of data objects is shown by
 <span><span class="co">#&gt;       /tempZone/home/rods/some_collection/subcollection  collection</span></span>
 <span><span class="co">#&gt;  /tempZone/home/rods/some_collection/random_numbers.rds data_object</span></span>
 <span><span class="co">#&gt;      last_write_time size</span></span>
-<span><span class="co">#&gt;  2023-07-31 23:01:28   NA</span></span>
-<span><span class="co">#&gt;  2023-07-31 23:01:28  831</span></span>
+<span><span class="co">#&gt;  2023-08-08 11:04:59   NA</span></span>
+<span><span class="co">#&gt;  2023-08-08 11:04:59  831</span></span>
 <span><span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span><span class="st">"some_collection"</span>, permissions<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co"># ils -A some_collection</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
@@ -226,8 +226,8 @@ that the item was last modified and the size of data objects is shown by
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt;                         logical_path rods        type     last_write_time size</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/some_collection  own  collection 2023-07-31 23:01:28   NA</span></span>
-<span><span class="co">#&gt;   /tempZone/home/rods/200numbers.rds  own data_object 2023-07-31 23:01:28 1631</span></span></code></pre></div>
+<span><span class="co">#&gt;  /tempZone/home/rods/some_collection  own  collection 2023-08-08 11:04:59   NA</span></span>
+<span><span class="co">#&gt;   /tempZone/home/rods/200numbers.rds  own data_object 2023-08-08 11:05:00 1631</span></span></code></pre></div>
 <p>A crucial difference between <code>ils</code> and <code><a href="../reference/ils.html">ils()</a></code>
 is that <code>ils(metadata=TRUE)</code> is used to print the metadata
 information of each element listed, whereas iCommands only provides
