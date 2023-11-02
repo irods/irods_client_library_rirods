@@ -1,6 +1,7 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env RScript
 
 args <- commandArgs(trailingOnly = TRUE)
+
 out_file_name <- args[[1]]
 out_file_path <- args[[2]]
 rirods_source <- args[[3]]
@@ -13,12 +14,19 @@ setwd(tmp_dir)
 print(getwd())
 
 # project
-if (!(requireNamespace("renv", quietly = TRUE) && requireNamespace("usethis", quietly = TRUE)))
-  install.packages(c("renv", "usethis"))
-usethis::create_project(".")
+if (!requireNamespace("renv", quietly = TRUE))
+  install.packages("renv")
+
+if (!requireNamespace("devtools", quietly = TRUE))
+  install.packages("devtools")
+
+if (!requireNamespace("usethis", quietly = TRUE))
+  install.packages("usethis")
+
+usethis::create_project(".", open = FALSE)
 
 # isolate library
-renv::init(bare = TRUE)
+renv::init(bare = TRUE, load = FALSE, restart = FALSE)
 
 # install dependencies
 install.packages(c("remotes", "bench", "readr", "knitr", "here", "dplyr",
@@ -26,8 +34,7 @@ install.packages(c("remotes", "bench", "readr", "knitr", "here", "dplyr",
 
 # install rirods
 if (startsWith(rirods_source, "/")) {
-  install.packages("devtools")
-  devtools::install(rirods_source)
+  devtools::install(rirods_source, quiet = TRUE, force = TRUE, dependencies = "always")
   rirods_source <- "/local/path"
 } else {
   remotes::install_github(

@@ -63,10 +63,13 @@ use_irods_demo <- function(user = character(), pass = character(),
 
   resp_user <- TRUE
   if (length(irods_images) == 0 ||
-      !all(grepl(paste0(irods_images_ref, collapse = "|"), irods_images))) {
+      !all(grepl(paste0(irods_images_ref, collapse = "|"), irods_images))
+      ) {
     message("\nThe iRODS demo Docker containers are not built on this system. \n")
-    resp_user <-
-      utils::askYesNo("Would you like it to be built?", default = FALSE)
+    if (interactive()) {
+      resp_user <-
+        utils::askYesNo("Would you like it to be built?", default = FALSE)
+    }
   }
 
   # launch irods_demo
@@ -151,9 +154,13 @@ remove_docker_images <- function() {
     stop("Docker containers are still running. Stop them with ",
          "`stop_irods_demo()` and proceed", call. = FALSE)
   }
-  system2(
-    system.file(package = "rirods", "shell_scripts", "docker-images-remove.sh"),
-    paste0(irods_images_ref, collapse = ", ")
+  bsh <-
+    system.file(package = "rirods", "shell_scripts", "docker-images-remove.sh")
+  Map(
+    function(x) {
+      system2(bsh, x, stderr = NULL)
+    },
+    irods_images_ref
   )
   invisible()
 }
