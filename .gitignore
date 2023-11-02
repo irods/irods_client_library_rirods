@@ -1,9 +1,11 @@
 .Rproj.user
 docs
 inst/doc
-dev/
+dev
+!dev/Makefile
 *.irods
 /doc/
 /Meta/
 NEWS.md
 CRAN-SUBMISSION
+revdep/

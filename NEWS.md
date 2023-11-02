@@ -1,4 +1,10 @@
-# rirods (development version)
+# rirods 0.1.2
+
+* Adding more documentation as vignettes:
+  + Use iRODS demo
+  + rirods vs iCommands
+  + Accessing data locally and in iRODS
+  + Use iRODS metadata
 
 # rirods 0.1.1
 

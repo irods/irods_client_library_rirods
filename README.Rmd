@@ -65,7 +65,7 @@ use_irods_demo("alice", "passWORD")
 unlink(rirods:::path_to_irods_conf())
 ```
 
-This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version).
+This will result in the demonstration REST API running at `http://localhost/irods-rest/0.9.3` (or later version).
 
 These Docker containers are designed to easily stand up a **DEMONSTRATION** of the iRODS server. It is intended for education and exploration. (See also `vignette("demo")`.)
 

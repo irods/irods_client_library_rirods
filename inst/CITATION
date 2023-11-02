@@ -3,10 +3,10 @@ bibentry(
   title    = "R Client for iRODS",
   author   = "Martin Schobben, Mariana Montes",
   year     = "2023",
-  version   = "0.1.1",
+  version   = "0.1.2",
   url      = "https://github.com/irods/irods_client_library_rirods",
   textVersion = paste0("Schobben, M., Montes, M., (2023) ",
                   "R Client for iRODS, ",
-                  "Version = 0.1.1, ",
+                  "Version = 0.1.2, ",
                   "https://github.com/irods/irods_client_library_rirods")
 )
