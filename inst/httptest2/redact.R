@@ -3,6 +3,9 @@ function (response) {
   # mask host in headers
   response$url <- gsub(rirods:::find_irods_file("host"), "", response$url, fixed = TRUE)
 
+  # mask dates in headers
+  response$headers$Date <- ""
+
   # change body upon PUT when type is raw (`iput()` and `isaverds()`)
   type_body <- try(response$body$type, silent = TRUE)
   if (!inherits(type_body, "try-error") && !is.null(type_body) && type_body == "raw" && response$method == "PUT") {
