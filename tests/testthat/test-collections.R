@@ -1,8 +1,26 @@
-with_mock_dir("add-data-collections", {
+with_mock_dir("add-data-collections-1", {
   test_that("creating collections from iRODS works", {
-
     # simple collection
     expect_invisible(imkdir("a"))
+
+    # reference dataframe
+    ref <- structure(
+      list(
+        logical_path = paste0(irods_test_path, "/a")
+      ),
+      row.names = 1L,
+      class = "irods_df"
+    )
+
+    # check if collections are added
+    expect_equal(ils(), ref)
+  })
+},
+simplify = FALSE
+)
+
+with_mock_dir("add-data-collections-2", {
+  test_that("creating collections recursively from iRODS works", {
 
     # collection within a collection
     expect_invisible(imkdir("x/a", create_parent_collections = TRUE))
@@ -10,8 +28,7 @@ with_mock_dir("add-data-collections", {
     # reference dataframe
     ref <- structure(
       list(
-        logical_path = paste0(lpath, "/", user, "/testthat", c("/a", "/x")),
-        type = c("collection", "collection")
+        logical_path = paste0(irods_test_path, c("/a", "/x"))
       ),
       row.names = c(1L, 2L),
       class = "irods_df"
@@ -19,38 +36,41 @@ with_mock_dir("add-data-collections", {
 
     # check if collections are added
     expect_equal(ils(), ref)
-
-    # remove dirs
-    irm("a", recursive = TRUE, force = TRUE)
-    icd("./x")
-    irm("a", recursive = TRUE, force = TRUE)
-    icd("..")
-    irm("x", recursive = TRUE, force = TRUE)
-
   })
-})
+},
+simplify = FALSE
+)
+
+with_mock_dir("remove-data-collections-1", {
+  test_that("removing collections from iRODS works", {
+    expect_invisible(irm("a", force = TRUE))
+  })
+},
+simplify = FALSE
+)
+
+with_mock_dir("remove-data-collections-2", {
+  test_that("removing collections recursive from iRODS works", {
+    expect_invisible(irm("x", recursive = TRUE, force = TRUE))
+  })
+},
+simplify = FALSE
+)
 
 with_mock_dir("remove-objects", {
   test_that("removing objects from iRODS works", {
 
-    # currently mocking does not work
-    skip_if(.rirods$token == "secret", "IRODS server unavailable")
+    test_iput(paste0(irods_test_path, "/dfr.csv"))
 
-    # store
-    iput("foo.csv", "foo.csv", overwrite = TRUE)
-
-    # delete object "foo.csv"
-    expect_invisible(irm("foo.csv", force = TRUE))
+    # delete object "dfr.csv"
+    expect_invisible(irm("dfr.csv", force = TRUE))
 
     # check if file is delete
-    expect_output(
+    expect_message(
       print(ils()),
       "This collection does not contain any objects or collections."
     )
-
-    # r objects
-    x <- 1
-    isaveRDS(x, "x.rds", overwrite = TRUE)
-    expect_invisible(irm("x.rds", force = TRUE))
   })
-})
+},
+simplify = FALSE
+)

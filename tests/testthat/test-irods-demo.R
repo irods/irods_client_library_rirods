@@ -21,8 +21,6 @@ test_that("irods demo works on linux", {
     # set token
     .rirods$token <- "secret"
   }
-   # set iRODS logical path back to testthat
-  def_path <- paste0(lpath, "/", user)
-  dev_path <- paste0(def_path, "/testthat")
-  .rirods$current_dir <- dev_path
+  # set iRODS logical path back to testthat
+  .rirods$current_dir <- irods_test_path
 })

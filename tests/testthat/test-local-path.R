@@ -1,21 +1,5 @@
-test_that("files can be chunked", {
-
-  # test object to be split
-  x <- matrix(1:100)
-
-  # chunk object from raw vector
-  chunks <- chunk_object(serialize(x, NULL), 10L)
-
-  # reversed operation
-  xc <- fuse_object(chunks[[1]])
-  y <- unserialize(xc)
-
-  expect_equal(x, y)
-})
-
-test_that("chunk size can be calculated",{
-  expect_snapshot(calc_chunk_size(11, 10L))
-  expect_snapshot(calc_chunk_size(20, 10L))
-  expect_snapshot(calc_chunk_size(30, 10L))
-  expect_error(calc_chunk_size(0, 20L))
+test_that("write stops by local file", {
+  # currently mocking does not work for parallel perform
+  skip_if(.rirods$token == "secret", "IRODS server unavailable")
+  expect_error(stop_local_overwrite(FALSE, "dfr.csv"))
 })
