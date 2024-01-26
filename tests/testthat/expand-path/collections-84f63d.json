@@ -1,0 +1,17 @@
+{
+    "inheritance_enabled": false,
+    "irods_response": {
+        "status_code": 0
+    },
+    "modified_at": 1706253077,
+    "permissions": [
+        {
+            "name": "rods",
+            "perm": "own",
+            "type": "rodsadmin",
+            "zone": "tempZone"
+        }
+    ],
+    "registered": true,
+    "type": "collection"
+}

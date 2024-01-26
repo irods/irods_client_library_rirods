@@ -1,0 +1,13 @@
+{
+    "entries": [
+        "/tempZone/home/rods/new_collection",
+        "/tempZone/home/rods/projectx",
+        "/tempZone/home/rods/some_collection",
+        "/tempZone/home/rods/testthat",
+        "/tempZone/home/rods/testthat/bar.rds",
+        "/tempZone/home/rods/testthat/qux.rds"
+    ],
+    "irods_response": {
+        "status_code": 0
+    }
+}

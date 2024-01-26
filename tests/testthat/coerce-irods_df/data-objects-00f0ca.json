@@ -1,0 +1,18 @@
+{
+    "checksum": "",
+    "irods_response": {
+        "status_code": 0
+    },
+    "modified_at": 1706253084,
+    "permissions": [
+        {
+            "name": "rods",
+            "perm": "own",
+            "type": "rodsadmin",
+            "zone": "tempZone"
+        }
+    ],
+    "registered": true,
+    "size": 2000,
+    "type": "data_object"
+}

@@ -1,0 +1,14 @@
+{
+    "irods_response": {
+        "status_code": 0
+    },
+    "rows": [
+        [
+            "/tempZone/home/rods/testthat",
+            "qux.rds",
+            "foo",
+            "bar",
+            "baz"
+        ]
+    ]
+}
