@@ -13,9 +13,9 @@ irm(logical_path, force = TRUE, recursive = FALSE, verbose = FALSE)
 permanently. If \code{FALSE}, it is sent to the trash collection. Defaults to
 \code{TRUE}.}
 
-\item{recursive}{If a collection is provided, whether its contents should also be
-removed. If a collection is not empty and \code{recursive} is \code{FALSE}, it cannot
-be deleted. Defaults to \code{FALSE}.}
+\item{recursive}{If a collection is provided, whether its contents should
+also bec removed. If a collection is not empty and \code{recursive} is \code{FALSE}
+, it cannot be deleted. Defaults to \code{FALSE}.}
 
 \item{verbose}{Whether information should be printed about the HTTP request
 and response. Defaults to \code{FALSE}.}
@@ -24,7 +24,8 @@ and response. Defaults to \code{FALSE}.}
 Invisibly the HTTP call.
 }
 \description{
-This is the equivalent of \code{\link[=file.remove]{file.remove()}}, but applied to an item inside iRODS.
+This is the equivalent of \code{\link[=file.remove]{file.remove()}}, but applied to an item inside
+iRODS.
 }
 \examples{
 \dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -32,7 +33,7 @@ This is the equivalent of \code{\link[=file.remove]{file.remove()}}, but applied
 # use_irods_demo()
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 
 # authenticate
 iauth("rods", "rods")

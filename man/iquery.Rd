@@ -11,15 +11,17 @@ iquery(
   type = c("general", "specific"),
   case_sensitive = TRUE,
   distinct = TRUE,
+  parser = c("genquery1", "genquery2"),
+  sql_only = FALSE,
   verbose = FALSE
 )
 }
 \arguments{
 \item{query}{GeneralQuery for searching the iCAT database.}
 
-\item{limit}{Maximum number of rows to return. Defaults to 100.}
+\item{limit}{Maximum number of rows to return. Depracated.}
 
-\item{offset}{Number of rows to skip for paging. Defaults to 0.}
+\item{offset}{Number of rows to skip for paging. Depracated.}
 
 \item{type}{Type of query: 'general' (the default) or 'specific'.}
 
@@ -27,6 +29,10 @@ iquery(
 Defaults to \code{TRUE}.}
 
 \item{distinct}{Whether only distinct rows should be listed. Defaults to \code{TRUE}.}
+
+\item{parser}{Which parser to use: genquery1 or genquery2. Defaults to genquery1.}
+
+\item{sql_only}{Whether to use SQL syntax. Defaults to \code{FALSE}. Needs Genquery2.}
 
 \item{verbose}{Whether information should be printed about the HTTP request and response.}
 }
@@ -49,7 +55,7 @@ is_irods_demo_running()
 # use_irods_demo()
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 
 # authentication
 iauth("rods", "rods")

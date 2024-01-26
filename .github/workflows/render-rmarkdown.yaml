@@ -23,12 +23,12 @@ jobs:
       - name: Setup iRODS demo
         run: |
           cd ./inst/irods_demo
-          git submodule update --init --recursive
-          docker-compose up -d nginx-reverse-proxy
-          docker-compose up -d irods-client-icommands
+          git submodule sync --recursive
+          git submodule update --init --force --recursive --remote
+          docker compose up -d nginx-reverse-proxy irods-client-http-api irods-client-icommands
           sleep 5
-          docker exec irods_demo_irods-client-icommands_1 iadmin mkuser alice rodsuser
-          docker exec irods_demo_irods-client-icommands_1 iadmin moduser alice password passWORD
+          docker exec irods_demo-irods-client-icommands-1 iadmin mkuser alice rodsuser
+          docker exec irods_demo-irods-client-icommands-1 iadmin moduser alice password passWORD
 
       - name: Install system dependencies
         run: |
@@ -52,6 +52,7 @@ jobs:
         run: |
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore(repos = c(CRAN = "https://cloud.r-project.org"))
+          if (!requireNamespace("readr", quietly = TRUE)) install.packages("readr")
 
       - name: Build rirods
         shell: Rscript {0}

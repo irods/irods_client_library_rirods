@@ -77,16 +77,16 @@ To connect to the REST API endpoint of your choice, load `rirods`, connect with 
 
 ```{r project, eval=is_irods_demo_running()}
 # connect
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 ```
 
 ### Authentication
 
-In this example Alice is a user of iRODS and she can authenticate herself with `iauth()`. This prompts a dialog where you can enter your username and password without hardcoding this information in your scripts.
+In this example Alice is a user of iRODS and she can authenticate herself with `iauth("alice")`. This prompts a dialog where you can enter your password without hardcoding this information in your scripts.
 
 ```{r, Alice, eval=FALSE}
 # login as alice with password "passWORD"
-iauth() # or iauth("alice", "passWORD")
+iauth("alice") # or iauth("alice", "passWORD")
 ```
 
 ```{r, secret, include=FALSE, eval=is_irods_demo_running()}
@@ -117,7 +117,6 @@ To truly appreciate the strength of iRODS, we can add some metadata that describ
 # add some metadata
 imeta(
   "foo.rds", 
-  "data_object", 
   operations = 
     data.frame(operation = "add", attribute = "foo", value = "bar", units = "baz")
 )

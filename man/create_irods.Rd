@@ -4,13 +4,12 @@
 \alias{create_irods}
 \title{Generate IRODS Configuration File}
 \usage{
-create_irods(host, zone_path, overwrite = FALSE)
+create_irods(host, zone_path = character(1), overwrite = FALSE)
 }
 \arguments{
 \item{host}{URL of host.}
 
-\item{zone_path}{Path to the zone of the iRODS server
-(e.g., "/tempZone/home").}
+\item{zone_path}{Depracated}
 
 \item{overwrite}{Overwrite existing iRODS configuration file. Defaults to
 \code{FALSE}.}

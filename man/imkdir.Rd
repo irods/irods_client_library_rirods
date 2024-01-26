@@ -4,7 +4,12 @@
 \alias{imkdir}
 \title{Create a New Collection in iRODS}
 \usage{
-imkdir(logical_path, create_parent_collections = FALSE, verbose = FALSE)
+imkdir(
+  logical_path,
+  create_parent_collections = FALSE,
+  overwrite = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{logical_path}{Path to the collection to create, relative to the current
@@ -12,6 +17,9 @@ working directory (see \code{\link[=ipwd]{ipwd()}}).}
 
 \item{create_parent_collections}{Whether parent collections should be created
 when necessary. Defaults to \code{FALSE}.}
+
+\item{overwrite}{Whether the existin collection should be overwritten
+if it exists. Defaults to \code{FALSE}.}
 
 \item{verbose}{Whether information about the HTTP request and response
 should be printed. Defaults to \code{FALSE}.}
@@ -28,7 +36,7 @@ instead of a local directory.
 is_irods_demo_running()
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 
 # authentication
 iauth("rods", "rods")

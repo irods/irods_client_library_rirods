@@ -27,8 +27,9 @@ jobs:
       - name: Setup iRODS demo
         run: |
           cd ./irods_demo
-          git submodule update --init
-          docker-compose up -d nginx-reverse-proxy
+          git submodule sync --recursive
+          git submodule update --init --force --recursive --remote
+          docker compose up -d nginx-reverse-proxy irods-client-http-api irods-client-icommands
 
       - uses: r-lib/actions/setup-pandoc@v2
 

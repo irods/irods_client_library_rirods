@@ -4,18 +4,11 @@
 \alias{local_create_irods}
 \title{Launch iRODS from Alternative Directory}
 \usage{
-local_create_irods(
-  host = NULL,
-  zone_path = NULL,
-  dir = tempdir(),
-  env = parent.frame()
-)
+local_create_irods(host = NULL, dir = tempdir(), env = parent.frame())
 }
 \arguments{
 \item{host}{Hostname of the iRODS server. Defaults to
-"http://localhost/irods-rest/0.9.3".}
-
-\item{zone_path}{Zone path of the iRODS server. Defaults to "/tempZone/home".}
+""http://localhost:9001/irods-http-api/0.1.0".}
 
 \item{dir}{The directory to use. Default is a temporary directory.}
 

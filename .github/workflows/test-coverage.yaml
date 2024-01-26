@@ -8,9 +8,6 @@ on:
 
 name: test-coverage
 
-env:
-  RENV_PATHS_ROOT: ~/.local/share/renv
-
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
@@ -24,33 +21,17 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Install system dependencies
-        if: startsWith(runner.os, 'Linux')
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev
-
-      - name: Cache packages
-        uses: actions/cache@v1
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
-
-      - name: Restore packages
-        shell: Rscript {0}
-        run: |
-          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
-          renv::restore(repos = c(CRAN = "https://cloud.r-project.org"))
-          if (!requireNamespace("covr", quietly = TRUE)) install.packages("covr")
+          extra-packages: any::covr
+          needs: coverage
 
       - name: Test coverage
         run: |
           covr::codecov(
             quiet = FALSE,
             clean = FALSE,
-            install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
+            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
           )
         shell: Rscript {0}
 

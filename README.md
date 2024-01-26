@@ -50,17 +50,16 @@ connect with `create_irods()`, and authenticate with your iRODS
 credentials:
 
     # connect
-    create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+    create_irods("http://localhost:9001/irods-http-api/0.1.0")
 
 ### Authentication
 
 In this example Alice is a user of iRODS and she can authenticate
-herself with `iauth()`. This prompts a dialog where you can enter your
-username and password without hardcoding this information in your
-scripts.
+herself with `iauth("alice")`. This prompts a dialog where you can enter
+your password without hardcoding this information in your scripts.
 
     # login as alice with password "passWORD"
-    iauth() # or iauth("alice", "passWORD")
+    iauth("alice") # or iauth("alice", "passWORD")
 
 ### Save R objects
 
@@ -85,7 +84,6 @@ describes the data object “foo”:
     # add some metadata
     imeta(
       "foo.rds", 
-      "data_object", 
       operations = 
         data.frame(operation = "add", attribute = "foo", value = "bar", units = "baz")
     )
@@ -93,19 +91,11 @@ describes the data object “foo”:
     # check if file is stored with associated metadata
     ils(metadata = TRUE)
     #> 
-    #> ========
-    #> metadata
-    #> ========
-    #> /tempZone/home/alice/foo.rds :
-    #>  attribute value units
-    #>        foo   bar   baz
-    #> 
-    #> 
     #> ==========
     #> iRODS Zone
     #> ==========
-    #>                  logical_path        type
-    #>  /tempZone/home/alice/foo.rds data_object
+    #>                  logical_path attribute value units
+    #>  /tempZone/home/alice/foo.rds       foo   bar   baz
 
 For more on using metadata, check out `vignette("metadata")`.
 
@@ -141,9 +131,9 @@ a file type that can be accessed by other programs. For this, use the
     #> ==========
     #> iRODS Zone
     #> ==========
-    #>                  logical_path        type
-    #>  /tempZone/home/alice/foo.csv data_object
-    #>  /tempZone/home/alice/foo.rds data_object
+    #>                  logical_path
+    #>  /tempZone/home/alice/foo.csv
+    #>  /tempZone/home/alice/foo.rds
 
 Later on somebody else might want to download this file again and store
 it locally:

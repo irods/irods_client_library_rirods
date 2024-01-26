@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-If you don't have access to an iRODS server with the [iRODS REST API](https://github.com/irods/irods_client_rest_cpp) installed,
+If you don't have access to an iRODS server with the [iRODS C++ HTTP API](https://github.com/irods/irods_client_http_api) installed,
 you can still try it out with a local demo on Linux or [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) (using Linux inside Windows).
 
 As initial requirements, you need bash, docker and the docker-compose plugin in your Linux distribution. You can check if they are installed like so (the command should provide the path to where your version is installed):
@@ -51,8 +51,15 @@ use_irods_demo()
 
 The first time you run it it may ask you questions to guiding through generating the first docker image. Once you get the message shown above, you can create the configuration file (if it doesn't exist yet) and authenticate. Here we authenticate with the default "rods" account, but you could have another account as well; remember that running `iauth()` will open an interactive dialog to provide a username and password.
 
+```{r echo=FALSE}
+# set user config directory to temporary location
+withr::local_envvar(
+  R_USER_CONFIG_DIR = tempdir()
+)
+```
+
 ```{r}
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", overwrite = TRUE)
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 iauth("rods", "rods")
 ils()
 ```
@@ -94,5 +101,6 @@ If you still have problems, please report them in the [Issues of the repository]
 
 ```{r, include=FALSE}
 end_vignette()
+unlink(rirods:::path_to_irods_conf())
 ```
 

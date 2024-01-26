@@ -9,8 +9,10 @@ ils(
   stat = FALSE,
   permissions = FALSE,
   metadata = FALSE,
-  offset = 0,
-  limit = 100,
+  offset = numeric(1),
+  limit = numeric(1),
+  recurse = FALSE,
+  ticket = NULL,
   message = TRUE,
   verbose = FALSE
 )
@@ -27,12 +29,15 @@ Defaults to \code{FALSE}.}
 \item{metadata}{Whether metadata information should be included. Defaults to
 \code{FALSE}.}
 
-\item{offset}{Number of records to skip for pagination. Defaults to 0.}
+\item{offset}{Number of records to skip for pagination. Deprecated.}
 
-\item{limit}{Number of records to show per page. Defaults to 100.}
+\item{limit}{Number of records to show per page. Deprecated.}
 
-\item{message}{Whether a message should be printed when the collection is
-empty. Defaults to \code{TRUE}.}
+\item{recurse}{Recursively list. Defaults to \code{FALSE}.}
+
+\item{ticket}{A valid iRODS ticket string. Defaults to \code{NULL}.}
+
+\item{message}{Show message when empty collection. Default to \code{FALSE}.}
 
 \item{verbose}{Whether information should be printed about the HTTP request
 and response. Defaults to \code{FALSE}.}
@@ -53,7 +58,7 @@ is_irods_demo_running()
 # use_irods_demo()
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 
 # authenticate
 iauth("rods", "rods")

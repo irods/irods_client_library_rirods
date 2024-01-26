@@ -11,7 +11,8 @@
   quote = FALSE,
   right = TRUE,
   row.names = FALSE,
-  max = NULL
+  max = NULL,
+  message = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@
 \item{max}{numeric or \code{NULL}, specifying the maximal number of
     entries to be printed.  By default, when \code{NULL},
     \code{\link[base]{getOption}("max.print")} used.}
+
+\item{message}{Show message when empty collection. Default to \code{TRUE}.}
 }
 \value{
 Invisibly return the class \code{irods_df} object.
@@ -49,7 +52,7 @@ is_irods_demo_running()
 # use_irods_demo()
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 
 # authenticate
 iauth("rods", "rods")

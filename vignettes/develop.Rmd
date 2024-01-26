@@ -53,7 +53,7 @@ Launch a local demonstration iRODS service (including the REST API):
 git clone --recurse-submodules https://github.com/irods/irods_demo
 # start the REST API
 cd irods_demo
-docker-compose up -d nginx-reverse-proxy
+docker compose up -d nginx-reverse-proxy irods-client-http-api irods-client-icommands
 ```
 
 Alternatively, one can use the R function `use_irods_demo()`.
@@ -86,13 +86,12 @@ source("renv/activate.R")
 
 # iRODS environment variables for development
 Sys.setenv(DEV_HOST_IRODS = "nLO8T0IpHCT2kXklYE-IB0HjYpNkg5wN4ZKk7TPSvkwGf9FauDR-O5mVI-mmD2_zNFGLoaVcAgYl")
-Sys.setenv(DEV_ZONE_PATH_IRODS = "gunp5Ts08NHfpKAdbFCBuilVb7Wjnxojbt7bA1e-9Q")
 Sys.setenv(DEV_USER = "ZGlORquE2G6BIPS5JAcuPcngmBB6Wg")
 Sys.setenv(DEV_PASS = "ZGlORquE2G6BIPS5JAcuPcngmBB6Wg")
 ```
 
 The server information is stored in the environmental variables `DEV_HOST_IRODS`
-,`DEV_ZONE_PATH_IRODS`, `DEV_USER`, and `DEV_PASS`. Server information is 
+, `DEV_USER`, and `DEV_PASS`. Server information is 
 provided in scrambled format to prevent leakage of sensitive information to 
 GitHub. 
 
@@ -116,12 +115,11 @@ DEV_KEY_IRODS="<key>"
 For example, scramble the host name as follows:
 
 ```{r host, eval=FALSE}
-httr2::secret_encrypt("http://myserver/irods-rest/0.9.3" ,"DEV_KEY_IRODS")
+httr2::secret_encrypt("http://localhost:9001/irods-http-api/0.1.0" ,"DEV_KEY_IRODS")
 ```
 
 4) Store the scrambled information at the designated places in the project level 
-`.Rprofile`: host name under `DEV_HOST_IRODS`, zone path under 
-`DEV_ZONE_PATH_IRODS` (e.g., `"/tempZone/home"`), user name under `DEV_USER`, 
+`.Rprofile`: host name under `DEV_HOST_IRODS`, user name under `DEV_USER`, 
 and password under `DEV_PASS`.
 
 5) Restart the R sessions (possibly with `CTRL + SHIFT + F10`).
