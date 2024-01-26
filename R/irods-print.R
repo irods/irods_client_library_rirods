@@ -1,6 +1,7 @@
 #' Print Method for iRODS Data Frame Class.
 #'
 #' @param x An object of class `irods_df`.
+#' @param message Show message when empty collection. Default to `TRUE`.
 #' @inheritParams base::print.data.frame
 #'
 #' @seealso [print.data.frame()]
@@ -14,7 +15,7 @@
 #' # use_irods_demo()
 #'
 #' # connect project to server
-#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
 #'
 #' # authenticate
 #' iauth("rods", "rods")
@@ -48,20 +49,12 @@
 #'
 print.irods_df <- function (x, ..., digits = NULL,
                             quote = FALSE, right = TRUE, row.names = FALSE,
-                            max = NULL) {
+                            max = NULL, message = TRUE) {
 
-    if (length(x$logical_path) == 0L) {
-      cat("This collection does not contain any objects or collections.")
+    if (length(x$logical_path) == 0L && isTRUE(message)) {
+      message("This collection does not contain any objects or collections.")
+      invisible(x)
     } else {
-      df <- extract_df(x, "metadata", ..., digits = digits, quote = quote,
-                       right = right, row.names = row.names,
-                       max = max)
-      df <- extract_df(df, "status_information", ..., digits = digits,
-                       quote = quote, right = right, row.names = row.names,
-                       max = max)
-      df <- extract_df(df, "permission_information", ..., digits = digits,
-                       quote = quote, right = right, row.names = row.names,
-                       max = max)
       cat(paste0(
         "\n",
         strrep("=", 10),
@@ -71,48 +64,14 @@ print.irods_df <- function (x, ..., digits = NULL,
         strrep("=", 10),
         "\n"
       ))
-      print(as.data.frame(df),  ..., digits = digits,
+      x <- as.data.frame(x)
+      x[
+        duplicated(x[[1]]) ,
+        !colnames(x) %in% c("attribute", "value", "unit")
+      ] <- character(1)
+      print(x, ..., digits = digits,
             quote = quote, right = right, row.names = row.names,
             max = max)
-      x
+      invisible(x)
     }
-    invisible(x)
-}
-
-extract_df <- function(df, var, ..., digits, quote, right, row.names, max) {
-  if (!is.null(extract <- df[[var]] )) {
-    remainder <- df[names(df) != var]
-    if (methods::is(extract, "data.frame")) {
-      df <- cbind(remainder, extract)
-    } else if (methods::is(extract, "list")) {
-      names(extract) <- df$logical_path
-      print_extract(extract, var, ..., digits = digits,
-                    quote = quote, right = right, row.names = row.names,
-                    max = max)
-      df <- remainder
-    }
-  }
-  df
-}
-
-print_extract <- function(x, var, ..., digits, quote, right, row.names, max) {
-  nn <- names(x)
-  ll <- length(x)
-
-  cat(paste0(
-    "\n",
-    strrep("=", nchar(var)),
-    "\n",
-    var,
-    "\n",
-    strrep("=", nchar(var)),
-    "\n"
-  ))
-  for (i in seq_len(ll)) {
-    cat(nn[i], ":\n")
-    print(x[[i]],  ..., digits = digits,
-          quote = quote, right = right, row.names = row.names,
-          max = max)
-    cat("\n")
-  }
 }

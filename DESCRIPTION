@@ -26,12 +26,10 @@ BugReports: https://github.com/irods/irods_client_library_rirods/issues
 Depends: 
     R (>= 4.1)
 Imports: 
-    askpass,
-    base64enc,
+    curl,
     httr2 (>= 0.2.2),
-    methods,
     rappdirs,
-    tools,
+    stats,
     utils,
     withr
 Suggests: 
@@ -51,5 +49,5 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-SystemRequirements: iRODS C++ REST API 0.9.3 (https://github.com/irods/irods_client_rest_cpp)
+RoxygenNote: 7.3.1
+SystemRequirements: iRODS C++ HTTP API 0.1.0 (<https://github.com/irods/irods_client_http_api>)

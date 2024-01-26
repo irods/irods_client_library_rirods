@@ -18,55 +18,48 @@
 #' # use_irods_demo()
 #'
 #' # connect project to server
-#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
 #'
 #' # authenticate
 #' iauth("rods", "rods")
 #'
-iauth <- function(user = NULL, password = NULL, role = "rodsuser") {
+iauth <- function(user, password = NULL, role = "rodsuser") {
 
-  # ask for credentials
-  if (is.null(user)) {
-    user <- askpass::askpass("Please enter your username:")
-  }
-  if (is.null(password)) {
-    password <- askpass::askpass()
-  }
+  .rirods$user <- user
 
   # get token
-  token <- get_token(paste(user, password, sep = ":"), find_irods_file("host"))
+  token <- get_token(user, password, find_irods_file("host"))
 
   # store token
   assign("token", token, envir = .rirods)
 
-  # starting dir as admin or user
-  if (role == "rodsadmin") {
-    start_rirods <- find_irods_file("zone_path")
-  } else if (role == "rodsuser") {
-    # check path formatting, does it end with "/"? If not, then add it.
-    if (!grepl("/$", find_irods_file("zone_path")))
-      zone_path <- paste0(find_irods_file("zone_path"), "/")
-    start_rirods <- paste0(zone_path, user)
-  } else {
-    stop("Unkown role of user.")
+  # add additional server information to config file
+  irods_conf_file <- path_to_irods_conf()
+  server_info <- jsonlite::fromJSON(irods_conf_file)
+
+  if (length(server_info) == 1) {
+    export <-
+      jsonlite::toJSON(append(server_info , get_server_info(FALSE)),
+                       auto_unbox = TRUE,
+                       pretty = TRUE)
+    write(export, file = irods_conf_file)
   }
 
-  .rirods$current_dir <- start_rirods
+  # starting dir as admin or user
+  .rirods$user_role <- role
+  .rirods$current_dir <- make_irods_base_path()
 
   invisible(NULL)
 }
 
-get_token <- function(details, host) {
-
-  # password and user as variables
-  secret <- base64enc::base64encode(charToRaw(details))
+get_token <- function(user, password, host) {
 
   # request
   req <- httr2::request(host) |>
-    httr2::req_url_path_append("auth") |>
-    httr2::req_headers(Authorization = paste0("Basic ", secret)) |>
     httr2::req_method("POST") |>
-    handle_irods_errors()
+    httr2::req_auth_basic(user, password) |>
+    handle_irods_errors() |>
+    httr2::req_url_path_append("authenticate")
 
   # response
   httr2::req_perform(req) |>
@@ -86,4 +79,15 @@ get_token <- function(details, host) {
 is_connected_irods <- function(...) {
 
   if (is.null(.rirods$token)) FALSE else TRUE
+}
+
+is_api_type <- function(host, type) {
+  if (grepl("irods-http-api", host)) {
+    api_type <- "http"
+  } else if (grepl("irods-rest", host)) {
+    api_type <- "rest"
+  } else {
+    stop("Unknown iRODS api type.")
+  }
+  api_type == type
 }

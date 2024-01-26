@@ -9,11 +9,11 @@ all: update remove clean
 # update modules
 update:
 	git submodule sync --recursive
-	git submodule update --init --force --recursive
+	git submodule update --init --force --recursive --remote
 # delete unnecessary docker modules
 remove:
 	rm -rf $(DOCKER_MODULES)
 # remove lines docker-compose
 clean:
-	head -n 43 '$(PATH_MODULES)/docker-compose.yml' > temp.yml
+	head -n 63 '$(PATH_MODULES)/docker-compose.yml' > temp.yml
 	mv temp.yml '$(PATH_MODULES)/docker-compose.yml'
