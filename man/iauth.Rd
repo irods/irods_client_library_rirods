@@ -4,7 +4,7 @@
 \alias{iauth}
 \title{Authentication Service for an iRODS Zone}
 \usage{
-iauth(user = NULL, password = NULL, role = "rodsuser")
+iauth(user, password = NULL, role = "rodsuser")
 }
 \arguments{
 \item{user}{iRODS user name (prompts user for user name if not supplied).}
@@ -29,7 +29,7 @@ is_irods_demo_running()
 # use_irods_demo()
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 
 # authenticate
 iauth("rods", "rods")

@@ -8,6 +8,7 @@ imeta(
   logical_path,
   entity_type = c("data_object", "collection", "user"),
   operations = list(),
+  admin = FALSE,
   verbose = FALSE
 )
 }
@@ -26,6 +27,8 @@ should be added to or removed from the metadata of the item (required).
 \item \code{value}, with the value of the AVU (required).
 \item \code{units}, with the unit of the AVU (optional).
 }}
+
+\item{admin}{Whether to grant admin rights. Defaults to \code{FALSE}.}
 
 \item{verbose}{Whether information should be printed about the HTTP request
 and response. Defaults to \code{FALSE}.}
@@ -48,7 +51,7 @@ is_irods_demo_running()
 # use_irods_demo()
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 
 # authentication
 iauth("rods", "rods")
@@ -64,7 +67,6 @@ ils()
 
 # add some metadata
 imeta(
-  "foo.rds",
   "data_object",
    operations =
     list(
@@ -75,7 +77,6 @@ imeta(
 # `operations` can contain multiple tags supplied as a `data.frame`
 imeta(
   "foo.rds",
-  "data_object",
   operations = data.frame(
     operation = c("add", "add"),
     attribute = c("foo2", "foo3"),
@@ -87,7 +88,6 @@ imeta(
 # or again as a list of lists
 imeta(
   "foo.rds",
-  "data_object",
   operations = list(
     list(operation = "add", attribute = "foo4", value = "bar4", units = "baz4"),
     list(operation = "add", attribute = "foo5", value = "bar5", units = "baz5")
@@ -97,7 +97,6 @@ imeta(
 # list of lists are useful as AVUs don't have to contain units
 imeta(
   "foo.rds",
-  "data_object",
   operations = list(
     list(operation = "add", attribute = "foo6", value = "bar6"),
     list(operation = "add", attribute = "foo7", value = "bar7", units = "baz7")

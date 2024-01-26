@@ -28,7 +28,11 @@ knitr::opts_knit$set(
 ```
 
 ```{r setup2, include=FALSE}
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", overwrite=TRUE)
+# set user config directory to temporary location
+withr::local_envvar(
+  R_USER_CONFIG_DIR = tempdir()
+)
+create_irods("http://localhost:9001/irods-http-api/0.1.0")
 iauth("rods", "rods")
 if (length(ils())> 0) {
   for (file in ils()$logical_path) {
@@ -164,7 +168,7 @@ icd("some_collection")
 ils(metadata=TRUE)
 
 # imeta add -C subcollection foo bar baz
-imeta("subcollection", "collection",
+imeta("subcollection",
       operations = list(
         list(operation="add", attribute="foo", value="bar", units="baz")
         )
@@ -213,11 +217,7 @@ if (length(ils())> 0) {
     irm(file, recursive = TRUE)
   }
 }
-if (length(ils("/tempZone/trash/home/rods"))> 0) {
-  for (file in ils("/tempZone/trash/home/rods")$logical_path) {
-    irm(file, recursive = TRUE)
-  }
-}
 end_vignette()
+unlink(rirods:::path_to_irods_conf())
 ```
 

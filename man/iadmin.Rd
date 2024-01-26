@@ -5,33 +5,21 @@
 \title{The Administration Interface to iRODS}
 \usage{
 iadmin(
-  action,
-  target,
-  arg2 = character(1),
-  arg3 = character(1),
-  arg4 = character(1),
-  arg5 = character(1),
-  arg6 = character(1),
-  arg7 = character(1),
+  name,
+  password = character(1),
+  action = c("create_user", "set_password", "remove_user"),
+  role = c("rodsuser", "rodsadmin"),
   verbose = FALSE
 )
 }
 \arguments{
-\item{action}{The action: add, modify, or remove.}
+\item{name}{Name of user to be added.}
 
-\item{target}{The subject of the action: user, zone, resource, childtoresc,}
+\item{password}{Password of to be added.}
 
-\item{arg2}{arg2}
+\item{action}{The action: create_user, remove_user, or set_password.}
 
-\item{arg3}{arg3}
-
-\item{arg4}{arg4}
-
-\item{arg5}{arg5}
-
-\item{arg6}{arg6}
-
-\item{arg7}{arg7}
+\item{role}{Role of user: rodsuser or rodsadmin.}
 
 \item{verbose}{Show information about the http request and response.
 Defaults to \code{FALSE}.}
@@ -56,13 +44,12 @@ create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
 iauth("rods", "rods")
 
 # add user
-iadmin(action = "add", target = "user", arg2 = "Bob", arg3 = "rodsuser")
+iadmin("Alice", action = "create_user", role = "rodsuser")
 
 # add user password
-iadmin(action = "modify", target = "user", arg2 = "Bob", arg3 = "password",
-  arg4 = "pass")
+iadmin("Alice", "pass", action = "set_password",  role = "rodsuser")
 
 # delete user
-iadmin(action = "remove", target = "user", arg2 = "Bob")
+iadmin("Alice", action = "remove_user", role = "rodsuser")
 \dontshow{\}) # examplesIf}
 }

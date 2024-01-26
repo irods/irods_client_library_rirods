@@ -31,8 +31,9 @@ jobs:
       - name: Setup iRODS demo
         run: |
           cd ./inst/irods_demo
-          git submodule update --init --recursive
-          docker-compose up -d nginx-reverse-proxy
+          git submodule sync --recursive
+          git submodule update --init --force --recursive --remote
+          docker compose up -d nginx-reverse-proxy irods-client-http-api irods-client-icommands
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -60,6 +61,11 @@ jobs:
           renv::restore(repos = c(CRAN = "https://cloud.r-project.org"))
           if (!requireNamespace("pkgdown", quietly = TRUE)) install.packages("pkgdown")
           if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
+          if (!requireNamespace("knitr", quietly = TRUE)) install.packages("knitr")
+          if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown")
+          if (!requireNamespace("httptest2", quietly = TRUE)) install.packages("httptest2")
+          if (!requireNamespace("purrr", quietly = TRUE)) install.packages("purrr")
+          if (!requireNamespace("kableExtra", quietly = TRUE)) install.packages("kableExtra")
           devtools::install()
           Sys.setenv(R_USER_CONFIG_DIR = tempdir())
 

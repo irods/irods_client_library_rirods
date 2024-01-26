@@ -9,20 +9,24 @@ iput(
   local_path,
   logical_path,
   offset = 0,
-  count = 2000L,
+  count = find_irods_file("max_http_request_size_in_bytes"),
   truncate = TRUE,
+  append = FALSE,
   verbose = FALSE,
-  overwrite = FALSE
+  overwrite = FALSE,
+  ticket = NULL
 )
 
 isaveRDS(
   x,
   logical_path,
   offset = 0,
-  count = 2000L,
+  count = find_irods_file("max_http_request_size_in_bytes"),
   truncate = TRUE,
+  append = FALSE,
   verbose = FALSE,
-  overwrite = FALSE
+  overwrite = FALSE,
+  ticket = NULL
 )
 }
 \arguments{
@@ -37,11 +41,14 @@ isaveRDS(
 \item{truncate}{Whether to truncate the object when opening it. Defaults to
 \code{TRUE}.}
 
+\item{append}{Whether to append the objects.}
+
 \item{verbose}{Whether to print information about the HTTP request and
 response. Defaults to \code{FALSE}.}
 
-\item{overwrite}{Whether the file in iRODS should be overwritten if it
-exists. Defaults to \code{FALSE}.}
+\item{overwrite}{Deprecated. Use \code{truncate}.}
+
+\item{ticket}{A valid iRODS ticket string. Defaults to \code{NULL}.}
 
 \item{x}{R object to save in iRODS.}
 }
@@ -64,7 +71,7 @@ is_irods_demo_running()
 # use_irods_demo()
 
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home", TRUE)
+create_irods("http://localhost:9001/irods-http-api/0.1.0", TRUE)
 
 # authenticate
 iauth("rods", "rods")

@@ -37,7 +37,6 @@ These functions are untested on Windows and macOS and require:
 \itemize{
 \item \code{bash}
 \item \code{docker}
-\item \code{docker-compose}
 }
 }
 \examples{
