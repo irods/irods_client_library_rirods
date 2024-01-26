@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker images --filter=reference="irods_demo_*" --format "{{.Repository}}"
+docker images --filter=reference="irods_demo*" --filter=reference="irods/*" --format "{{.Repository}}"

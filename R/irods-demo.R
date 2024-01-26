@@ -6,7 +6,6 @@
 #' These functions are untested on Windows and macOS and require:
 #'  * `bash`
 #'  * `docker`
-#'  * `docker-compose`
 #'
 #' @param user Character vector for user name (defaults to "rods" admin)
 #' @param pass Character vector for password (defaults to "rods" admin password)
@@ -42,11 +41,10 @@ use_irods_demo <- function(user = character(), pass = character(),
   docker_version <- system("docker --version", ignore.stdout = !verbose,
                            ignore.stderr = !verbose)
   if (Sys.which("bash") == "" ||
-      Sys.which("docker") == ""  ||
-      docker_version == "" ||
-      Sys.which("docker-compose") == "") {
+      Sys.which("docker") == "" ||
+      docker_version == "") {
     stop(
-      "Bash and Docker with the docker-compose plugin are required. \n",
+      "Bash and Docker are required. \n",
       "Install bash and docker to commence. Alternatively, sudo rights \n",
       "are required for Docker: please check: \n",
       "https://docs.docker.com/engine/install/linux-postinstall/",
@@ -85,7 +83,7 @@ use_irods_demo <- function(user = character(), pass = character(),
       c(user, pass),
       stdout = FALSE,
       stderr = FALSE
-     )
+    )
   } else {
     user <- pass <- "rods"
   }
@@ -98,18 +96,18 @@ use_irods_demo <- function(user = character(), pass = character(),
     message(
       "\n",
       "Do the following to connect with the iRODS demo server: \n",
-      "create_irods(\"http://localhost/irods-rest/0.9.3\", \"/tempZone/home\") \n",
+      "create_irods(\"http://localhost:9001/irods-http-api/0.1.0\") \n",
       "iauth(\"", user, "\", \"", pass, "\")"
     )
   }
 
-  invisible()
+  invisible(NULL)
 }
 #' @rdname use_irods_demo
 #'
 #' @export
 stop_irods_demo <- function() {
-  system(paste0("cd ", path_to_demo(), " ; docker-compose down"))
+  system(paste0("cd ", path_to_demo(), " ; docker compose down"))
   invisible()
 }
 
@@ -126,9 +124,10 @@ stop_irods_demo <- function() {
 is_irods_demo_running <- function(...) {
 
   # check for client-icommand is not required (only needed for demo itself)
-  irods_container_ref <- paste0(irods_images_ref, "_1")
+  irods_container_ref <- paste0(irods_images_ref, "-1")
+  irods_container_ref[6] <- "irods_demo-irods-client-http-api-1" # inconsistent naming between image and container
   irods_container_ref <-
-    irods_container_ref[irods_container_ref != "irods_demo_irods-client-icommands_1"]
+    irods_container_ref[irods_container_ref != "irods_demo-irods-client-icommands-1"]
   is_irods_demo_running_ <- function(x) {
     system2(
       system.file(package = "rirods", "shell_scripts", "docker-containers.sh"),
@@ -158,7 +157,7 @@ remove_docker_images <- function() {
     system.file(package = "rirods", "shell_scripts", "docker-images-remove.sh")
   Map(
     function(x) {
-      system2(bsh, x, stderr = NULL)
+      system(paste("docker rmi", x), ignore.stderr = TRUE)
     },
     irods_images_ref
   )
@@ -167,9 +166,9 @@ remove_docker_images <- function() {
 
 start_irods <- function(verbose, recreate = TRUE) {
   if (isTRUE(recreate)) {
-    cmd <- " ; docker-compose up -d --force-recreate nginx-reverse-proxy"
+    cmd <- " ; docker compose up -d --force-recreate nginx-reverse-proxy irods-client-http-api irods-client-icommands"
   } else {
-    cmd <- " ; docker-compose up -d nginx-reverse-proxy"
+    cmd <- " ; docker compose up -d nginx-reverse-proxy irods-client-http-api irods-client-icommands"
   }
   system(
     paste0("cd ", path_to_demo(), cmd),
@@ -183,7 +182,7 @@ path_to_demo <- function() system.file("irods_demo", package = "rirods")
 # perform dry run to see if iRODS can be used
 dry_run_irods <- function(user, pass, recreate) {
   tryCatch(
-    {local_create_irods(); iauth(user, pass)},
+    {local_create_irods(); iauth(user, pass); ils()},
     error = function(err)  {
       if (isFALSE(recreate)) {
         message(
@@ -207,11 +206,12 @@ dry_run_irods <- function(user, pass, recreate) {
 
 # look up table for irods_demo images
 irods_images_ref <- c(
-  "irods_demo_irods-catalog",
-  "irods_demo_irods-catalog-provider",
-  "irods_demo_irods-client-icommands",
-  "irods_demo_irods-client-rest-cpp",
-  "irods_demo_nginx-reverse-proxy"
+  "irods_demo-irods-catalog",
+  "irods_demo-irods-catalog-provider",
+  "irods_demo-irods-client-icommands",
+  "irods_demo-irods-client-rest-cpp",
+  "irods_demo-nginx-reverse-proxy",
+  "irods/irods_http_api"
 )
 
 #' Launch iRODS from Alternative Directory
@@ -220,8 +220,7 @@ irods_images_ref <- c(
 #' package source files.
 #'
 #' @param host Hostname of the iRODS server. Defaults to
-#'  "http://localhost/irods-rest/0.9.3".
-#' @param zone_path Zone path of the iRODS server. Defaults to "/tempZone/home".
+#'  ""http://localhost:9001/irods-http-api/0.1.0".
 #' @param dir The directory to use. Default is a temporary directory.
 #' @param env Attach exit handlers to this environment. Defaults to the
 #'  parent frame (accessed through [parent.frame()]).
@@ -230,10 +229,9 @@ irods_images_ref <- c(
 #' @keywords internal
 #'
 local_create_irods <- function(
-    host = NULL,
-    zone_path = NULL,
-    dir = tempdir(),
-    env = parent.frame()
+  host = NULL,
+  dir = tempdir(),
+  env = parent.frame()
 ) {
 
   # default host
@@ -242,17 +240,7 @@ local_create_irods <- function(
       host <-
         httr2::secret_decrypt(Sys.getenv("DEV_HOST_IRODS"), "DEV_KEY_IRODS")
     } else {
-      host <- "http://localhost/irods-rest/0.9.3"
-    }
-  }
-
-  # defaults path
-  if (is.null(zone_path)) {
-    if (Sys.getenv("DEV_KEY_IROD") != "") {
-      zone_path <-
-        httr2::secret_decrypt(Sys.getenv("DEV_ZONE_PATH_IRODS"), "DEV_KEY_IRODS")
-    } else {
-      zone_path <- "/tempZone/home"
+      host <- "http://localhost:9001/irods-http-api/0.1.0"
     }
   }
 
@@ -264,7 +252,7 @@ local_create_irods <- function(
   withr::defer(setwd(old_dir), envir = env)
 
   # switch to new iRODS project
-  create_irods(host, zone_path, overwrite = TRUE)
+  create_irods(host, overwrite = TRUE)
   withr::defer(unlink(path_to_irods_conf()), envir = env)
 
   invisible(dir)

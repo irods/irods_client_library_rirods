@@ -9,15 +9,17 @@
 #' it follows platform conventions (see also [rappdirs::user_config_dir()]).
 #'
 #' @param host URL of host.
-#' @param zone_path Path to the zone of the iRODS server
-#'    (e.g., "/tempZone/home").
+#' @param zone_path Depracated
 #' @param overwrite Overwrite existing iRODS configuration file. Defaults to
 #'    `FALSE`.
 #'
 #' @return Invisibly, the path to the iRODS configuration file.
 #' @export
 #'
-create_irods <- function(host, zone_path, overwrite = FALSE) {
+create_irods <- function(host, zone_path = character(1), overwrite = FALSE) {
+
+  if (!missing("zone_path"))
+    warning("Argument `zone_path` is deprecated")
 
   path <- path_to_irods_conf()
 
@@ -31,10 +33,8 @@ create_irods <- function(host, zone_path, overwrite = FALSE) {
 
   # create file
   file.create(path)
-  cat(
-    paste0("host: ", host),
-    paste0("zone_path: ", zone_path),
-    sep = "\n",
+  write(
+    jsonlite::toJSON(list(host = host), auto_unbox = TRUE, pretty = TRUE),
     file = path
   )
 
