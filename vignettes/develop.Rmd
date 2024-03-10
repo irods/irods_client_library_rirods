@@ -20,14 +20,14 @@ knitr::opts_chunk$set(
 
 ## Contributing to rirods development
 
-To contribute to rirods fork the source files from: 
+To contribute to `{rirods}` fork the source files from: 
 https://github.com/irods/irods_client_library_rirods, and make a Pull Request. 
 
 ## Prerequisites R
 
 The following R packages are furthermore required for development: `xml2`, 
-`jsonlite`, `readr`, `testthat` (>= 3.0.0), `knitr`, `rmarkdown`, `spelling`, 
-and `httptest2`. For convenience, one can also use `renv` () and 
+`purrr`, `readr`, `testthat` (>= 3.0.0), `knitr`, `rmarkdown`, `spelling`, 
+`kableExtra`, and `httptest2`. For convenience, one can also use `renv` () and 
 `renv::restore()` to install all dependencies. The `usethis` and the `devtools` 
 packages are further suggestions to streamline development. See [devtools](https://devtools.r-lib.org/) and [usethis](https://usethis.r-lib.org/) 
 for common development tasks and setups covered by these packages.
@@ -40,12 +40,12 @@ stored in several directories under `tests/testthat/`.
 ## Prerequisites iRODS
 
 The unit test included in the source files can either be run against a local or 
-remote iRODS C++ REST API service, version 0.9.3 or later - 
-https://github.com/irods/irods_client_rest_cpp.
+remote iRODS C++ HTTP API service - 
+https://github.com/irods/irods_client_http_api.
 
 ### Local server
 
-Launch a local demonstration iRODS service (including the REST API):
+Launch a local demonstration iRODS service (including the HTTP API):
 
 ```{bash, eval=FALSE}
 # clone the repository (and submodule "irods_demo")
@@ -60,7 +60,7 @@ Alternatively, one can use the R function `use_irods_demo()`.
 
 Note, that both options can only be used if Docker and the Docker-compose plugin are installed.
 
-This will result in the demonstration REST API running at `http://localhost/irods-rest/0.9.3` (or later version). 
+This will result in the demonstration HTTP API running at `r rirods:::.irods_host` (or later version). 
 No further configuration in R is needed for development (except for removing 
 possible mock files). For example, to run the unit tests against this local 
 server use: `devtools::test()`.

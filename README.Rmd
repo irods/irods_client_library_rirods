@@ -31,7 +31,7 @@ The rirods package is an R client for iRODS.
 
 ## Installation
 
-You can install the development version of rirods like so:
+You can install the latest CRAN version of rirods like so:
 
 ```r
 install.packages("rirods")
@@ -46,9 +46,9 @@ devtools::install_github("irods/irods_client_library_rirods")
 
 ## Prerequisites
 
-This package connects to the iRODS C++ REST API - https://github.com/irods/irods_client_rest_cpp.
+This package connects to the iRODS C++ HTTP API - https://github.com/irods/irods_client_http_api.
 
-Launch a local demonstration iRODS service (including the REST API):
+Launch a local demonstration iRODS service (including the HTTP API):
 
 ```{r echo=FALSE}
 library(rirods)
@@ -65,7 +65,7 @@ use_irods_demo("alice", "passWORD")
 unlink(rirods:::path_to_irods_conf())
 ```
 
-This will result in the demonstration REST API running at `http://localhost/irods-rest/0.9.3` (or later version).
+This will result in the demonstration HTTP API running at `r paste0("\"", rirods:::.irods_host, "\"")`.
 
 These Docker containers are designed to easily stand up a **DEMONSTRATION** of the iRODS server. It is intended for education and exploration. (See also `vignette("demo")`.)
 
@@ -73,11 +73,14 @@ These Docker containers are designed to easily stand up a **DEMONSTRATION** of t
 
 ## Example Usage
 
-To connect to the REST API endpoint of your choice, load `rirods`, connect with `create_irods()`, and authenticate with your iRODS credentials:
+To connect to the HTTP API endpoint of your choice, load `rirods`, connect with `create_irods()`, and authenticate with your iRODS credentials:
 
-```{r project, eval=is_irods_demo_running()}
-# connect
-create_irods("http://localhost:9001/irods-http-api/0.1.0")
+```{r project_mock, echo=FALSE, comment=""}
+substitute(create_irods(x), list(x = rirods:::.irods_host))
+```
+
+```{r project, eval=is_irods_demo_running(), echo=FALSE}
+eval(substitute(create_irods(x), list(x = rirods:::.irods_host)))
 ```
 
 ### Authentication

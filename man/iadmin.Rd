@@ -8,18 +8,18 @@ iadmin(
   name,
   password = character(1),
   action = c("create_user", "set_password", "remove_user"),
-  role = c("rodsuser", "rodsadmin"),
+  role = c("rodsuser", "groupadmin", "rodsadmin"),
   verbose = FALSE
 )
 }
 \arguments{
 \item{name}{Name of user to be added.}
 
-\item{password}{Password of to be added.}
+\item{password}{Password to be added.}
 
-\item{action}{The action: create_user, remove_user, or set_password.}
+\item{action}{The action: \code{"create_user"}, \code{"remove_user"}, or \code{"set_password"}.}
 
-\item{role}{Role of user: rodsuser or rodsadmin.}
+\item{role}{Role of user: \code{"rodsuser"}, \code{"groupadmin"}, and \code{"groupadmin"}.}
 
 \item{verbose}{Show information about the http request and response.
 Defaults to \code{FALSE}.}
@@ -36,9 +36,12 @@ is_irods_demo_running()
 
 # demonstration server (requires Bash, Docker and Docker-compose)
 # use_irods_demo()
-
+\dontshow{
+.old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+}
 # connect project to server
-create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+\Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 
 # authentication
 iauth("rods", "rods")
@@ -51,5 +54,8 @@ iadmin("Alice", "pass", action = "set_password",  role = "rodsuser")
 
 # delete user
 iadmin("Alice", action = "remove_user", role = "rodsuser")
+\dontshow{
+Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+}
 \dontshow{\}) # examplesIf}
 }

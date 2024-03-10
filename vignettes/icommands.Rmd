@@ -32,7 +32,7 @@ knitr::opts_knit$set(
 withr::local_envvar(
   R_USER_CONFIG_DIR = tempdir()
 )
-create_irods("http://localhost:9001/irods-http-api/0.1.0")
+eval(substitute(create_irods(x, overwrite = TRUE), list(x = rirods:::.irods_host)))
 iauth("rods", "rods")
 if (length(ils())> 0) {
   for (file in ils()$logical_path) {
@@ -79,9 +79,9 @@ When it comes to listing the contents of a collection, both `ils` and `ils()` ca
 ```{r}
 ils() # ils
 ils("some_collection") # ils some_collection
-ils("some_collection", stat=TRUE) # ils -l some_collection
-ils("some_collection", permissions=TRUE) # ils -A some_collection
-ils(permissions=TRUE, stat=TRUE) # ils -Al
+ils("some_collection", stat = TRUE) # ils -l some_collection
+ils("some_collection", permissions = TRUE) # ils -A some_collection
+ils(permissions=TRUE, stat = TRUE) # ils -Al
 ```
 
 A crucial difference between `ils` and `ils()` is that `ils(metadata=TRUE)` is used to print the metadata information of each element listed, whereas iCommands only provides metadata information of one element at a time by calling `imeta ls` on it. At the moment, `{rirods}` does not offer any fast way of restricting the metadata to a specific item, although the custom function `filter_ils()` shown below could be used to achieve this result.
@@ -91,16 +91,16 @@ filter_ils <- function(pattern, ils_output = ils()) {
   stopifnot(inherits(ils_output, "irods_df"))
   ils_df <- as.data.frame(ils_output)
   if (length(pattern) == 1) {
-    filtered <- ils_df[grepl(pattern, ils_df$logical_path),]
+    filtered <- ils_df[grepl(pattern, ils_df$logical_path), ]
   } else {
-    filtered <- ils_df[basename(ils_df$logical_path) %in% pattern,]
+    filtered <- ils_df[basename(ils_df$logical_path) %in% pattern, ]
   }
   rirods:::new_irods_df(filtered)
 }
 ```
 
 ```{r}
-my_files <- ils("some_collection", metadata=TRUE)
+my_files <- ils("some_collection", metadata = TRUE)
 my_files
 filter_ils("random", my_files) # imeta ls -d some_collection/random_numbers.rds
 ```

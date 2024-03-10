@@ -19,26 +19,30 @@ iquery(
 \arguments{
 \item{query}{GeneralQuery for searching the iCAT database.}
 
-\item{limit}{Maximum number of rows to return. Depracated.}
+\item{limit}{Maximum number of rows to return.}
 
-\item{offset}{Number of rows to skip for paging. Depracated.}
+\item{offset}{Number of rows to skip for paging. Deprecated.}
 
 \item{type}{Type of query: 'general' (the default) or 'specific'.}
 
-\item{case_sensitive}{Whether the string matching in the query is case sensitive.
-Defaults to \code{TRUE}.}
+\item{case_sensitive}{Whether the string matching in the query is case
+sensitive. Defaults to \code{TRUE}.}
 
-\item{distinct}{Whether only distinct rows should be listed. Defaults to \code{TRUE}.}
+\item{distinct}{Whether only distinct rows should be listed. Defaults to
+\code{TRUE}.}
 
-\item{parser}{Which parser to use: genquery1 or genquery2. Defaults to genquery1.}
+\item{parser}{Which parser to use: genquery1 or genquery2. Defaults to
+genquery1.}
 
-\item{sql_only}{Whether to use SQL syntax. Defaults to \code{FALSE}. Needs Genquery2.}
+\item{sql_only}{Whether to dry-run query and return SQL syntax query as
+return. Defaults to \code{FALSE}. Needs \href{https://github.com/irods/irods_api_plugin_genquery2/?#api-plugin}{Genquery2}.}
 
-\item{verbose}{Whether information should be printed about the HTTP request and response.}
+\item{verbose}{Whether information should be printed about the HTTP request
+and response.}
 }
 \value{
-A dataframe with one row per result and one column per requested attribute,
-with "size" and "time" columns parsed to the right type.
+A dataframe with one row per result and one column per requested
+attribute, with "size" and "time" columns parsed to the right type.
 
 Invisibly, the HTTP response.
 }
@@ -50,12 +54,12 @@ equivalent \code{iquest} in the \href{https://docs.irods.org/master/icommands/us
 \examples{
 \dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 is_irods_demo_running()
-
-# demonstration server (requires Bash, Docker and Docker-compose)
-# use_irods_demo()
-
+\dontshow{
+.old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+}
 # connect project to server
-create_irods("http://localhost:9001/irods-http-api/0.1.0")
+\Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 
 # authentication
 iauth("rods", "rods")
@@ -69,7 +73,6 @@ isaveRDS(foo, "foo.rds")
 # add metadata
 imeta(
   "foo.rds",
-  "data_object",
   operations =
     list(
       list(operation = "add", attribute = "bar", value = "baz")
@@ -81,12 +84,16 @@ iquery("SELECT COLL_NAME, DATA_NAME WHERE META_DATA_ATTR_NAME LIKE 'bar\%'")
 
 # delete object
 irm("foo.rds", force = TRUE)
+\dontshow{
+Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+}
 \dontshow{\}) # examplesIf}
 }
 \references{
 https://docs.irods.org/master/icommands/user/#iquest
 
-Use SQL-like expressions to query data objects and collections based on different properties.
+Use SQL-like expressions to query data objects and collections based on
+different properties.
 }
 \seealso{
 \code{\link[=imeta]{imeta()}}

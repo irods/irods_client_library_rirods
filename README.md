@@ -24,18 +24,18 @@ Or, the development version from GitHub, like so:
 
 ## Prerequisites
 
-This package connects to the iRODS C++ REST API -
-<https://github.com/irods/irods_client_rest_cpp>.
+This package connects to the iRODS C++ HTTP API -
+<https://github.com/irods/irods_client_http_api>.
 
-Launch a local demonstration iRODS service (including the REST API):
+Launch a local demonstration iRODS service (including the HTTP API):
 
     # load
     library(rirods)
     # setup a mock iRODS server (https://github.com/irods/irods_demo)
     use_irods_demo("alice", "passWORD")
 
-This will result in the demonstration REST API running at
-`http://localhost/irods-rest/0.9.3` (or later version).
+This will result in the demonstration HTTP API running at
+rirods:::.irods\_host.
 
 These Docker containers are designed to easily stand up a
 **DEMONSTRATION** of the iRODS server. It is intended for education and
@@ -45,12 +45,11 @@ exploration. (See also `vignette("demo")`.)
 
 ## Example Usage
 
-To connect to the REST API endpoint of your choice, load `rirods`,
+To connect to the HTTP API endpoint of your choice, load `rirods`,
 connect with `create_irods()`, and authenticate with your iRODS
 credentials:
 
-    # connect
-    create_irods("http://localhost:9001/irods-http-api/0.1.0")
+    create_irods("http://localhost:9001/irods-http-api/0.2.0")
 
 ### Authentication
 

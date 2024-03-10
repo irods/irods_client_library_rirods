@@ -9,7 +9,7 @@ create_irods(host, zone_path = character(1), overwrite = FALSE)
 \arguments{
 \item{host}{URL of host.}
 
-\item{zone_path}{Depracated}
+\item{zone_path}{Deprecated}
 
 \item{overwrite}{Overwrite existing iRODS configuration file. Defaults to
 \code{FALSE}.}

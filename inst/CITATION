@@ -2,11 +2,11 @@ bibentry(
   "Manual",
   title    = "R Client for iRODS",
   author   = "Martin Schobben, Mariana Montes",
-  year     = "2023",
-  version   = "0.1.2",
+  year     = "2024",
+  version   = "0.2.0",
   url      = "https://github.com/irods/irods_client_library_rirods",
-  textVersion = paste0("Schobben, M., Montes, M., (2023) ",
+  textVersion = paste0("Schobben, M., Montes, M., (2024) ",
                   "R Client for iRODS, ",
-                  "Version = 0.1.2, ",
+                  "Version = 0.2.0, ",
                   "https://github.com/irods/irods_client_library_rirods")
 )

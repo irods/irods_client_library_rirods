@@ -58,5 +58,7 @@ reference:
 
 news:
  releases:
+  - text: "Version 0.2.0"
+    href: https://fairelabs.github.io/iRODS4R/posts/rirods-0-2-0/
   - text: "Version 0.1.1"
     href: https://fairelabs.github.io/iRODS4R/posts/rirods-0-1-1/

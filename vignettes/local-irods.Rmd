@@ -17,7 +17,7 @@ start_vignette("local-irods")
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval=is_irods_demo_running()
+  eval=FALSE
 )
 
 root_dir <- tempdir()
@@ -30,9 +30,9 @@ knitr::opts_knit$set(
 ```{r setup2, include=FALSE}
 # set user config directory to temporary location
 withr::local_envvar(
-  R_USER_CONFIG_DIR = tempdir()
+  R_USER_CONFIG_DIR = root_dir
 )
-create_irods("http://localhost:9001/irods-http-api/0.1.0")
+eval(substitute(create_irods(x, overwrite = TRUE), list(x = rirods:::.irods_host)))
 iauth("rods", "rods")
 
 if (length(ils())> 0) {
@@ -43,7 +43,6 @@ if (length(ils())> 0) {
 
 dir.create(file.path(root_dir, "data"))
 imkdir("data")
-
 ```
 
 If you are not familiar with iRODS, understanding how to access and manipulate data with it may be less than intuitive. In this vignette, we'll go through the main functions for setting and changing the working directory and for creating, saving, reading and removing data, comparing R functions for manipulation of local files and the `{rirods}` counterparts.
@@ -128,7 +127,7 @@ For example, let's simulate some data and store it in our "data" directory with 
 set.seed(1234)
 fake_data <- data.frame(x = rnorm(20, mean = 1))
 fake_data$y <- fake_data$x * 2 + 3 - rnorm(20, sd = 0.6)
-write.csv(fake_data, file.path("data", "data.csv"), row.names=FALSE)
+write.csv(fake_data, file.path("data", "data.csv"), row.names = FALSE)
 dir("data")
 ```
 
