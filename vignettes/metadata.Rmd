@@ -34,7 +34,7 @@ options(knitr.kable.NA = "")
 withr::local_envvar(
   R_USER_CONFIG_DIR = tempdir()
 )
-create_irods("http://localhost:9001/irods-http-api/0.1.0")
+eval(substitute(create_irods(x, overwrite = TRUE), list(x = rirods:::.irods_host)))
 iauth("rods", "rods")
 
 filter_ils <- function(pattern, ils_output = ils()) {
@@ -150,9 +150,9 @@ Since dataframes are lists of lists, the `operations` argument of `imeta()` can 
 
 ```{r}
 lm_meta <- data.frame(
-    attribute = c("size", "size", "data_file", "model_type"),
-    value = c(as.character(nrow(fake_data)), 1, data_path, "linear regression"),
-    units= c("observations", "predictors", "", "")
+  attribute = c("size", "size", "data_file", "model_type"),
+  value = c(as.character(nrow(fake_data)), 1, data_path, "linear regression"),
+  units = c("observations", "predictors", "", "")
 )
 lm_meta
 ```
@@ -185,8 +185,16 @@ file_md <- data.frame(
 )
 pwalk(file_md, function(path, type, responsible) {
   imeta(path, operations = list(
-    list(operation = "add", attribute = "type", value = type),
-    list(operation = "add", attribute = "responsible", value = responsible)
+    list(
+      operation = "add",
+      attribute = "type",
+      value = type
+    ),
+    list(
+      operation = "add",
+      attribute = "responsible",
+      value = responsible
+    )
   ))
 })
 ```

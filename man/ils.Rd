@@ -10,7 +10,7 @@ ils(
   permissions = FALSE,
   metadata = FALSE,
   offset = numeric(1),
-  limit = numeric(1),
+  limit = find_irods_file("max_number_of_rows_per_catalog_query"),
   recurse = FALSE,
   ticket = NULL,
   message = TRUE,
@@ -31,7 +31,7 @@ Defaults to \code{FALSE}.}
 
 \item{offset}{Number of records to skip for pagination. Deprecated.}
 
-\item{limit}{Number of records to show per page. Deprecated.}
+\item{limit}{Number of records to show per page.}
 
 \item{recurse}{Recursively list. Defaults to \code{FALSE}.}
 
@@ -53,12 +53,12 @@ access control information for each element in the collection.
 \examples{
 \dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 is_irods_demo_running()
-
-# demonstration server (requires Bash, Docker and Docker-compose)
-# use_irods_demo()
-
+\dontshow{
+.old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+}
 # connect project to server
-create_irods("http://localhost:9001/irods-http-api/0.1.0")
+\Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 
 # authenticate
 iauth("rods", "rods")
@@ -77,6 +77,9 @@ ils(metadata = TRUE)
 
 # delete `some_collection`
 irm("some_collection", force = TRUE, recursive = TRUE)
+\dontshow{
+Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

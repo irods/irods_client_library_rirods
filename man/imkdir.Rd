@@ -18,7 +18,7 @@ working directory (see \code{\link[=ipwd]{ipwd()}}).}
 \item{create_parent_collections}{Whether parent collections should be created
 when necessary. Defaults to \code{FALSE}.}
 
-\item{overwrite}{Whether the existin collection should be overwritten
+\item{overwrite}{Whether the existing collection should be overwritten
 if it exists. Defaults to \code{FALSE}.}
 
 \item{verbose}{Whether information about the HTTP request and response
@@ -34,9 +34,12 @@ instead of a local directory.
 \examples{
 \dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 is_irods_demo_running()
-
+\dontshow{
+.old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+}
 # connect project to server
-create_irods("http://localhost:9001/irods-http-api/0.1.0")
+\Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 
 # authentication
 iauth("rods", "rods")
@@ -56,6 +59,9 @@ icd("new_collection")
 # remove collection
 icd("..")
 irm("new_collection", force = TRUE, recursive = TRUE)
+\dontshow{
+Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

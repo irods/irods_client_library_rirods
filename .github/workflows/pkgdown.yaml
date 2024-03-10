@@ -66,6 +66,8 @@ jobs:
           if (!requireNamespace("httptest2", quietly = TRUE)) install.packages("httptest2")
           if (!requireNamespace("purrr", quietly = TRUE)) install.packages("purrr")
           if (!requireNamespace("kableExtra", quietly = TRUE)) install.packages("kableExtra")
+          devtools::load_all(".")
+          source("pkgdown/pre-reference.R")
           devtools::install()
           Sys.setenv(R_USER_CONFIG_DIR = tempdir())
 

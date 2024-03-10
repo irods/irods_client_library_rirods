@@ -4,7 +4,13 @@
 \alias{irm}
 \title{Remove Data Objects or Collections in iRODS}
 \usage{
-irm(logical_path, force = TRUE, recursive = FALSE, verbose = FALSE)
+irm(
+  logical_path,
+  force = TRUE,
+  recursive = FALSE,
+  catalog_only = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{logical_path}{Path to the data object or collection to remove.}
@@ -14,8 +20,11 @@ permanently. If \code{FALSE}, it is sent to the trash collection. Defaults to
 \code{TRUE}.}
 
 \item{recursive}{If a collection is provided, whether its contents should
-also bec removed. If a collection is not empty and \code{recursive} is \code{FALSE}
+also be removed. If a collection is not empty and \code{recursive} is \code{FALSE}
 , it cannot be deleted. Defaults to \code{FALSE}.}
+
+\item{catalog_only}{Whether to remove only the catalog entry. Defaults to
+\code{FALSE}.}
 
 \item{verbose}{Whether information should be printed about the HTTP request
 and response. Defaults to \code{FALSE}.}
@@ -29,11 +38,13 @@ iRODS.
 }
 \examples{
 \dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-# demonstration server (requires Bash, Docker and Docker-compose)
-# use_irods_demo()
-
+is_irods_demo_running()
+\dontshow{
+.old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+}
 # connect project to server
-create_irods("http://localhost:9001/irods-http-api/0.1.0")
+\Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 
 # authenticate
 iauth("rods", "rods")
@@ -52,6 +63,9 @@ irm("foo.rds", force = TRUE)
 
 # check if file is deleted
 ils()
+\dontshow{
+Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -27,8 +27,8 @@ jobs:
           git submodule update --init --force --recursive --remote
           docker compose up -d nginx-reverse-proxy irods-client-http-api irods-client-icommands
           sleep 5
-          docker exec irods_demo-irods-client-icommands-1 iadmin mkuser alice rodsuser
-          docker exec irods_demo-irods-client-icommands-1 iadmin moduser alice password passWORD
+          docker exec irods-demo-irods-client-icommands-1 iadmin mkuser alice rodsuser
+          docker exec irods-demo-irods-client-icommands-1 iadmin moduser alice password passWORD
 
       - name: Install system dependencies
         run: |

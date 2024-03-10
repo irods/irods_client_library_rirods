@@ -9,9 +9,8 @@ iput(
   local_path,
   logical_path,
   offset = 0,
-  count = find_irods_file("max_http_request_size_in_bytes"),
+  count = 0,
   truncate = TRUE,
-  append = FALSE,
   verbose = FALSE,
   overwrite = FALSE,
   ticket = NULL
@@ -21,9 +20,8 @@ isaveRDS(
   x,
   logical_path,
   offset = 0,
-  count = find_irods_file("max_http_request_size_in_bytes"),
+  count = 0,
   truncate = TRUE,
-  append = FALSE,
   verbose = FALSE,
   overwrite = FALSE,
   ticket = NULL
@@ -34,19 +32,17 @@ isaveRDS(
 
 \item{logical_path}{Destination path in iRODS.}
 
-\item{offset}{Offset in bytes into the data object. Defaults to 0.}
+\item{offset}{Offset in bytes into the data object. Deprecated.}
 
-\item{count}{Maximum number of bytes to write. Defaults to 2000.}
+\item{count}{Maximum number of bytes to write. Deprecated.}
 
-\item{truncate}{Whether to truncate the object when opening it. Defaults to
-\code{TRUE}.}
-
-\item{append}{Whether to append the objects.}
+\item{truncate}{Whether to truncate the object when opening it. Deprecated.}
 
 \item{verbose}{Whether to print information about the HTTP request and
 response. Defaults to \code{FALSE}.}
 
-\item{overwrite}{Deprecated. Use \code{truncate}.}
+\item{overwrite}{Whether the file in iRODS should be overwritten if it
+exists. Defaults to \code{FALSE}.}
 
 \item{ticket}{A valid iRODS ticket string. Defaults to \code{NULL}.}
 
@@ -63,15 +59,13 @@ the current environment in iRODS in RDS format (see \code{\link[=saveRDS]{saveRD
 \examples{
 \dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 is_irods_demo_running()
-
 \dontshow{
+.old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
 .old_wd <- setwd(tempdir())
+Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
 }
-# demonstration server (requires Bash, Docker and Docker-compose)
-# use_irods_demo()
-
 # connect project to server
-create_irods("http://localhost:9001/irods-http-api/0.1.0", TRUE)
+\Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 
 # authenticate
 iauth("rods", "rods")
@@ -94,6 +88,7 @@ irm("iris.csv", force = TRUE)
 
 \dontshow{
 setwd(.old_wd)
+Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
 }
 \dontshow{\}) # examplesIf}
 }
