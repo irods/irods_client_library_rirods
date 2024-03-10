@@ -63,8 +63,8 @@ jobs:
           PKG_PATH=$(pwd)
           BENCH_PATH=$(pwd)/inst/bench
           cd ${BENCH_PATH}
-          Rscript run-bench.R main ${BENCH_PATH} irods/irods_client_library_rirods HEAD 5
-          Rscript run-bench.R dev ${BENCH_PATH} ${PKG_PATH} ${{ github.sha }} 5
+          Rscript run-bench.R main ${BENCH_PATH} irods/irods_client_library_rirods HEAD http://localhost/irods-rest/0.9.3 5
+          Rscript run-bench.R dev ${BENCH_PATH} ${PKG_PATH} ${{ github.sha }} http://localhost:9001/irods-http-api/0.2.0 5
           Rscript -e "install.packages('knitr'); knitr::knit(file.path(getwd(), 'README.Rmd'), file.path(getwd(), 'README.md'))"
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"

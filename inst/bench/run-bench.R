@@ -1,12 +1,12 @@
 #!/usr/bin/env RScript
 
 args <- commandArgs(trailingOnly = TRUE)
-
 out_file_name <- args[[1]]
 out_file_path <- args[[2]]
 rirods_source <- args[[3]]
 rirods_version <- args[[4]]
-num <- args[[5]]
+host_name <- args[[5]]
+num <- args[[6]]
 
 # run in temp dir
 tmp_dir <- tempdir()
@@ -48,7 +48,7 @@ if (startsWith(rirods_source, "/")) {
 library("rirods")
 
 # irods project in temp dir
-rirods::create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+rirods::create_irods(host_name, "/tempZone/home")
 rirods::iauth("rods", "rods")
 
 # range

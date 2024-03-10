@@ -66,19 +66,19 @@ make_plot <- function(type = "files") {
 
 ## Prerequisites
 
-For the benchmarks one needs to connect to the iRODS C++ REST API - https://github.com/irods/irods_client_rest_cpp.
+For the benchmarks one needs to connect to the iRODS C++ REST/HTTP API.
 
-Launch a local demonstration iRODS service (including the REST API):
+Launch a local demonstration iRODS service (including the REST/HTTP API):
 
 ```{bash, eval=FALSE}
 # clone the repository
 git clone --recursive https://github.com/irods/irods_demo
 # start the REST API
 cd irods_demo
-docker-compose up -d nginx-reverse-proxy
+docker compose up -d nginx-reverse-proxy
 ```
 
-This will result in the demonstration REST API running at http://localhost/irods-rest/0.9.3 (or later version).
+This will result in the demonstration REST/HTTP API running at http://localhost/irods-rest/0.9.3 or http://localhost:9001/irods-http-api/0.2.0.
 
 ## Usage benchmarks
 

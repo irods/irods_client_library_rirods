@@ -14,6 +14,19 @@ test_that("get information about iRODS server", {
   expect_equal(find_irods_file("irods_zone"),  sub("/", "", dirname(dirname(def_path))))
 })
 
+test_that("create iRODS configuration directory works", {
+  tmp_dir <- rappdirs::user_config_dir("mock_config_dir")
+  if (!dir.exists(tmp_dir))
+    dir.create(tmp_dir, recursive = TRUE)
+  expect_true(dir.exists(tmp_dir))
+  unlink(tmp_dir, force=TRUE, recursive=TRUE)
+  expect_false(dir.exists(tmp_dir)) # just making sure
+
+  # test create_config_dir()
+  expect_invisible(create_config_dir(tmp_dir))
+  expect_true(dir.exists(tmp_dir))
+})
+
 test_that("error on finding iRODS server information", {
   # store conf file
   tmp <- tempfile()

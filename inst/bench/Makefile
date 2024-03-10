@@ -1,15 +1,12 @@
-MAX_NUM_FILESIZES = 5
+ROOT=$(shell pwd)
 
-all: main dev markdown
+all: rest http
 
-main:
-	Rscript run-bench.R $@ $(shell pwd) irods/irods_client_library_rirods HEAD $(MAX_NUM_FILESIZES)
+rest:
+	Rscript run-bench.R $@ '$ROOT/posts/rirods-0-2-0/data' irods/irods_client_library_rirods HEAD http://localhost/irods-rest/0.9.3
 
-dev:
-	Rscript run-bench.R $@ $(shell pwd) $(shell cd ../.. && pwd) local $(MAX_NUM_FILESIZES)
-
-markdown:
-	Rscript -e "install.packages('knitr'); knitr::knit(file.path(getwd(), 'README.Rmd'), file.path(getwd(), 'README.md'))"
+http:
+	Rscript run-bench.R $@ '$ROOT/posts/rirods-0-2-0/data' martinschobben/irods_client_library_rirods dev local http://localhost:9001/irods-http-api/0.2.0
 
 clean:
-	rm -f main-files.tsv dev-files.tsv main-objects.tsv dev-objects.tsv
+	rm -f '$ROOT/posts/rirods-0-2-0/data/rest-files.csv' '$ROOT/posts/rirods-0-2-0/datarest-files.csv'

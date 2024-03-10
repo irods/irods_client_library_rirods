@@ -1,8 +1,8 @@
 library(httptest2)
 library(httr2)
 
-#-----------------------------------------------------------------------------
-# Snapshots are created with github actions and use the latest irods_demo
+#-------------------------------------------------------------------------------
+# Snapshots are created with github actions using the latest irods_demo
 # configuration. Hence we set these environmental variables as default when
 # loading the package and no environmental variables are set. This ensures
 # that CRAN checks won't fail. In case of testing on your own sever, you have
@@ -10,7 +10,7 @@ library(httr2)
 # in your environmental variables. To use the scrambled server information in
 # the tests place them in your project level environmental variable
 # (possibly place those in your .Rprofile for convenience)
-#-----------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 if (Sys.getenv("DEV_KEY_IRODS") != "") {
   user <- secret_decrypt(Sys.getenv("DEV_USER"), "DEV_KEY_IRODS")
@@ -19,7 +19,7 @@ if (Sys.getenv("DEV_KEY_IRODS") != "") {
 } else {
   user <- "rods"
   pass <- "rods"
-  host <- "http://localhost:9001/irods-http-api/0.1.0"
+  host <- rirods:::.irods_host
 }
 
 # set user config directory to temporary location
@@ -47,8 +47,8 @@ tk <- try({
   irods_test_path <- paste0(def_path, "/testthat")
   irods_test_path_x <- paste0(def_path, "/projectx")
   # make tests collections (especially useful in case of remote server)
-  if (!lpath_exists(irods_test_path)) imkdir("testthat")
-  if (!lpath_exists(irods_test_path_x)) imkdir("projectx")
+  if (!lpath_exists(irods_test_path)) test_imkdir(irods_test_path)
+  if (!lpath_exists(irods_test_path_x)) test_imkdir(irods_test_path_x)
 
   # leave iRODS in clean state upon exit
   withr::defer(test_irm(irods_test_path, "collections"), teardown_env())
@@ -73,7 +73,7 @@ if (inherits(tk, "try-error")) {
       irods_zone = "tempZone",
       max_number_of_parallel_write_streams = 3L,
       max_number_of_rows_per_catalog_query = 15L,
-      max_http_request_size_in_bytes = 8388608L
+      max_size_of_request_body_in_bytes = 8388608L
     ), auto_unbox = TRUE, pretty = TRUE),
     file = path_to_irods_conf()
   )
