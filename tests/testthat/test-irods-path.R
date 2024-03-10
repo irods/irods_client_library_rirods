@@ -36,7 +36,9 @@ with_mock_dir("expand-path", {
       paste0(irods_test_path, "/x")
     )
   })
-})
+},
+simplify = FALSE
+)
 
 with_mock_dir("object-helpers", {
   test_that("irods object helpers work", {

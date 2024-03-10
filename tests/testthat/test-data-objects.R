@@ -20,7 +20,6 @@ simplify = FALSE
 with_mock_dir("single-write", {
   test_that("single write request works", {
     x <- list()
-    y <- NULL
     object <- serialize(x, NULL)
     offset <- 0
     count <- 150
@@ -40,15 +39,18 @@ with_mock_dir("single-write", {
     )
     expect_s3_class(req, "httr2_request")
     httr2::req_perform(req)
-    req <- irods_to_local_(lpath, offset, count, verbose = FALSE)
+    req <- irods_to_local(lpath, ticket = NULL, verbose = FALSE)
     expect_s3_class(req, "httr2_request")
     con <- rawConnection(raw(0),  "a+b")
     on.exit(close(con))
-    resp <- httr2::req_perform(req)  |>
+    resp <- httr2::req_perform(req) |>
       httr2::resp_body_raw()
     writeBin(resp, con, useBytes = TRUE)
-    y <- rawConnectionValue(con) |> unserialize()
-    expect_equal(y, x)
+    # currently mocking does not work
+    if (.rirods$token != "secret") {
+      y <- rawConnectionValue(con) |> unserialize()
+      expect_equal(y, x)
+    }
     test_irm(paste0(irods_test_path, "/x"))
   })
 },
@@ -66,8 +68,6 @@ with_mock_dir("chunked-write", {
     object <- serialize(dfr, NULL) # 400 bytes
     object_size <- length(object)
     count <- 200
-    truncate <- 1
-    append <- 1
     ticket <- NULL
     verbose <- FALSE
     lpath <- paste0(irods_test_path, "/dfr.rds")
@@ -76,15 +76,16 @@ with_mock_dir("chunked-write", {
     reqs <- chunked_local_to_irods(chunks,
                                    object,
                                    lpath,
-                                   truncate,
-                                   append,
+                                   truncate = 1,
+                                   append = 0,
                                    ticket,
                                    verbose)
     expect_type(reqs, "list")
     expect_type(reqs[[1]], "list")
-    resp <- parallel_perform(reqs[[1]], lpath, truncate, append, ticket, verbose)
+    resp <- parallel_perform(reqs[[1]], lpath, truncate = 1, append = 0, ticket, verbose)
     expect_type(resp, "list")
     expect_s3_class(resp[[1]], "httr2_response")
+    expect_equal(dfr, ireadRDS("dfr.rds"))
     test_irm(paste0(irods_test_path, "/dfr.rds"))
     # serial and parallel
     count <- 50
@@ -93,14 +94,15 @@ with_mock_dir("chunked-write", {
     reqs <- chunked_local_to_irods(chunks,
                                    object,
                                    lpath,
-                                   truncate,
-                                   append,
+                                   truncate = 1,
+                                   append = 0,
                                    ticket,
                                    verbose)
-    resp <- sequential_parallel_perform(reqs, lpath, truncate, append, ticket, verbose)
+    resp <- sequential_parallel_perform(reqs, lpath, truncate = 1, append = 0, ticket, verbose)
     expect_type(resp, "list")
     expect_type(resp[[1]], "list")
     expect_s3_class(resp[[1]][[1]], "httr2_response")
+    expect_equal(dfr, ireadRDS("dfr.rds"))
     test_irm(paste0(irods_test_path, "/dfr.rds"))
   })
 },
@@ -112,10 +114,7 @@ with_mock_dir("write-from-memory", {
     chunks <- local_to_irods(
       dfr,
       paste0(irods_test_path, "/dfr.rds"),
-      offset = 0,
       count = 15,
-      truncate = 1,
-      append = 0,
       ticket = NULL,
       verbose = FALSE
     )
@@ -134,10 +133,7 @@ with_mock_dir("write-from-disk", {
     chunks <- local_to_irods(
       x,
       paste0(irods_test_path, "/dfr.csv"),
-      offset = 0,
       count = 15,
-      truncate = 1,
-      append = 0,
       ticket = NULL,
       verbose = FALSE
     )
@@ -153,14 +149,18 @@ with_mock_dir("write-read-data-objects", {
   test_that("write and read data-objects works", {
 
     # R objects
-    expect_invisible(isaveRDS(dfr, "dfr.rds"))
-    expect_equal(dfr, ireadRDS("dfr.rds"))
+    expect_invisible(isaveRDS(dfr, "dfr.rds", overwrite = TRUE)) # overwrite = TRUE to circumvent additional API calls
+    # currently mocking does not work for ireadRDS streaming
+    if (.rirods$token != "secret") {
+      expect_equal(dfr, ireadRDS("dfr.rds"))
+    }
 
     # external files
-    expect_invisible(iput("dfr.csv", "dfr.csv"))
+    expect_invisible(iput("dfr.csv", "dfr.csv", overwrite = TRUE))
     unlink( "dfr.csv")
     expect_invisible(out_path <- iget("dfr.csv",  "dfr.csv"))
     expect_equal(dfr, read.csv(out_path$body))
+    write.csv(read.csv(out_path$body), "dfr.csv")
 
     test_irm(paste0(irods_test_path, "/dfr.csv"))
     test_irm(paste0(irods_test_path, "/dfr.rds"))

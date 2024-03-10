@@ -49,4 +49,6 @@ with_mock_dir("coerce-irods_df", {
     expect_invisible(irm("dfr.csv", force = TRUE))
 
   })
-})
+},
+simplify = FALSE
+)

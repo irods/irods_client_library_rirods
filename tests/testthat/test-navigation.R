@@ -63,7 +63,18 @@ with_mock_dir("list", {
                   "This collection does not contain any objects or collections.")
     expect_error(ils("tempZone/home/rods/projectx"))
     expect_error(ils("/projectx"))
-    icd("testthat") # move back up to testthat
+    icd(irods_test_path) # move back up to testthat
+  })
+},
+simplify = FALSE
+)
+
+with_mock_dir("list-limit-number-rows", {
+  test_that("number of rows returned can be limited", {
+    icd("..")
+    out <- ils(limit = 1L)
+    expect_equal(nrow(as.data.frame(out)), 1L)
+    icd(irods_test_path) # move back up to testthat
   })
 },
 simplify = FALSE
