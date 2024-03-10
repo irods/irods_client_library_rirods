@@ -8,10 +8,13 @@
 #'    permanently. If `FALSE`, it is sent to the trash collection. Defaults to
 #'   `TRUE`.
 #' @param recursive If a collection is provided, whether its contents should
-#'     also bec removed. If a collection is not empty and `recursive` is `FALSE`
+#'     also be removed. If a collection is not empty and `recursive` is `FALSE`
 #'    , it cannot be deleted. Defaults to `FALSE`.
+#' @param catalog_only Whether to remove only the catalog entry. Defaults to
+#'    `FALSE`.
 #' @param verbose Whether information should be printed about the HTTP request
 #'    and response. Defaults to `FALSE`.
+#'
 #'
 #' @seealso
 #'  [imkdir()] for creating collections,
@@ -21,11 +24,13 @@
 #' @export
 #'
 #' @examplesIf is_irods_demo_running()
-#' # demonstration server (requires Bash, Docker and Docker-compose)
-#' # use_irods_demo()
-#'
+#' is_irods_demo_running()
+#' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+#' }
 #' # connect project to server
-#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authenticate
 #' iauth("rods", "rods")
@@ -44,8 +49,11 @@
 #'
 #' # check if file is deleted
 #' ils()
-#'
+#' \dontshow{
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+#' }
 irm <- function(logical_path, force = TRUE, recursive = FALSE,
+                catalog_only = FALSE,
                 verbose = FALSE) {
 
   logical_path <- get_absolute_lpath(logical_path)
@@ -61,6 +69,7 @@ irm <- function(logical_path, force = TRUE, recursive = FALSE,
   if (is_collection(logical_path)) {
     out <- irm_("collections", args, verbose)
   } else if (is_object(logical_path)) {
+    args$`catalog-only` <- as.integer(catalog_only)
     out <- irm_("data-objects", args, verbose)
   } else {
     stop("Logical path does not resolve to data object or collection.", call. = FALSE)
@@ -83,7 +92,7 @@ irm_ <- function(endpoint, args, verbose) {
 #'   working directory (see [ipwd()]).
 #' @param create_parent_collections Whether parent collections should be created
 #'   when necessary. Defaults to `FALSE`.
-#' @param overwrite Whether the existin collection should be overwritten
+#' @param overwrite Whether the existing collection should be overwritten
 #'   if it exists. Defaults to `FALSE`.
 #' @param verbose Whether information about the HTTP request and response
 #'  should be printed. Defaults to `FALSE`.
@@ -97,9 +106,12 @@ irm_ <- function(endpoint, args, verbose) {
 #'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
-#'
+#' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+#' }
 #' # connect project to server
-#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authentication
 #' iauth("rods", "rods")
@@ -119,7 +131,9 @@ irm_ <- function(endpoint, args, verbose) {
 #' # remove collection
 #' icd("..")
 #' irm("new_collection", force = TRUE, recursive = TRUE)
-#'
+#' \dontshow{
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+#' }
 imkdir <- function(
   logical_path,
   create_parent_collections = FALSE,

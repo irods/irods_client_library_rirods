@@ -8,7 +8,7 @@
 #'
 #' @param logical_path Path to the data object or collection (or name of the user).
 #' @param entity_type Type of item to add metadata to or remove it from.
-#'   Options are 'data_object', 'collection' and 'user'.
+#'   Options are 'data_object', 'collection' and 'user'.  Deprecated.
 #' @param operations List of named lists or [data.frame] representing operations.
 #'   The valid components of each of these lists or vectors are:
 #'   - `operation`, with values 'add' or 'remove', depending on whether the AVU
@@ -33,9 +33,12 @@
 #'
 #' # demonstration server (requires Bash, Docker and Docker-compose)
 #' # use_irods_demo()
-#'
+#' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+#' }
 #' # connect project to server
-#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authentication
 #' iauth("rods", "rods")
@@ -51,7 +54,7 @@
 #'
 #' # add some metadata
 #' imeta(
-#'   "data_object",
+#'   "foo.rds",
 #'    operations =
 #'     list(
 #'      list(operation = "add", attribute = "foo", value = "bar", units = "baz")
@@ -92,7 +95,9 @@
 #'
 #' # delete object
 #' irm("foo.rds", force = TRUE)
-#'
+#' \dontshow{
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+#' }
 imeta <- function(
     logical_path,
     entity_type = c("data_object", "collection", "user"),
@@ -180,37 +185,42 @@ imeta <- function(
 #' @param verbose Whether information should be printed about the HTTP request
 #'  and response. Defaults to `FALSE`.
 #'
-#' @return A dataframe with one row per result and one column per requested attribute,
-#'   with "size" and "time" columns parsed to the right type.
+#' @return A dataframe with one row per result and one column per requested
+#'  attribute, with "size" and "time" columns parsed to the right type.
 #' @seealso [imeta()]
 #'
 #' @references
 #'  https://docs.irods.org/master/icommands/user/#iquest
 #'
-#' Use SQL-like expressions to query data objects and collections based on different properties.
+#' Use SQL-like expressions to query data objects and collections based on
+#'  different properties.
 #'
 #' @param query GeneralQuery for searching the iCAT database.
-#' @param limit Maximum number of rows to return. Depracated.
-#' @param offset Number of rows to skip for paging. Depracated.
+#' @param limit Maximum number of rows to return.
+#' @param offset Number of rows to skip for paging. Deprecated.
 #' @param type Type of query: 'general' (the default) or 'specific'.
-#' @param case_sensitive Whether the string matching in the query is case sensitive.
-#'   Defaults to `TRUE`.
-#' @param distinct Whether only distinct rows should be listed. Defaults to `TRUE`.
-#' @param parser Which parser to use: genquery1 or genquery2. Defaults to genquery1.
-#' @param sql_only Whether to use SQL syntax. Defaults to `FALSE`. Needs Genquery2.
-#' @param verbose Whether information should be printed about the HTTP request and response.
+#' @param case_sensitive Whether the string matching in the query is case
+#'  sensitive. Defaults to `TRUE`.
+#' @param distinct Whether only distinct rows should be listed. Defaults to
+#'  `TRUE`.
+#' @param parser Which parser to use: genquery1 or genquery2. Defaults to
+#'  genquery1.
+#' @param sql_only Whether to dry-run query and return SQL syntax query as
+#'  return. Defaults to `FALSE`. Needs [Genquery2](https://github.com/irods/irods_api_plugin_genquery2/?#api-plugin).
+#' @param verbose Whether information should be printed about the HTTP request
+#'  and response.
 #'
 #' @return Invisibly, the HTTP response.
 #' @export
 #'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
-#'
-#' # demonstration server (requires Bash, Docker and Docker-compose)
-#' # use_irods_demo()
-#'
+#' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+#' }
 #' # connect project to server
-#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authentication
 #' iauth("rods", "rods")
@@ -224,7 +234,6 @@ imeta <- function(
 #' # add metadata
 #' imeta(
 #'   "foo.rds",
-#'   "data_object",
 #'   operations =
 #'     list(
 #'       list(operation = "add", attribute = "bar", value = "baz")
@@ -236,7 +245,9 @@ imeta <- function(
 #'
 #' # delete object
 #' irm("foo.rds", force = TRUE)
-#'
+#' \dontshow{
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+#' }
 iquery <- function(
     query,
     limit = 100,
@@ -252,9 +263,6 @@ iquery <- function(
   parser <- match.arg(parser)
 
   # deprecate arguments
-  if (!missing("limit"))
-    warning("Argument `limit` is deprecated")
-
   if (!missing("type"))
     warning("Argument `type` is deprecated")
 
@@ -305,7 +313,7 @@ iquery <- function(
     silent = TRUE
   )
 
-  out
+  limit_maximum_number_of_rows_catalog(out, limit)
 }
 
 data_object_metadata <- function(lpath, x = NULL) {

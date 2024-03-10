@@ -9,7 +9,7 @@
 #' it follows platform conventions (see also [rappdirs::user_config_dir()]).
 #'
 #' @param host URL of host.
-#' @param zone_path Depracated
+#' @param zone_path Deprecated
 #' @param overwrite Overwrite existing iRODS configuration file. Defaults to
 #'    `FALSE`.
 #'

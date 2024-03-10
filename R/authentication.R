@@ -11,18 +11,24 @@
 #' @return Invisibly `NULL`.
 #' @export
 #'
+#'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
 #'
 #' # demonstration server (requires Bash, Docker and Docker-compose)
 #' # use_irods_demo()
-#'
+#' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+#' }
 #' # connect project to server
-#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authenticate
 #' iauth("rods", "rods")
-#'
+#' \dontshow{
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+#' }
 iauth <- function(user, password = NULL, role = "rodsuser") {
 
   .rirods$user <- user
@@ -77,17 +83,5 @@ get_token <- function(user, password, host) {
 #' @examples
 #' is_connected_irods()
 is_connected_irods <- function(...) {
-
   if (is.null(.rirods$token)) FALSE else TRUE
-}
-
-is_api_type <- function(host, type) {
-  if (grepl("irods-http-api", host)) {
-    api_type <- "http"
-  } else if (grepl("irods-rest", host)) {
-    api_type <- "rest"
-  } else {
-    stop("Unknown iRODS api type.")
-  }
-  api_type == type
 }

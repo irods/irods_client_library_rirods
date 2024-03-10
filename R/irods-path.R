@@ -3,14 +3,16 @@ make_irods_base_path <- function() {
   if (!is.null(find_irods_file("irods_zone"))) {
     if (.rirods$user_role == "rodsuser") {
       paste0("/", find_irods_file("irods_zone"), "/home/", .rirods$user)
-    } else if (.rirods$user_role == "rodsadmin") {
+    } else if (.rirods$user_role == "groupadmin") {
       paste0("/", find_irods_file("irods_zone"), "/home")
+    } else if (.rirods$user_role == "rodsadmin") {
+      paste0("/", find_irods_file("irods_zone"))
     } else {
-      stop("User role unkown", call. = FALSE)
+      stop("User role unknown.", call. = FALSE)
     }
 
   } else {
-    stop("iRODS zone unkown", call. = FALSE)
+    stop("iRODS zone unknown.", call. = FALSE)
   }
 }
 
@@ -57,7 +59,7 @@ stop_irods_overwrite <- function(overwrite, lpath) {
 is_collection <- function(lpath) {
   lpath <- get_absolute_lpath(lpath)
   irods_stats <- try(get_stat_collections(lpath), silent = TRUE)
-  if (inherits(irods_stats, "try-error")) {
+  if (inherits(irods_stats, "try-error") || irods_stats$status_code == -170000L) {
     FALSE
   } else {
     irods_stats$type == "collection"
@@ -68,7 +70,7 @@ is_collection <- function(lpath) {
 is_object <- function(lpath) {
   lpath <- get_absolute_lpath(lpath)
   irods_stats <- try(get_stat_data_objects(lpath), silent = TRUE)
-  if (inherits(irods_stats, "try-error")) {
+  if (inherits(irods_stats, "try-error") || irods_stats$status_code == -171000L) {
     FALSE
   } else {
     irods_stats$type == "data_object"

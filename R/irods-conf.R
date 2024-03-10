@@ -10,13 +10,8 @@ has_irods_conf <- function() {
 
 # create package configuration directory
 create_config_dir <- function(path_to_config_dir) {
-
   if (!dir.exists(path_to_config_dir)) {
-    # windows uses author name and app name as path
-    if (Sys.info()[["sysname"]] == "Windows") {
-      dir.create(dirname(path_to_config_dir))
-    }
-    dir.create(path_to_config_dir)
+    dir.create(path_to_config_dir, recursive = TRUE)
   }
 }
 
@@ -49,9 +44,10 @@ check_irods_conf <- function() {
   }
 
   # check content
-  if (length(jsonlite::fromJSON(path_to_irods_conf())) < 1) {
-    stop("iRODS configuration file is incomplete. Did you supply the correct ",
-         "host and/or zone name with `create_irods()`?", call. = FALSE)
+  content <- try(jsonlite::fromJSON(path_to_irods_conf()), silent = TRUE)
+  if (inherits(content, "try-error") || length(content) < 1) {
+    stop("iRODS configuration file is corrupted. Create a new configuration ",
+         "file with `create_irods()`?", call. = FALSE)
   }
 
   invisible(irods_conf_file)

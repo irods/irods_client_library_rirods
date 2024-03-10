@@ -1,7 +1,7 @@
 #' Remove http snapshots or mockfiles
 #' @keywords internal
 #' @return Invisibly the mock file paths.
-#'
+#' @noRd
 remove_mock_files <- function() {
   # find the mock dirs
   pt <- file.path(getwd(), testthat::test_path())
@@ -54,6 +54,7 @@ test_irm <- function(lpath, endpoint = "data-objects") {
     lpath = lpath,
     `no-trash` = 1
   )
+  if(endpoint == "data-objects") args$`catalog-only` <- 0
   req <- irods_http_call(endpoint, "POST", args, verbose = FALSE)
   invisible(httr2::req_perform(req))
 }
