@@ -7,15 +7,14 @@
 #' @param local_path Local path of file to be sent to iRODS.
 #' @param x R object to save in iRODS.
 #' @param logical_path Destination path in iRODS.
-#' @param offset Offset in bytes into the data object. Defaults to 0.
-#' @param count Maximum number of bytes to write. Defaults to 2000.
-#' @param truncate Whether to truncate the object when opening it. Defaults to
-#'  `TRUE`.
-#' @param append Whether to append the objects.
-#' @param ticket A valid iRODS ticket string. Defaults to `NULL`.
+#' @param offset Offset in bytes into the data object. Deprecated.
+#' @param count Maximum number of bytes to write. Deprecated.
+#' @param truncate Whether to truncate the object when opening it. Deprecated.
 #' @param verbose Whether to print information about the HTTP request and
 #'  response. Defaults to `FALSE`.
-#' @param overwrite Deprecated. Use `truncate`.
+#' @param overwrite Whether the file in iRODS should be overwritten if it
+#'  exists. Defaults to `FALSE`.
+#' @param ticket A valid iRODS ticket string. Defaults to `NULL`.
 #'
 #' @return (Invisibly) the HTTP response.
 #' @seealso
@@ -26,15 +25,13 @@
 #'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
-#'
 #' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
 #' .old_wd <- setwd(tempdir())
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
 #' }
-#' # demonstration server (requires Bash, Docker and Docker-compose)
-#' # use_irods_demo()
-#'
 #' # connect project to server
-#' create_irods("http://localhost:9001/irods-http-api/0.1.0", TRUE)
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authenticate
 #' iauth("rods", "rods")
@@ -57,28 +54,30 @@
 #'
 #' \dontshow{
 #' setwd(.old_wd)
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
 #' }
 iput <- function(
     local_path,
     logical_path,
     offset = 0,
-    count = find_irods_file("max_http_request_size_in_bytes"),
+    count = 0,
     truncate = TRUE,
-    append = FALSE,
     verbose = FALSE,
     overwrite = FALSE,
     ticket = NULL
   ) {
 
   # deprecate arguments
-  if (!missing("overwrite"))
-    warning("Argument `overwrite` is deprecated")
+  if (!missing("offset"))
+    warning("Argument `offset` is deprecated")
+  if (!missing("count"))
+    warning("Argument `count` is deprecated")
 
   # expand logical path to absolute logical path
   logical_path <- get_absolute_lpath(logical_path, write = TRUE)
 
   # check if iRODS object already exists and whether it should be overwritten
-  stop_irods_overwrite(truncate, logical_path)
+  stop_irods_overwrite(overwrite, logical_path)
 
   # check if local file exists
   if (!(is.character(local_path) && file.exists(local_path))) {
@@ -90,10 +89,7 @@ iput <- function(
   reqs <-  local_to_irods(
     object = local_path,
     logical_path = logical_path,
-    offset = offset,
-    count = count,
-    truncate = as.integer(truncate),
-    append = as.integer(append),
+    count =  find_irods_file("max_size_of_request_body_in_bytes"),
     ticket = ticket,
     verbose = verbose
   )
@@ -105,8 +101,6 @@ iput <- function(
     resps <- sequential_parallel_perform(
       reqs,
       logical_path = logical_path,
-      truncate = as.integer(truncate),
-      append = as.integer(append),
       ticket = ticket,
       verbose = verbose
     )
@@ -120,23 +114,24 @@ isaveRDS <- function(
     x,
     logical_path,
     offset = 0,
-    count = find_irods_file("max_http_request_size_in_bytes"),
+    count = 0,
     truncate = TRUE,
-    append = FALSE,
     verbose = FALSE,
     overwrite = FALSE,
     ticket = NULL
 ) {
 
   # deprecate arguments
-  if (!missing("overwrite"))
-    warning("Argument `overwrite` is deprecated")
+  if (!missing("offset"))
+    warning("Argument `offset` is deprecated")
+  if (!missing("count"))
+    warning("Argument `count` is deprecated")
 
   # expand logical path to absolute logical path
   logical_path <- get_absolute_lpath(logical_path, write = TRUE)
 
   # check if iRODS object already exists and whether it should be overwritten
-  stop_irods_overwrite(truncate, logical_path)
+  stop_irods_overwrite(overwrite, logical_path)
 
   # object name
   name <- deparse(substitute(x))
@@ -150,10 +145,7 @@ isaveRDS <- function(
   reqs <- local_to_irods(
     object = x,
     logical_path = logical_path,
-    offset = offset,
-    count = count,
-    truncate = as.integer(truncate),
-    append = as.integer(append),
+    count = find_irods_file("max_size_of_request_body_in_bytes"),
     ticket = ticket,
     verbose = verbose
   )
@@ -165,8 +157,6 @@ isaveRDS <- function(
     resps <- sequential_parallel_perform(
       reqs,
       logical_path = logical_path,
-      truncate = as.integer(truncate),
-      append = as.integer(append),
       ticket = ticket,
       verbose = verbose
     )
@@ -178,12 +168,18 @@ isaveRDS <- function(
 sequential_parallel_perform <- function(
     reqs,
     logical_path,
-    truncate,
-    append,
+    truncate = 1,
+    append = 0,
     ticket,
     verbose
   ) {
-  Map(function(x) {
+
+  list_truncate <- rep(0, length(reqs))
+  list_append <- rep(0, length(reqs))
+  list_truncate[1] <- truncate
+  list_append[1] <- append
+
+  Map(function(x, truncate, append) {
     parallel_perform(
       reqs = x,
       logical_path = logical_path,
@@ -193,7 +189,9 @@ sequential_parallel_perform <- function(
       verbose = verbose
     )
   },
-  reqs
+  reqs,
+  list_truncate,
+  list_append
   )
 }
 
@@ -210,7 +208,7 @@ parallel_perform <- function(
     parallel_write_init(
       logical_path = logical_path,
       stream_count = max_number_of_parallel_write_streams,
-      truncate = 0,
+      truncate = truncate,
       append = append,
       ticket = ticket,
       verbose = verbose
@@ -227,10 +225,7 @@ parallel_perform <- function(
 local_to_irods <- function(
     object,
     logical_path,
-    offset,
     count,
-    truncate,
-    append,
     ticket,
     verbose
   ) {
@@ -253,8 +248,8 @@ local_to_irods <- function(
     chunked_local_to_irods(
       list_of_chunks = list_of_chunks,
       logical_path = logical_path,
-      truncate = truncate,
-      append = append,
+      truncate = 1,
+      append = 0,
       ticket = ticket,
       verbose = verbose,
       object = object
@@ -263,10 +258,10 @@ local_to_irods <- function(
     local_to_irods_(
       object = object,
       logical_path = logical_path,
-      offset = offset,
+      offset = 0,
       count = object_size,
-      truncate = truncate,
-      append = append,
+      truncate = 1,
+      append = 0,
       verbose = verbose,
       stream_index = NULL
     )
@@ -275,7 +270,7 @@ local_to_irods <- function(
 
 # calculate chunk sizes
 calc_chunk_size <- function(x, count, max_number_of_parallel_write_streams) {
-  # stop if object size is less than  count
+  # stop if object size is less than count
   if (x < count)
     stop("Object size smaller than count.", call. = FALSE)
   # check that object size exceeds with more than 2 times the size
@@ -305,7 +300,12 @@ chunked_local_to_irods <- function(
     verbose
   ) {
 
-  Map(function(chunks) {
+  list_truncate <- rep(0, length(list_of_chunks))
+  list_append <- rep(0, length(list_of_chunks))
+  list_truncate[1] <- truncate
+  list_append[1] <- append
+
+  Map(function(chunks, truncate, append) {
     chunked_local_to_irods_(
       chunks = chunks,
       object = object,
@@ -315,7 +315,9 @@ chunked_local_to_irods <- function(
       verbose = verbose
     )
   },
-  list_of_chunks
+  list_of_chunks,
+  list_truncate,
+  list_append
   )
 }
 
@@ -335,7 +337,7 @@ chunked_local_to_irods_ <- function(
       logical_path = logical_path,
       offset = x[[1]],
       count =  x[[2]],
-      truncate = 0,
+      truncate = truncate,
       append = append,
       verbose = verbose,
       stream_index =  x[[3]]
@@ -370,7 +372,6 @@ local_to_irods_ <- function(
     op = "write",
     lpath = logical_path,
     offset = offset,
-    count = count,
     truncate = truncate,
     append = append,
     bytes = curl::form_data(object, type = "application/octet-stream"),
@@ -428,12 +429,13 @@ parallel_write_shutdown <- function(parallel_write_handle, verbose) {
 #'
 #' @param logical_path Source path in iRODS.
 #' @param local_path Destination path in local storage.
-#' @param offset Offset in bytes into the data object. Defaults to 0.
-#' @param count Maximum number of bytes to write. Defaults to 2000.
+#' @param offset Offset in bytes into the data object. Deprecated.
+#' @param count Maximum number of bytes to write. Deprecated.
 #' @param verbose Whether information should be printed about the HTTP request
 #'  and response. Defaults to `FALSE`.
 #' @param overwrite Whether the local file should be overwritten if it exists.
 #'    Defaults to `FALSE`.
+#' @param ticket A valid iRODS ticket string. Defaults to `NULL`.
 #'
 #' @return The R object in case of `ireadRDS()`, invisibly `NULL` in case of
 #'  `iget()`.
@@ -449,8 +451,8 @@ parallel_write_shutdown <- function(parallel_write_handle, verbose) {
 #' @param local_path Destination path in local storage. By default,
 #'   the basename of the logical path; the file will be stored in the current
 #'   directory (see `getwd()`).
-#' @param offset Offset in bytes into the data object. Defaults to 0.
-#' @param count Maximum number of bytes to write. Defaults to 2000.
+#' @param offset Offset in bytes into the data object. Deprecated.
+#' @param count Maximum number of bytes to write. Deprecated.
 #' @param verbose Whether information should be printed about the HTTP request and response.
 #' @param overwrite Whether the local file should be overwritten if it exists.
 #'    Defaults to `FALSE`.
@@ -460,15 +462,13 @@ parallel_write_shutdown <- function(parallel_write_handle, verbose) {
 #'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
-#'
 #' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
 #' .old_wd <- setwd(tempdir())
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
 #' }
-#' # demonstration server (requires Bash, Docker and Docker-compose)
-#' # use_irods_demo()
-#'
 #' # connect project to server
-#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authenticate
 #' iauth("rods", "rods")
@@ -494,15 +494,23 @@ parallel_write_shutdown <- function(parallel_write_handle, verbose) {
 #'
 #' \dontshow{
 #' setwd(.old_wd)
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
 #' }
 iget <- function(
     logical_path,
     local_path,
     offset = 0,
-    count = 2000L,
+    count = 0,
     verbose = FALSE,
-    overwrite = FALSE
+    overwrite = FALSE,
+    ticket = NULL
   ) {
+
+  # deprecate arguments
+  if (!missing("offset"))
+    warning("Argument `offset` is deprecated")
+  if (!missing("count"))
+    warning("Argument `count` is deprecated")
 
   # expand logical path to absolute logical path
   logical_path <- get_absolute_lpath(logical_path)
@@ -516,8 +524,7 @@ iget <- function(
   # handle iRODS to local file conversion
   req <- irods_to_local(
     logical_path = logical_path,
-    offset = offset,
-    count = count,
+    ticket = ticket,
     verbose = verbose
   )
 
@@ -532,10 +539,16 @@ iget <- function(
 ireadRDS <- function(
     logical_path,
     offset = 0,
-    count = as.integer(2e7),
+    count = 0,
     verbose = FALSE,
-    overwrite = FALSE
+    ticket = NULL
 ) {
+
+  # deprecate arguments
+  if (!missing("offset"))
+    warning("Argument `offset` is deprecated")
+  if (!missing("count"))
+    warning("Argument `count` is deprecated")
 
   # expand logical path to absolute logical path
   logical_path <- get_absolute_lpath(logical_path)
@@ -543,39 +556,20 @@ ireadRDS <- function(
   # handle iRODS to R object conversion
   req <- irods_to_local(
     logical_path = logical_path,
-    offset = offset,
-    count = count,
+    ticket = ticket,
     verbose = verbose
   )
-  con <- rawConnection(raw(0),  "a+b")
-  on.exit(close(con))
-  resp <- httr2::req_perform(req) |>
+
+  con <- httr2::req_perform(req) |>
     httr2::resp_body_raw()
-  writeBin(resp, con, useBytes = TRUE)
-  unserialize(rawConnectionValue(con))
+
+  unserialize(con)
 }
 
-# vectorised iRODS to object or file conversion
-irods_to_local <- function(logical_path, offset, count, verbose, local_path = NULL) {
-
-  # object size on iRODS
-  object_size <- get_stat_data_objects(logical_path)$size
-
-  irods_to_local_(
-      logical_path = logical_path,
-      offset = offset,
-      count = 8192,
-      verbose = verbose
-  )
-
-}
-
-#' iRODS to object conversion
-#' @noRd
-irods_to_local_ <- function(logical_path, offset, count, verbose) {
+irods_to_local <- function(logical_path, ticket, verbose) {
 
   # flags to curl call
-  args <- list(op = "read", lpath = logical_path, offset = offset, count = count)
+  args <- list(op = "read", lpath = logical_path, ticket = ticket)
 
   # http call
   irods_http_call("data-objects", "GET", args, verbose)

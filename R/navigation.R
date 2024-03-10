@@ -15,15 +15,15 @@
 #'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
-#'
-#' # demonstration server (requires Bash, Docker and Docker-compose)
-#' # use_irods_demo()
-#'
+#' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+#' }
 #' # connect project to server
-#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authenticate
-#' iauth("rods", "rods")
+#' iauth("rods", "rods", "rodsadmin")
 #'
 #' # default dir
 #' icd(".")
@@ -43,7 +43,9 @@
 #'
 #' # back home
 #' icd("/tempZone/home")
-#'
+#' \dontshow{
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+#' }
 icd <- function(dir) {
 
   # check connection
@@ -138,7 +140,7 @@ ipwd <- function() .rirods$current_dir
 #' @param recurse Recursively list. Defaults to `FALSE`.
 #' @param ticket A valid iRODS ticket string. Defaults to `NULL`.
 #' @param message Show message when empty collection. Default to `FALSE`.
-#' @param limit Number of records to show per page. Deprecated.
+#' @param limit Number of records to show per page.
 #' @param verbose Whether information should be printed about the HTTP request
 #'    and response. Defaults to `FALSE`.
 #'
@@ -153,12 +155,12 @@ ipwd <- function() .rirods$current_dir
 #'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
-#'
-#' # demonstration server (requires Bash, Docker and Docker-compose)
-#' # use_irods_demo()
-#'
+#' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+#' }
 #' # connect project to server
-#' create_irods("http://localhost:9001/irods-http-api/0.1.0")
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authenticate
 #' iauth("rods", "rods")
@@ -177,14 +179,16 @@ ipwd <- function() .rirods$current_dir
 #'
 #' # delete `some_collection`
 #' irm("some_collection", force = TRUE, recursive = TRUE)
-#'
+#' \dontshow{
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+#' }
 ils <- function(
   logical_path = ".",
   stat = FALSE,
   permissions = FALSE,
   metadata = FALSE,
   offset = numeric(1),
-  limit = numeric(1),
+  limit = find_irods_file("max_number_of_rows_per_catalog_query"),
   recurse = FALSE,
   ticket = NULL,
   message = TRUE,
@@ -202,8 +206,6 @@ ils <- function(
   # deprecate arguments
   if (!missing("offset"))
     warning("Argument `offset` is deprecated")
-  if (!missing("limit"))
-    warning("argument `limit` is deprecated")
 
   # flags to curl call
   args <- list(
@@ -233,7 +235,8 @@ ils <- function(
     }
   }
 
-  new_irods_df(irods_zone_overview)
+  limit_maximum_number_of_rows_catalog(irods_zone_overview, limit) |>
+    new_irods_df()
 }
 
 make_ils_stat <- function(lpaths) {
@@ -287,9 +290,9 @@ rbind_unequal_shaped_dataframes <- function(df1, df2) {
 get_stat <- function(lpath) {
   stat_collection <- try(get_stat_collections(lpath), silent = TRUE)
   stat_data_object <- try(get_stat_data_objects(lpath), silent = TRUE)
-  if (!inherits(stat_collection, "try-error")) {
-    return(stat_collection)
-  } else if (!inherits(stat_data_object, "try-error")) {
+  if (stat_collection$status_code == -170000L) {
     return(stat_data_object)
+  } else if (stat_data_object$status_code == -171000L) {
+    return(stat_collection)
   }
 }

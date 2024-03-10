@@ -3,23 +3,27 @@
 #' Note that this function can only be used with admin rights.
 #'
 #' @param name Name of user to be added.
-#' @param password Password of to be added.
-#' @param action The action: create_user, remove_user, or set_password.
-#' @param role Role of user: rodsuser or rodsadmin.
+#' @param password Password to be added.
+#' @param action The action: `"create_user"`, `"remove_user"`, or `"set_password"`.
+#' @param role Role of user: `"rodsuser"`, `"groupadmin"`, and `"groupadmin"`.
 #' @param verbose Show information about the http request and response.
 #'  Defaults to `FALSE`.
 #'
 #' @return Invisible http status.
 #' @export
 #'
+#'
 #' @examplesIf is_irods_demo_running()
 #' is_irods_demo_running()
 #'
 #' # demonstration server (requires Bash, Docker and Docker-compose)
 #' # use_irods_demo()
-#'
+#' \dontshow{
+#' .old_config_dir <- Sys.getenv("R_USER_CONFIG_DIR")
+#' Sys.setenv("R_USER_CONFIG_DIR" = tempdir())
+#' }
 #' # connect project to server
-#' create_irods("http://localhost/irods-rest/0.9.3", "/tempZone/home")
+#' \Sexpr[stage=build, results=rd]{paste0("create_irods(\"", rirods:::.irods_host, "\")")}
 #'
 #' # authentication
 #' iauth("rods", "rods")
@@ -32,12 +36,14 @@
 #'
 #' # delete user
 #' iadmin("Alice", action = "remove_user", role = "rodsuser")
-#'
+#' \dontshow{
+#' Sys.setenv("R_USER_CONFIG_DIR" = .old_config_dir)
+#' }
 iadmin <- function(
     name,
     password = character(1),
     action = c("create_user", "set_password", "remove_user"),
-    role = c("rodsuser", "rodsadmin"),
+    role = c("rodsuser", "groupadmin", "rodsadmin"),
     verbose = FALSE
   ) {
 

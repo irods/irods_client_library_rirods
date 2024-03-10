@@ -6,7 +6,7 @@
 #' @param verbose Verbosity of the HTTP request.
 #' @param error Whether status codes larger than 400 should be translated to
 #'  errors.
-#'
+#' @noRd
 #' @references https://github.com/irods/irods_client_http_api
 #' @keywords internal
 #' @return HTTP response
@@ -63,7 +63,7 @@ handle_irods_errors <- function(req) {
     httr2::req_error(body = irods_errors) # show if nothing works
 }
 
-# iRODS rest api errors
+# iRODS http api errors
 irods_errors <- function(resp) {
   # json for iRODS internal errors, except for nginx bad gateway 502
   if (httr2::resp_status(resp) >= 500 && httr2::resp_status(resp) < 600) {

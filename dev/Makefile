@@ -15,5 +15,5 @@ remove:
 	rm -rf $(DOCKER_MODULES)
 # remove lines docker-compose
 clean:
-	head -n 63 '$(PATH_MODULES)/docker-compose.yml' > temp.yml
+	head -n 65 '$(PATH_MODULES)/docker-compose.yml' > temp.yml
 	mv temp.yml '$(PATH_MODULES)/docker-compose.yml'

@@ -16,3 +16,6 @@ Sys.setenv(DEV_HOST_IRODS = "Dd_rTPPENlWR7NrXsGQkPrd2GgLhUD9zavGum-ppk-v0iSL3iYw
 Sys.setenv(DEV_ZONE_PATH_IRODS = "AEGApbh1J6Gk0v16t51Wf4YzZBc7LMEFtKthhmw")
 Sys.setenv(DEV_USER = "szYLD6oOfZ73SEh9zgOlGVNU97TzWA")
 Sys.setenv(DEV_PASS = "szYLD6oOfZ73SEh9zgOlGVNU97TzWA")
+
+# only use core irods-demo functionality
+system("cd dev && make")
