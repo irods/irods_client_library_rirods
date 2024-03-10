@@ -1,9 +1,0 @@
-{
-    "entries": [
-        "/tempZone/home/rods/testthat/bar.rds",
-        "/tempZone/home/rods/testthat/qux.rds"
-    ],
-    "irods_response": {
-        "status_code": 0
-    }
-}

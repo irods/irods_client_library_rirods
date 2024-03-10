@@ -1,8 +1,8 @@
 structure(list(method = "GET", url = "/query?op=execute_genquery&query=select%20COLL_NAME%2C%20META_COLL_ATTR_NAME%2C%20META_COLL_ATTR_VALUE%2C%20META_COLL_ATTR_UNITS%20where%20COLL_PARENT_NAME%20%3D%20%27%2FtempZone%2Fhome%2Frods%2Ftestthat%27&offset=0&count=15&case-sensitive=1&distinct=1&parser=genquery1&sql-only=0&zone=tempZone", 
-    status_code = 200L, headers = structure(list(Server = "irods_http_api/0.1.0 [86bad75c3dc6e8f8855a5978bfa43c79f069101c]", 
+    status_code = 200L, headers = structure(list(Server = "irods_http_api/0.2.0 (8da6c5794f04edab1290e429a0d1676e4452dd5c)", 
         `Content-Type` = "application/json", `Content-Length` = "158", 
         Date = ""), class = "httr2_headers"), body = charToRaw("{\"irods_response\":{\"status_code\":0},\"rows\":[[\"/tempZone/home/rods/testthat/new\",\"foo\",\"bar\",\"baz\"],[\"/tempZone/home/rods/testthat/new\",\"foo2\",\"bar2\",\"baz2\"]]}"), 
-    request = structure(list(url = "http://localhost:9001/irods-http-api/0.1.0/query?op=execute_genquery&query=select%20COLL_NAME%2C%20META_COLL_ATTR_NAME%2C%20META_COLL_ATTR_VALUE%2C%20META_COLL_ATTR_UNITS%20where%20COLL_PARENT_NAME%20%3D%20%27%2FtempZone%2Fhome%2Frods%2Ftestthat%27&offset=0&count=15&case-sensitive=1&distinct=1&parser=genquery1&sql-only=0&zone=tempZone", 
+    request = structure(list(url = "http://localhost:9001/irods-http-api/0.2.0/query?op=execute_genquery&query=select%20COLL_NAME%2C%20META_COLL_ATTR_NAME%2C%20META_COLL_ATTR_VALUE%2C%20META_COLL_ATTR_UNITS%20where%20COLL_PARENT_NAME%20%3D%20%27%2FtempZone%2Fhome%2Frods%2Ftestthat%27&offset=0&count=15&case-sensitive=1&distinct=1&parser=genquery1&sql-only=0&zone=tempZone", 
         method = "GET", headers = structure(list(Authorization = ""), redact = "Authorization"), 
         body = NULL, fields = list(), options = list(), policies = list(
             retry_max_tries = 3, retry_is_transient = structure(function (..., 
