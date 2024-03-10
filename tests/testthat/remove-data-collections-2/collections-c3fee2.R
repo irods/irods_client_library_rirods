@@ -1,8 +1,8 @@
 structure(list(method = "GET", url = "/collections?op=list&lpath=%2FtempZone%2Fhome%2Frods&recurse=1", 
-    status_code = 200L, headers = structure(list(Server = "irods_http_api/0.1.0 [86bad75c3dc6e8f8855a5978bfa43c79f069101c]", 
-        `Content-Type` = "application/json", `Content-Length` = "253", 
-        Date = ""), class = "httr2_headers"), body = charToRaw("{\"entries\":[\"/tempZone/home/rods/new_collection\",\"/tempZone/home/rods/projectx\",\"/tempZone/home/rods/some_collection\",\"/tempZone/home/rods/testthat\",\"/tempZone/home/rods/testthat/x\",\"/tempZone/home/rods/testthat/x/a\"],\"irods_response\":{\"status_code\":0}}"), 
-    request = structure(list(url = "http://localhost:9001/irods-http-api/0.1.0/collections?op=list&lpath=%2FtempZone%2Fhome%2Frods&recurse=1", 
+    status_code = 200L, headers = structure(list(Server = "irods_http_api/0.2.0 (8da6c5794f04edab1290e429a0d1676e4452dd5c)", 
+        `Content-Type` = "application/json", `Content-Length` = "178", 
+        Date = ""), class = "httr2_headers"), body = charToRaw("{\"entries\":[\"/tempZone/home/rods/projectx\",\"/tempZone/home/rods/testthat\",\"/tempZone/home/rods/testthat/x\",\"/tempZone/home/rods/testthat/x/a\"],\"irods_response\":{\"status_code\":0}}"), 
+    request = structure(list(url = "http://localhost:9001/irods-http-api/0.2.0/collections?op=list&lpath=%2FtempZone%2Fhome%2Frods&recurse=1", 
         method = "GET", headers = structure(list(Authorization = ""), redact = "Authorization"), 
         body = NULL, fields = list(), options = list(), policies = list(
             retry_max_tries = 3, retry_is_transient = structure(function (..., 
