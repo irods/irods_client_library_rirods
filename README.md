@@ -35,7 +35,7 @@ Launch a local demonstration iRODS service (including the HTTP API):
     use_irods_demo("alice", "passWORD")
 
 This will result in the demonstration HTTP API running at
-“<http://localhost:9001/irods-http-api/0.2.0>”.
+<http://localhost:9001/irods-http-api/0.2.0>.
 
 These Docker containers are designed to easily stand up a
 **DEMONSTRATION** of the iRODS server. It is intended for education and
