@@ -76,28 +76,13 @@
     <loc>https://irods.github.io/irods_client_library_rirods/reference/irm.html</loc>
   </url>
   <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/irods_rest_call.html</loc>
-  </url>
-  <url>
     <loc>https://irods.github.io/irods_client_library_rirods/reference/is_connected_irods.html</loc>
   </url>
   <url>
     <loc>https://irods.github.io/irods_client_library_rirods/reference/is_irods_demo_running.html</loc>
   </url>
   <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/local_create_irods.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/new_irods_df.html</loc>
-  </url>
-  <url>
     <loc>https://irods.github.io/irods_client_library_rirods/reference/print.irods_df.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/remove_docker_images.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/remove_mock_files.html</loc>
   </url>
   <url>
     <loc>https://irods.github.io/irods_client_library_rirods/reference/use_irods_demo.html</loc>

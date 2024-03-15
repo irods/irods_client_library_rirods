@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Use iRODS metadata">
 <meta property="og:description" content="rirods">
@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rirods</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,6 +59,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-news">News</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-news">
     <h6 class="dropdown-header" data-toc-skip>Releases</h6>
+    <a class="external-link dropdown-item" href="https://fairelabs.github.io/iRODS4R/posts/rirods-0-2-0/">Version 0.2.0</a>
     <a class="external-link dropdown-item" href="https://fairelabs.github.io/iRODS4R/posts/rirods-0-1-1/">Version 0.1.1</a>
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="../news/index.html">Changelog</a>
@@ -92,7 +93,7 @@
                         <h4 data-toc-skip class="author">Mariana
 Montes</h4>
             
-            <h4 data-toc-skip class="date">2023-11-20</h4>
+            <h4 data-toc-skip class="date">2024-03-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/irods/irods_client_library_rirods/blob/HEAD/vignettes/metadata.Rmd" class="external-link"><code>vignettes/metadata.Rmd</code></a></small>
       <div class="d-none name"><code>metadata.Rmd</code></div>
@@ -145,37 +146,22 @@ we will see that these new data objects have no metadata attached to
 them.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span>metadata<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; metadata</span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/analysis :</span></span>
-<span><span class="co">#&gt; list()</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/data.csv :</span></span>
-<span><span class="co">#&gt; list()</span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; No metadata</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
-<span><span class="co">#&gt;                  logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/analysis  collection</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/data.csv data_object</span></span>
+<span><span class="co">#&gt;                  logical_path</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/analysis</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/data.csv</span></span>
 <span><span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span><span class="st">"analysis"</span>, metadata<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; metadata</span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/analysis/linear_model.rds :</span></span>
-<span><span class="co">#&gt; list()</span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; No metadata</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
-<span><span class="co">#&gt;                                   logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds data_object</span></span></code></pre></div>
+<span><span class="co">#&gt;                                   logical_path</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="metadata-in-irods">Metadata in iRODS<a class="anchor" aria-label="anchor" href="#metadata-in-irods"></a>
@@ -200,19 +186,11 @@ found in &lt;code&gt;&lt;a href="../articles/icommands.html"&gt;vignette("icomma
 <span>  <span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">filter_ils</span><span class="op">(</span><span class="va">data_path</span>, <span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span>metadata<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; metadata</span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/data.csv :</span></span>
-<span><span class="co">#&gt;  attribute value units</span></span>
-<span><span class="co">#&gt;       nrow    20      </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
-<span><span class="co">#&gt;                  logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/data.csv data_object</span></span></code></pre></div>
+<span><span class="co">#&gt;                  logical_path attribute value units</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/data.csv      nrow    20</span></span></code></pre></div>
 <p>We can also have several AVUs with the same attribute name and
 different values or units for the same item. For example, we might want
 to code the number of rows and columns as a metadata field “size”. Since
@@ -226,20 +204,12 @@ the old AVU is not necessary any more, we can remove it by providing a
 <span>  <span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">filter_ils</span><span class="op">(</span><span class="va">data_path</span>, <span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span>metadata<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; metadata</span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/data.csv :</span></span>
-<span><span class="co">#&gt;  attribute value   units</span></span>
-<span><span class="co">#&gt;       size     2 columns</span></span>
-<span><span class="co">#&gt;       size    20    rows</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
-<span><span class="co">#&gt;                  logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/data.csv data_object</span></span></code></pre></div>
+<span><span class="co">#&gt;                  logical_path attribute value   units</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/data.csv      size     2 columns</span></span>
+<span><span class="co">#&gt;                                    size    20</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="multiple-operations-for-one-item">Multiple operations for one item<a class="anchor" aria-label="anchor" href="#multiple-operations-for-one-item"></a>
 </h3>
@@ -249,9 +219,9 @@ example, that we have a standard set of metadata fields that we would
 like to add to the linear model:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>    attribute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"size"</span>, <span class="st">"size"</span>, <span class="st">"data_file"</span>, <span class="st">"model_type"</span><span class="op">)</span>,</span>
-<span>    value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">fake_data</span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">data_path</span>, <span class="st">"linear regression"</span><span class="op">)</span>,</span>
-<span>    units<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observations"</span>, <span class="st">"predictors"</span>, <span class="st">""</span>, <span class="st">""</span><span class="op">)</span></span>
+<span>  attribute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"size"</span>, <span class="st">"size"</span>, <span class="st">"data_file"</span>, <span class="st">"model_type"</span><span class="op">)</span>,</span>
+<span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">fake_data</span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">data_path</span>, <span class="st">"linear regression"</span><span class="op">)</span>,</span>
+<span>  units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observations"</span>, <span class="st">"predictors"</span>, <span class="st">""</span>, <span class="st">""</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">lm_meta</span></span>
 <span><span class="co">#&gt;    attribute             value        units</span></span>
@@ -266,22 +236,19 @@ our model data object:</p>
 <span><span class="fu"><a href="../reference/imeta.html">imeta</a></span><span class="op">(</span><span class="va">lm_path</span>, operations <span class="op">=</span> <span class="va">lm_meta</span><span class="op">)</span></span>
 <span><span class="fu">filter_ils</span><span class="op">(</span><span class="st">"linear_model"</span>, <span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span><span class="st">"analysis"</span>, metadata<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; metadata</span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/analysis/linear_model.rds :</span></span>
-<span><span class="co">#&gt;   attribute             value        units</span></span>
-<span><span class="co">#&gt;   data_file          data.csv             </span></span>
-<span><span class="co">#&gt;  model_type linear regression             </span></span>
-<span><span class="co">#&gt;        size                 1   predictors</span></span>
-<span><span class="co">#&gt;        size                20 observations</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
-<span><span class="co">#&gt;                                   logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds data_object</span></span></code></pre></div>
+<span><span class="co">#&gt;                                   logical_path  attribute             value</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds  data_file          data.csv</span></span>
+<span><span class="co">#&gt;                                                model_type linear regression</span></span>
+<span><span class="co">#&gt;                                                      size                 1</span></span>
+<span><span class="co">#&gt;                                                      size                20</span></span>
+<span><span class="co">#&gt;  units</span></span>
+<span><span class="co">#&gt;       </span></span>
+<span><span class="co">#&gt;       </span></span>
+<span><span class="co">#&gt;       </span></span>
+<span><span class="co">#&gt; </span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="working-with-multiple-items">Working with multiple items<a class="anchor" aria-label="anchor" href="#working-with-multiple-items"></a>
@@ -295,55 +262,51 @@ function such as <code>purrr:::pmap()</code>:</p>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dataframe"</span>, <span class="st">"lm"</span><span class="op">)</span>,</span>
 <span>  responsible <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"abby"</span>, <span class="st">"bob"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">pmap</span><span class="op">(</span><span class="va">file_md</span>, <span class="kw">function</span><span class="op">(</span><span class="va">path</span>, <span class="va">type</span>, <span class="va">responsible</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="fu">pwalk</span><span class="op">(</span><span class="va">file_md</span>, <span class="kw">function</span><span class="op">(</span><span class="va">path</span>, <span class="va">type</span>, <span class="va">responsible</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="../reference/imeta.html">imeta</a></span><span class="op">(</span><span class="va">path</span>, operations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"type"</span>, value <span class="op">=</span> <span class="va">type</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"responsible"</span>, value <span class="op">=</span> <span class="va">responsible</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      operation <span class="op">=</span> <span class="st">"add"</span>,</span>
+<span>      attribute <span class="op">=</span> <span class="st">"type"</span>,</span>
+<span>      value <span class="op">=</span> <span class="va">type</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      operation <span class="op">=</span> <span class="st">"add"</span>,</span>
+<span>      attribute <span class="op">=</span> <span class="st">"responsible"</span>,</span>
+<span>      value <span class="op">=</span> <span class="va">responsible</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span>metadata<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; metadata</span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/analysis :</span></span>
-<span><span class="co">#&gt; data frame with 0 columns and 0 rows</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/data.csv :</span></span>
-<span><span class="co">#&gt;    attribute     value   units</span></span>
-<span><span class="co">#&gt;  responsible      abby        </span></span>
-<span><span class="co">#&gt;         size         2 columns</span></span>
-<span><span class="co">#&gt;         size        20    rows</span></span>
-<span><span class="co">#&gt;         type dataframe        </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
-<span><span class="co">#&gt;                  logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/analysis  collection</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/data.csv data_object</span></span>
+<span><span class="co">#&gt;                  logical_path   attribute     value units</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/analysis        &lt;NA&gt;      &lt;NA&gt;  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/data.csv responsible      abby      </span></span>
+<span><span class="co">#&gt;                                      size         2      </span></span>
+<span><span class="co">#&gt;                                      size        20      </span></span>
+<span><span class="co">#&gt;                                      type dataframe</span></span>
 <span><span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span><span class="st">"analysis"</span>, metadata<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; metadata</span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/analysis/linear_model.rds :</span></span>
-<span><span class="co">#&gt;    attribute             value        units</span></span>
-<span><span class="co">#&gt;    data_file          data.csv             </span></span>
-<span><span class="co">#&gt;   model_type linear regression             </span></span>
-<span><span class="co">#&gt;  responsible               bob             </span></span>
-<span><span class="co">#&gt;         size                 1   predictors</span></span>
-<span><span class="co">#&gt;         size                20 observations</span></span>
-<span><span class="co">#&gt;         type                lm             </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
-<span><span class="co">#&gt;                                   logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds data_object</span></span></code></pre></div>
+<span><span class="co">#&gt;                                   logical_path   attribute             value</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/analysis/linear_model.rds   data_file          data.csv</span></span>
+<span><span class="co">#&gt;                                                 model_type linear regression</span></span>
+<span><span class="co">#&gt;                                                responsible               bob</span></span>
+<span><span class="co">#&gt;                                                       size                 1</span></span>
+<span><span class="co">#&gt;                                                       size                20</span></span>
+<span><span class="co">#&gt;                                                       type                lm</span></span>
+<span><span class="co">#&gt;  units</span></span>
+<span><span class="co">#&gt;       </span></span>
+<span><span class="co">#&gt;       </span></span>
+<span><span class="co">#&gt;       </span></span>
+<span><span class="co">#&gt;       </span></span>
+<span><span class="co">#&gt;       </span></span>
+<span><span class="co">#&gt; </span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="collections">Collections<a class="anchor" aria-label="anchor" href="#collections"></a>
@@ -354,33 +317,20 @@ data objects is that it’s the default value.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/imeta.html">imeta</a></span><span class="op">(</span></span>
 <span>  <span class="st">"analysis"</span>,</span>
-<span>  <span class="st">"collection"</span>,</span>
 <span>  operations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"add"</span>, attribute <span class="op">=</span> <span class="st">"dataset"</span>, value <span class="op">=</span> <span class="va">data_path</span><span class="op">)</span></span>
 <span>  <span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/ils.html">ils</a></span><span class="op">(</span>metadata<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; metadata</span></span>
-<span><span class="co">#&gt; ========</span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/analysis :</span></span>
-<span><span class="co">#&gt;  attribute    value units</span></span>
-<span><span class="co">#&gt;    dataset data.csv      </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; /tempZone/home/rods/data.csv :</span></span>
-<span><span class="co">#&gt;    attribute     value   units</span></span>
-<span><span class="co">#&gt;  responsible      abby        </span></span>
-<span><span class="co">#&gt;         size         2 columns</span></span>
-<span><span class="co">#&gt;         size        20    rows</span></span>
-<span><span class="co">#&gt;         type dataframe        </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==========</span></span>
 <span><span class="co">#&gt; iRODS Zone</span></span>
 <span><span class="co">#&gt; ==========</span></span>
-<span><span class="co">#&gt;                  logical_path        type</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/analysis  collection</span></span>
-<span><span class="co">#&gt;  /tempZone/home/rods/data.csv data_object</span></span></code></pre></div>
+<span><span class="co">#&gt;                  logical_path attribute    value units</span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/analysis   dataset data.csv      </span></span>
+<span><span class="co">#&gt;  /tempZone/home/rods/data.csv   dataset data.csv      </span></span>
+<span><span class="co">#&gt;                                 dataset data.csv      </span></span>
+<span><span class="co">#&gt;                                 dataset data.csv      </span></span>
+<span><span class="co">#&gt;                                 dataset data.csv</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -400,7 +350,8 @@ to:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/iquery.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                      COLL_NAME        DATA_NAME</span></span>
 <span><span class="co">#&gt; 1          /tempZone/home/rods         data.csv</span></span>
-<span><span class="co">#&gt; 2 /tempZone/home/rods/analysis linear_model.rds</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 /tempZone/home/rods/analysis linear_model.rds</span></span>
+<span><span class="co">#&gt; 3    /tempZone/trash/home/rods   200numbers.rds</span></span></code></pre></div>
 <p>The output is a dataframe with one row per result and one column per
 information piece we requested (in this case the name of the collection
 “COLL_NAME” and the name of the data object “DATA_NAME”). Note how the
@@ -425,8 +376,8 @@ and “META_DATA_ATTR_UNITS”).</p>
 <span><span class="co">#&gt;          DATA_NAME DATA_SIZE META_DATA_ATTR_VALUE META_DATA_ATTR_UNITS</span></span>
 <span><span class="co">#&gt; 1         data.csv       798                    2              columns</span></span>
 <span><span class="co">#&gt; 2         data.csv       798                   20                 rows</span></span>
-<span><span class="co">#&gt; 3 linear_model.rds      3926                    1           predictors</span></span>
-<span><span class="co">#&gt; 4 linear_model.rds      3926                   20         observations</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 linear_model.rds      3927                    1           predictors</span></span>
+<span><span class="co">#&gt; 4 linear_model.rds      3927                   20         observations</span></span></code></pre></div>
 <p>Columns ending in “SIZE” are parsed to numbers; in the same way,
 columns ending in “TIME” have the class “POSIXct”, i.e. as datetime
 objects. As an example, the query below retrieves parent collection’s
@@ -438,7 +389,7 @@ whose parent collection name ends in “analysis” and that are less than
 <code class="sourceCode R"><span><span class="va">iq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/iquery.html">iquery</a></span><span class="op">(</span><span class="st">"SELECT COLL_NAME, DATA_NAME, DATA_CREATE_TIME, DATA_SIZE WHERE COLL_NAME LIKE '%analysis' AND DATA_SIZE &lt; '8000'"</span><span class="op">)</span></span>
 <span><span class="va">iq</span></span>
 <span><span class="co">#&gt;                      COLL_NAME        DATA_NAME    DATA_CREATE_TIME DATA_SIZE</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds 2023-11-20 17:27:53      3926</span></span>
+<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds 2024-03-15 13:22:36      3927</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">iq</span><span class="op">$</span><span class="va">DATA_CREATE_TIME</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "POSIXct" "POSIXt"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">iq</span><span class="op">$</span><span class="va">DATA_SIZE</span><span class="op">)</span></span>
@@ -598,7 +549,7 @@ their logical paths:</p>
 <code class="sourceCode R"><span><span class="va">iq</span><span class="op">$</span><span class="va">PATH</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">iq</span><span class="op">$</span><span class="va">COLL_NAME</span>, <span class="va">iq</span><span class="op">$</span><span class="va">DATA_NAME</span><span class="op">)</span></span>
 <span><span class="va">iq</span></span>
 <span><span class="co">#&gt;                      COLL_NAME        DATA_NAME    DATA_CREATE_TIME DATA_SIZE</span></span>
-<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds 2023-11-20 17:27:53      3926</span></span>
+<span><span class="co">#&gt; 1 /tempZone/home/rods/analysis linear_model.rds 2024-03-15 13:22:36      3927</span></span>
 <span><span class="co">#&gt;                                            PATH</span></span>
 <span><span class="co">#&gt; 1 /tempZone/home/rods/analysis/linear_model.rds</span></span></code></pre></div>
 <p>Now you are ready to describe all your data with iRODS metadata and
