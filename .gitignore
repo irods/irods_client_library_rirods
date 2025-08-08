@@ -3,6 +3,7 @@ docs
 inst/doc
 dev
 !dev/Makefile
+!dev/extract_irods_services_yaml.R
 *.irods
 /doc/
 /Meta/

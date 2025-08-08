@@ -68,7 +68,7 @@ use_irods_demo <- function(user = character(), pass = character(),
   if (length(user) != 0 && length(pass) != 0) {
     system2(
       system.file(package = "rirods", "shell_scripts", "iadmin-docker-icommand.sh"),
-      Map(shQuote, c(user, pass)),
+      append(system.file("irods_demo", package = "rirods"), Map(shQuote, c(user, pass))),
       stdout = FALSE,
       stderr = FALSE
     )
@@ -118,17 +118,15 @@ stop_irods_demo <- function(verbose = TRUE) {
 #' @examples
 #' is_irods_demo_running()
 is_irods_demo_running <- function(...) {
-  # first check if Docker exist
+  # first check if Docker exists
   if (!check_docker(FALSE)) {
     return(FALSE)
   }
-  # then check if images exist
+  # then check if images exists
   if (!check_irods_images()) {
     return(FALSE)
   }
-  # check for client-icommand is not required (only needed for demo itself)
   ref <- irods_containers_ref()
-  ref <- ref[ref != "irods-demo-irods-client-icommands-1"]
   irods_containers_state <-
     vapply(ref, is_irods_demo_running_, integer(1))
 
@@ -163,9 +161,9 @@ remove_docker_images <- function() {
 
 start_irods <- function(verbose, recreate = TRUE) {
   if (isTRUE(recreate)) {
-    cmd <- " ; docker compose up -d --force-recreate nginx-reverse-proxy irods-client-http-api irods-client-icommands"
+    cmd <- " ; docker compose up -d --force-recreate "
   } else {
-    cmd <- " ; docker compose up -d nginx-reverse-proxy irods-client-http-api irods-client-icommands"
+    cmd <- " ; docker compose up -d "
   }
   system(
     paste0("cd ", path_to_demo(), cmd),
@@ -192,6 +190,7 @@ dry_run_irods <- function(user, pass, host, lpath, verbose, user_input = FALSE) 
     }
     if (isTRUE(user_input)) {
       if (verbose) message("\nRecreating iRODS demo. This may take a while!\n")
+      stop_irods_demo()
       start_irods(verbose, recreate = TRUE)
     } else{
       stop("The iRODS server could not be started!", call. = FALSE)
@@ -219,6 +218,7 @@ is_http_server_running_correct <- function(user, pass, host, lpath) {
 is_irods_server_running_correct <- function() {
   system2(
     system.file(package = "rirods", "shell_scripts", "dry-run-irods-icommands.sh"),
+    system.file("irods_demo", package = "rirods"),
     stdout = FALSE,
     stderr = FALSE
   ) == 0
@@ -262,21 +262,19 @@ check_docker <- function(verbose = TRUE) {
   !(Sys.which("bash") == "" || Sys.which("docker") == "" || docker_version == "")
 }
 
-irods_containers_ref <- function() {
-  irods_demo_yml <- system.file("irods_demo", "docker-compose.yml", package = "rirods")
-  irods_demo_file <- readLines(irods_demo_yml)
-  irods_images_ref <- grep("^\\s{4}[[:graph:]]*?:$", irods_demo_file)
-  irods_images <- irods_demo_file[irods_images_ref]
-  paste0("irods-demo-", trimws(gsub( ":$", "", irods_images)), "-1")
+irods_containers_ref <- function(services = c("nginx", "http-api", "icommands", "catalog", "minio")) {
+  docker_compose_service_names = extract_irods_services_names(services)
+  paste0(names(docker_compose_service_names), "-", docker_compose_service_names[[1]], "-1")
 }
 
 irods_images <- c(
   "irods-demo-irods-catalog",
+  "irods-demo-irods-catalog-consumer",
   "irods-demo-irods-catalog-provider",
   "irods-demo-irods-client-icommands",
-  "irods-demo-irods-client-rest-cpp",
   "irods-demo-nginx-reverse-proxy",
-  "irods/irods_http_api"
+  "irods/irods_http_api",
+  "irods-demo-minio"
 )
 
 #' Launch iRODS from Alternative Directory

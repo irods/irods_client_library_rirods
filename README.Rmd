@@ -80,7 +80,7 @@ substitute(create_irods(x), list(x = rirods:::.irods_host))
 ```
 
 ```{r project, eval=is_irods_demo_running(), echo=FALSE}
-eval(substitute(create_irods(x), list(x = rirods:::.irods_host)))
+eval(substitute(create_irods(x), list(x = URLencode(rirods:::.irods_host))))
 ```
 
 ### Authentication

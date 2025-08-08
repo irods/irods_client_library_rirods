@@ -35,7 +35,7 @@ Launch a local demonstration iRODS service (including the HTTP API):
     use_irods_demo("alice", "passWORD")
 
 This will result in the demonstration HTTP API running at
-<http://localhost:9001/irods-http-api/0.2.0>.
+<http://localhost:9001/irods-http-api/0.4.0>.
 
 These Docker containers are designed to easily stand up a
 **DEMONSTRATION** of the iRODS server. It is intended for education and
@@ -49,7 +49,7 @@ To connect to the HTTP API endpoint of your choice, load `rirods`,
 connect with `create_irods()`, and authenticate with your iRODS
 credentials:
 
-    create_irods("http://localhost:9001/irods-http-api/0.2.0")
+    create_irods("http://localhost:9001/irods-http-api/0.4.0")
 
 ### Authentication
 
@@ -70,7 +70,6 @@ session to an iRODS collection. For this, use the `isaveRDS()` command:
 
     # check where we are in the iRODS namespace
     ipwd()
-    #> [1] "/tempZone/home/alice"
 
     # store data in iRODS
     isaveRDS(foo, "foo.rds")
@@ -89,12 +88,6 @@ describes the data object “foo”:
 
     # check if file is stored with associated metadata
     ils(metadata = TRUE)
-    #> 
-    #> ==========
-    #> iRODS Zone
-    #> ==========
-    #>                  logical_path attribute value units
-    #>  /tempZone/home/alice/foo.rds       foo   bar   baz
 
 For more on using metadata, check out `vignette("metadata")`.
 
@@ -105,10 +98,6 @@ current R session, she would use `ireadRDS()`:
 
     # retrieve in native R format
     ireadRDS("foo.rds")
-    #>   x y
-    #> 1 1 x
-    #> 2 8 y
-    #> 3 9 z
 
 ### Other file formats
 
@@ -126,13 +115,6 @@ a file type that can be accessed by other programs. For this, use the
 
     # check whether it is stored
     ils()
-    #> 
-    #> ==========
-    #> iRODS Zone
-    #> ==========
-    #>                  logical_path
-    #>  /tempZone/home/alice/foo.csv
-    #>  /tempZone/home/alice/foo.rds
 
 Later on somebody else might want to download this file again and store
 it locally:
@@ -140,20 +122,6 @@ it locally:
     # retrieve it again later
     iget("foo.csv", "foo.csv")
     read_csv("foo.csv")
-    #> Rows: 3 Columns: 2
-    #> ── Column specification ────────────────────────────────────────────────────────
-    #> Delimiter: ","
-    #> chr (1): y
-    #> dbl (1): x
-    #> 
-    #> ℹ Use `spec()` to retrieve the full column specification for this data.
-    #> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-    #> # A tibble: 3 × 2
-    #>       x y    
-    #>   <dbl> <chr>
-    #> 1     1 x    
-    #> 2     8 y    
-    #> 3     9 z
 
 ### Query
 
@@ -163,15 +131,9 @@ future projects. Objects can be searched with General Queries and
 
     # look for objects in the home collection with a wildcard `%`
     iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
-    #>              COLL_NAME DATA_NAME
-    #> 1 /tempZone/home/alice   foo.csv
-    #> 2 /tempZone/home/alice   foo.rds
 
     # or for data objects with a name that starts with "foo"
     iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-    #>              COLL_NAME DATA_NAME
-    #> 1 /tempZone/home/alice   foo.csv
-    #> 2 /tempZone/home/alice   foo.rds
 
 For more on querying, check out `vignette("metadata")`.
 
@@ -185,7 +147,6 @@ Finally, we can clean up Alice’s home collection:
 
     # check if objects are removed
     ils()
-    #> This collection does not contain any objects or collections.
 
     # close the server
     stop_irods_demo()

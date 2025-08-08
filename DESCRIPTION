@@ -33,7 +33,8 @@ Imports:
     stats,
     testthat (>= 3.0.0),
     utils,
-    withr
+    withr,
+    yaml
 Suggests: 
     httptest2,
     kableExtra,
