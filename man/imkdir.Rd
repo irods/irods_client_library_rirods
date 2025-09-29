@@ -13,7 +13,7 @@ imkdir(
 }
 \arguments{
 \item{logical_path}{Path to the collection to create, relative to the current
-working directory (see \code{\link[=ipwd]{ipwd()}}).}
+working collection (see \code{\link[=ipwd]{ipwd()}}).}
 
 \item{create_parent_collections}{Whether parent collections should be created
 when necessary. Defaults to \code{FALSE}.}

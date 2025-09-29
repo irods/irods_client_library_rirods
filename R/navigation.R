@@ -1,12 +1,12 @@
-#' Get or Set Current Working Directory in iRODS
+#' Get or Set Current Working Directory (Collection) in iRODS
 #'
 #' `ipwd()` and `icd()` are the iRODS equivalents of [getwd()] and [setwd()]
 #' respectively. For example, whereas `getwd()` returns the current working directory
-#' in the local system, `ipwd()` returns the current working directory in iRODS.
+#' in the local system, `ipwd()` returns the current working collection in iRODS.
 #'
-#' @param dir Collection to set as working directory.
+#' @param dir Path to set as working collection.
 #'
-#' @return Invisibly the current directory before the change (same convention as
+#' @return Invisibly the current collection before the change (same convention as
 #'  `setwd()`).
 #' @seealso
 #'  [setwd()] and [getwd()] for R equivalents,
@@ -140,7 +140,7 @@ ipwd <- function() .rirods$current_dir
 #' @param recurse Recursively list. Defaults to `FALSE`.
 #' @param ticket A valid iRODS ticket string. Defaults to `NULL`.
 #' @param message Show message when empty collection. Default to `FALSE`.
-#' @param limit Number of records to show per page.
+#' @param limit Number of records to show. To show all records, provide `NULL`.
 #' @param verbose Whether information should be printed about the HTTP request
 #'    and response. Defaults to `FALSE`.
 #'
@@ -222,8 +222,15 @@ ils <- function(
 
   irods_zone_overview <- data.frame(logical_path = lpaths)
 
-  if (isTRUE(stat)) {
+  if (isTRUE(stat) | isTRUE(permissions)) {
     ils_stat_dataframe <- make_ils_stat(irods_zone_overview$logical_path)
+    if (isFALSE(stat)) {
+      permissions_columns <- names(ils_stat_dataframe)[grepl("permission", names(ils_stat_dataframe))]
+      if ("inheritance_enabled" %in% names(ils_stat_dataframe)) {
+        permissions_columns <- c(permissions_columns, "inheritance_enabled")
+      }
+      ils_stat_dataframe <- ils_stat_dataframe[permissions_columns]
+    }
     irods_zone_overview <- cbind(irods_zone_overview, ils_stat_dataframe)
   }
 
@@ -235,8 +242,10 @@ ils <- function(
     }
   }
 
-  limit_maximum_number_of_rows_catalog(irods_zone_overview, limit) |>
-    new_irods_df()
+  if (!is.null(limit)) {
+    irods_zone_overview <- limit_maximum_number_of_rows_catalog(irods_zone_overview, limit)
+  }
+  new_irods_df(irods_zone_overview)
 }
 
 make_ils_stat <- function(lpaths) {

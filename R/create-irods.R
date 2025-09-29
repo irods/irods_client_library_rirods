@@ -9,6 +9,9 @@
 #' it follows platform conventions (see also [rappdirs::user_config_dir()]).
 #'
 #' @param host URL of host.
+#' @param irods_home Path to the initial working collection. Once the user is authenticated,
+#'   if no other absolute or relative path has been requested here, it will default
+#'   to `/zoneName/home`.
 #' @param zone_path Deprecated
 #' @param overwrite Overwrite existing iRODS configuration file. Defaults to
 #'    `FALSE`.
@@ -16,7 +19,7 @@
 #' @return Invisibly, the path to the iRODS configuration file.
 #' @export
 #'
-create_irods <- function(host, zone_path = character(1), overwrite = FALSE) {
+create_irods <- function(host, irods_home = character(0), zone_path = character(1), overwrite = FALSE) {
 
   if (!missing("zone_path"))
     warning("Argument `zone_path` is deprecated")
@@ -34,7 +37,7 @@ create_irods <- function(host, zone_path = character(1), overwrite = FALSE) {
   # create file
   file.create(path)
   write(
-    jsonlite::toJSON(list(host = host), auto_unbox = TRUE, pretty = TRUE),
+    jsonlite::toJSON(list(host = host, irods_home = irods_home), auto_unbox = TRUE, pretty = TRUE),
     file = path
   )
 

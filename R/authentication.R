@@ -42,10 +42,15 @@ iauth <- function(user, password = NULL, role = "rodsuser") {
   # add additional server information to config file
   irods_conf_file <- path_to_irods_conf()
   server_info <- jsonlite::fromJSON(irods_conf_file)
+  new_server_info <- get_server_info(FALSE)
+  .rirods$zone <- new_server_info$irods_zone
+  server_info$irods_home <- make_irods_home()
 
-  if (length(server_info) == 1) {
+  missing_info <- (!names(new_server_info) %in% names(server_info))
+
+  if (sum(missing_info) > 0) {
     export <-
-      jsonlite::toJSON(append(server_info , get_server_info(FALSE)),
+      jsonlite::toJSON(append(server_info, new_server_info[missing_info]),
                        auto_unbox = TRUE,
                        pretty = TRUE)
     write(export, file = irods_conf_file)
@@ -53,10 +58,11 @@ iauth <- function(user, password = NULL, role = "rodsuser") {
 
   # starting dir as admin or user
   .rirods$user_role <- role
-  .rirods$current_dir <- make_irods_base_path()
+  .rirods$current_dir <- server_info$irods_home
 
   invisible(NULL)
 }
+
 
 get_token <- function(user, password, host) {
 

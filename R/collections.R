@@ -89,7 +89,7 @@ irm_ <- function(endpoint, args, verbose) {
 #' instead of a local directory.
 #'
 #' @param logical_path Path to the collection to create, relative to the current
-#'   working directory (see [ipwd()]).
+#'   working collection (see [ipwd()]).
 #' @param create_parent_collections Whether parent collections should be created
 #'   when necessary. Defaults to `FALSE`.
 #' @param overwrite Whether the existing collection should be overwritten

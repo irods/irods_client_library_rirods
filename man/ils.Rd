@@ -31,7 +31,7 @@ Defaults to \code{FALSE}.}
 
 \item{offset}{Number of records to skip for pagination. Deprecated.}
 
-\item{limit}{Number of records to show per page.}
+\item{limit}{Number of records to show. To show all records, provide \code{NULL}.}
 
 \item{recurse}{Recursively list. Defaults to \code{FALSE}.}
 

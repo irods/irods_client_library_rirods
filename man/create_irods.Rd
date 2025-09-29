@@ -4,10 +4,19 @@
 \alias{create_irods}
 \title{Generate IRODS Configuration File}
 \usage{
-create_irods(host, zone_path = character(1), overwrite = FALSE)
+create_irods(
+  host,
+  irods_home = character(0),
+  zone_path = character(1),
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{host}{URL of host.}
+
+\item{irods_home}{Path to the initial working collection. Once the user is authenticated,
+if no other absolute or relative path has been requested here, it will default
+to \verb{/zoneName/home}.}
 
 \item{zone_path}{Deprecated}
 

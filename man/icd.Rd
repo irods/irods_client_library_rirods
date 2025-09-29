@@ -3,23 +3,23 @@
 \name{icd}
 \alias{icd}
 \alias{ipwd}
-\title{Get or Set Current Working Directory in iRODS}
+\title{Get or Set Current Working Directory (Collection) in iRODS}
 \usage{
 icd(dir)
 
 ipwd()
 }
 \arguments{
-\item{dir}{Collection to set as working directory.}
+\item{dir}{Path to set as working collection.}
 }
 \value{
-Invisibly the current directory before the change (same convention as
+Invisibly the current collection before the change (same convention as
 \code{setwd()}).
 }
 \description{
 \code{ipwd()} and \code{icd()} are the iRODS equivalents of \code{\link[=getwd]{getwd()}} and \code{\link[=setwd]{setwd()}}
 respectively. For example, whereas \code{getwd()} returns the current working directory
-in the local system, \code{ipwd()} returns the current working directory in iRODS.
+in the local system, \code{ipwd()} returns the current working collection in iRODS.
 }
 \examples{
 \dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
