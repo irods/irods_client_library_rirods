@@ -1,3 +1,10 @@
+# rirods 0.3.0
+
+## Minor changes
+
+* Move maintainership to the iRODS Consortium
+* Updating GitHub Actions to current versions
+
 # rirods 0.2.0
 
 ## Major changes
