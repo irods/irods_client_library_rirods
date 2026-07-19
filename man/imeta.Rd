@@ -41,7 +41,7 @@ In iRODS, metadata is stored as attribute-value-units triples (AVUs), consisting
 of an attribute name, an attribute value and an optional unit.
 This function allows to chain several operations ('add' or 'remove') linked to
 specific AVUs. Read more about metadata by looking at the iCommands
-equivalent \code{imeta} in the \href{https://docs.irods.org/master/icommands/metadata/}{iRODS Docs}.
+equivalent \code{imeta} in the \href{https://docs.irods.org/5.0.2/icommands/metadata/}{iRODS Docs}.
 }
 \examples{
 \dontshow{if (is_irods_demo_running()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
