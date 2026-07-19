@@ -1,90 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/404.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/articles/demo.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/articles/develop.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/articles/icommands.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/articles/local-irods.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/articles/metadata.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/index.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/as.data.frame.irods_df.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/create_irods.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/iadmin.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/iauth.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/icd.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/iget.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/ils.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/imeta.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/imkdir.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/iput.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/iquery.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/irm.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/is_connected_irods.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/is_irods_demo_running.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/print.irods_df.html</loc>
-  </url>
-  <url>
-    <loc>https://irods.github.io/irods_client_library_rirods/reference/use_irods_demo.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://irods.github.io/irods_client_library_rirods/404.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/LICENSE-text.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/LICENSE.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/articles/demo.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/articles/develop.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/articles/icommands.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/articles/index.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/articles/local-irods.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/articles/metadata.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/authors.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/index.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/news/index.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/as.data.frame.irods_df.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/create_irods.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/iadmin.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/iauth.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/icd.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/iget.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/ils.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/imeta.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/imkdir.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/index.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/iput.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/iquery.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/irm.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/is_connected_irods.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/is_irods_demo_running.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/print.irods_df.html</loc></url>
+<url><loc>https://irods.github.io/irods_client_library_rirods/reference/use_irods_demo.html</loc></url>
 </urlset>
+

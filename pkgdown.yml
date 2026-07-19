@@ -1,5 +1,5 @@
-pandoc: 3.1.11
-pkgdown: 2.0.7
+pandoc: 3.8.3
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   demo: demo.html
@@ -7,8 +7,7 @@ articles:
   icommands: icommands.html
   local-irods: local-irods.html
   metadata: metadata.html
-last_built: 2024-03-16T19:23Z
+last_built: 2026-07-19T02:50Z
 urls:
   reference: https://irods.github.io/irods_client_library_rirods/reference
   article: https://irods.github.io/irods_client_library_rirods/articles
-

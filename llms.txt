@@ -1,0 +1,305 @@
+# rirods
+
+The rirods package is an R client for iRODS.
+
+## Installation
+
+You can install the latest CRAN version of rirods like so:
+
+``` R
+install.packages("rirods")
+```
+
+Or, the development version from GitHub, like so:
+
+``` R
+# install.packages("devtools")
+devtools::install_github("irods/irods_client_library_rirods")
+```
+
+## Prerequisites
+
+This package connects to the iRODS C++ HTTP API -
+<https://github.com/irods/irods_client_http_api>.
+
+Launch a local demonstration iRODS service (including the HTTP API):
+
+``` R
+# load
+library(rirods)
+# setup a mock iRODS server (https://github.com/irods/irods_demo)
+use_irods_demo("alice", "passWORD")
+```
+
+This will result in the demonstration HTTP API running at
+<http://localhost:9001/irods-http-api/0.2.0>.
+
+These Docker containers are designed to easily stand up a
+**DEMONSTRATION** of the iRODS server. It is intended for education and
+exploration. (See also
+[`vignette("demo")`](https://irods.github.io/irods_client_library_rirods/articles/demo.md).)
+
+**DO NOT USE IN PRODUCTION**
+
+## Example Usage
+
+To connect to the HTTP API endpoint of your choice, load `rirods`,
+connect with
+[`create_irods()`](https://irods.github.io/irods_client_library_rirods/reference/create_irods.md),
+and authenticate with your iRODS credentials:
+
+``` R
+create_irods("http://localhost:9001/irods-http-api/0.2.0")
+```
+
+### Authentication
+
+In this example Alice is a user of iRODS and she can authenticate
+herself with `iauth("alice")`. This prompts a dialog where you can enter
+your password without hardcoding this information in your scripts.
+
+``` R
+# login as alice with password "passWORD"
+iauth("alice") # or iauth("alice", "passWORD")
+```
+
+### Save R objects
+
+Suppose Alice would like to upload an R object from her current R
+session to an iRODS collection. For this, use the
+[`isaveRDS()`](https://irods.github.io/irods_client_library_rirods/reference/iput.md)
+command:
+
+``` R
+# some data
+foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
+
+# check where we are in the iRODS namespace
+ipwd()
+#> [1] "/tempZone/home/alice"
+
+# store data in iRODS
+isaveRDS(foo, "foo.rds")
+```
+
+### Metadata
+
+To truly appreciate the strength of iRODS, we can add some metadata that
+describes the data object “foo”:
+
+``` R
+# add some metadata
+imeta(
+  "foo.rds", 
+  operations = 
+    data.frame(operation = "add", attribute = "foo", value = "bar", units = "baz")
+)
+
+# check if file is stored with associated metadata
+ils(metadata = TRUE)
+#> 
+#> ==========
+#> iRODS Zone
+#> ==========
+#>                  logical_path attribute value units
+#>  /tempZone/home/alice/foo.rds       foo   bar   baz
+```
+
+For more on using metadata, check out
+[`vignette("metadata")`](https://irods.github.io/irods_client_library_rirods/articles/metadata.md).
+
+### Read R objects
+
+If Alice wanted to copy the foo R object from an iRODS collection to her
+current R session, she would use
+[`ireadRDS()`](https://irods.github.io/irods_client_library_rirods/reference/iget.md):
+
+``` R
+# retrieve in native R format
+ireadRDS("foo.rds")
+#>   x y
+#> 1 1 x
+#> 2 8 y
+#> 3 9 z
+```
+
+### Other file formats
+
+Possibly Alice does not want a native R object to be stored on iRODS but
+a file type that can be accessed by other programs. For this, use the
+[`iput()`](https://irods.github.io/irods_client_library_rirods/reference/iput.md)
+command:
+
+``` R
+library(readr)
+
+# creates a csv file of foo
+write_csv(foo, "foo.csv")
+
+# send file
+iput("foo.csv", "foo.csv")
+
+# check whether it is stored
+ils()
+#> 
+#> ==========
+#> iRODS Zone
+#> ==========
+#>                  logical_path
+#>  /tempZone/home/alice/foo.csv
+#>  /tempZone/home/alice/foo.rds
+```
+
+Later on somebody else might want to download this file again and store
+it locally:
+
+``` R
+# retrieve it again later
+iget("foo.csv", "foo.csv")
+read_csv("foo.csv")
+#> Rows: 3 Columns: 2
+#> ── Column specification ────────────────────────────────────────────────────────
+#> Delimiter: ","
+#> chr (1): y
+#> dbl (1): x
+#> 
+#> ℹ Use `spec()` to retrieve the full column specification for this data.
+#> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+#> # A tibble: 3 × 2
+#>       x y    
+#>   <dbl> <chr>
+#> 1     1 x    
+#> 2     8 y    
+#> 3     9 z
+```
+
+### Query
+
+By adding metadata you and others can more easily discover data in
+future projects. Objects can be searched with General Queries and
+[`iquery()`](https://irods.github.io/irods_client_library_rirods/reference/iquery.md):
+
+``` R
+# look for objects in the home collection with a wildcard `%`
+iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
+#>              COLL_NAME DATA_NAME
+#> 1 /tempZone/home/alice   foo.csv
+#> 2 /tempZone/home/alice   foo.rds
+
+# or for data objects with a name that starts with "foo"
+iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
+#>              COLL_NAME DATA_NAME
+#> 1 /tempZone/home/alice   foo.csv
+#> 2 /tempZone/home/alice   foo.rds
+```
+
+For more on querying, check out
+[`vignette("metadata")`](https://irods.github.io/irods_client_library_rirods/articles/metadata.md).
+
+### Cleanup
+
+Finally, we can clean up Alice’s home collection:
+
+``` R
+# delete object
+irm("foo.rds", force = TRUE)
+irm("foo.csv", force = TRUE)
+
+# check if objects are removed
+ils()
+#> This collection does not contain any objects or collections.
+
+# close the server
+stop_irods_demo()
+# optionally remove the Docker images
+# irods:::remove_docker_images()
+```
+
+# Package index
+
+## Connecting and authentication
+
+Functions for saving server details and authentication
+
+- [`create_irods()`](https://irods.github.io/irods_client_library_rirods/reference/create_irods.md)
+  : Generate IRODS Configuration File
+- [`iauth()`](https://irods.github.io/irods_client_library_rirods/reference/iauth.md)
+  : Authentication Service for an iRODS Zone
+- [`is_connected_irods()`](https://irods.github.io/irods_client_library_rirods/reference/is_connected_irods.md)
+  : Predicate for iRODS Connectivity
+
+## Navigating the iRODS Zone
+
+Logical paths of iRODS and listing content of collections
+
+- [`icd()`](https://irods.github.io/irods_client_library_rirods/reference/icd.md)
+  [`ipwd()`](https://irods.github.io/irods_client_library_rirods/reference/icd.md)
+  : Get or Set Current Working Directory in iRODS
+- [`ils()`](https://irods.github.io/irods_client_library_rirods/reference/ils.md)
+  : List iRODS Data Objects and Collections
+
+## Managing collections
+
+Creating and removing data objects and collections within iRODS
+
+- [`irm()`](https://irods.github.io/irods_client_library_rirods/reference/irm.md)
+  : Remove Data Objects or Collections in iRODS
+- [`imkdir()`](https://irods.github.io/irods_client_library_rirods/reference/imkdir.md)
+  : Create a New Collection in iRODS
+
+## Moving objects
+
+Functions to transfer and download R objects and files to and from iRODS
+
+- [`iput()`](https://irods.github.io/irods_client_library_rirods/reference/iput.md)
+  [`isaveRDS()`](https://irods.github.io/irods_client_library_rirods/reference/iput.md)
+  : Save Files and Objects in iRODS
+- [`iget()`](https://irods.github.io/irods_client_library_rirods/reference/iget.md)
+  [`ireadRDS()`](https://irods.github.io/irods_client_library_rirods/reference/iget.md)
+  : Retrieve File or Object from iRODS
+
+## Metadata
+
+Functions to annotate collections and data objects as well as discovery
+of objects and collections in iRODS
+
+- [`imeta()`](https://irods.github.io/irods_client_library_rirods/reference/imeta.md)
+  : Add or Remove Metadata
+- [`iquery()`](https://irods.github.io/irods_client_library_rirods/reference/iquery.md)
+  : Query Data Objects and Collections in iRODS
+
+## Demonstrating iRODS
+
+Functions to demonstrate iRODS capabilities in a Docker container
+
+- [`use_irods_demo()`](https://irods.github.io/irods_client_library_rirods/reference/use_irods_demo.md)
+  [`stop_irods_demo()`](https://irods.github.io/irods_client_library_rirods/reference/use_irods_demo.md)
+  : Run Docker iRODS Demonstration Service
+- [`is_irods_demo_running()`](https://irods.github.io/irods_client_library_rirods/reference/is_irods_demo_running.md)
+  : Predicate for iRODS Demonstration Service State
+- [`iadmin()`](https://irods.github.io/irods_client_library_rirods/reference/iadmin.md)
+  : The Administration Interface to iRODS
+
+## iRODS s3 class
+
+Functions to coerce and print irods_df s3 class
+
+- [`as.data.frame(`*`<irods_df>`*`)`](https://irods.github.io/irods_client_library_rirods/reference/as.data.frame.irods_df.md)
+  : Coerce to a Data Frame
+- [`print(`*`<irods_df>`*`)`](https://irods.github.io/irods_client_library_rirods/reference/print.irods_df.md)
+  : Print Method for iRODS Data Frame Class.
+
+# Articles
+
+### All vignettes
+
+- [Use iRODS
+  demo](https://irods.github.io/irods_client_library_rirods/articles/demo.md):
+- [Developing
+  rirods](https://irods.github.io/irods_client_library_rirods/articles/develop.md):
+- [rirods vs
+  iCommands](https://irods.github.io/irods_client_library_rirods/articles/icommands.md):
+- [Accessing data locally and in
+  iRODS](https://irods.github.io/irods_client_library_rirods/articles/local-irods.md):
+- [Use iRODS
+  metadata](https://irods.github.io/irods_client_library_rirods/articles/metadata.md):

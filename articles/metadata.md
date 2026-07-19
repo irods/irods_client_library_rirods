@@ -1,0 +1,266 @@
+# Use iRODS metadata
+
+In this vignette we’ll look at the use of metadata with the
+[rirods](https://github.com/irods/irods_client_library_rirods) package.
+This guide is meant to be useful both for users familiar with iRODS that
+want to understand the R client better, and for R users who are not
+familiar with iRODS metadata.
+
+## Setup
+
+In the background we have already started an iRODS session in the demo
+server; our home directory “/tempZone/home/rods” is empty, as
+[`ils()`](https://irods.github.io/irods_client_library_rirods/reference/ils.md)
+shows:
+
+``` r
+
+ils()
+```
+
+For illustration purposes, we’ll create some data objects (i.e. files).
+First, we simulate a study with a small dataframe and a linear model.
+
+``` r
+
+set.seed(1234)
+fake_data <- data.frame(x = rnorm(20, mean = 1))
+fake_data$y <- fake_data$x * 2 + 3 - rnorm(20, sd = 0.6)
+m <- lm(y ~ x, data = fake_data)
+m
+```
+
+Then we store the dataframe as csv and the linear model as RDS objects
+on iRODS. The csv file must be stored locally first, but the other two
+can be directly streamed to iRODS.
+
+``` r
+
+data_path <- "data.csv"
+lm_path <- "analysis/linear_model.rds"
+write.csv(fake_data, data_path) # write locally
+iput(data_path, data_path) # transfer to iRODS
+imkdir("analysis") # create directory
+# save directly as rds
+isaveRDS(m, lm_path)
+```
+
+If we add `metadata=TRUE` to the
+[`ils()`](https://irods.github.io/irods_client_library_rirods/reference/ils.md)
+call, we will see that these new data objects have no metadata attached
+to them.
+
+``` r
+
+ils(metadata=TRUE)
+ils("analysis", metadata=TRUE)
+```
+
+## Metadata in iRODS
+
+In iRODS, metadata is registered as attribute name-value-unit triples
+(*aka* AVUs) attached to collections or data objects. To add an AVU with
+[rirods](https://github.com/irods/irods_client_library_rirods) we can
+use the
+[`imeta()`](https://irods.github.io/irods_client_library_rirods/reference/imeta.md)
+function, which takes three main arguments: the path to the collection
+or data object, its entity type (“data_object”, which is the default, or
+“collection”), and a list of operations. These operations themselves
+must be named lists or vectors with an `operation` —which indicates
+whether we want to “add” or “remove” an AVU— and the values for the
+attribute (name), value and, optionally, units.
+
+For example, let’s say we want to include the number of rows of our
+`fake_data` as a metadata field “nrow”. We could do something like
+this[^1]:
+
+``` r
+
+imeta(data_path, operations = list(
+  list(operation = "add", attribute = "nrow", value = as.character(nrow(fake_data)))
+  ))
+filter_ils(data_path, ils(metadata=TRUE))
+```
+
+We can also have several AVUs with the same attribute name and different
+values or units for the same item. For example, we might want to code
+the number of rows and columns as a metadata field “size”. Since the old
+AVU is not necessary any more, we can remove it by providing a “remove”
+operation.
+
+``` r
+
+imeta(data_path, operations = list(
+  list(operation = "add", attribute = "size", value = as.character(nrow(fake_data)), units = "rows"),
+  list(operation = "add", attribute = "size", value = as.character(length(fake_data)), units = "columns"),
+  list(operation = "remove", attribute = "nrow", value = as.character(nrow(fake_data)))
+  ))
+filter_ils(data_path, ils(metadata=TRUE))
+```
+
+### Multiple operations for one item
+
+Since dataframes are lists of lists, the `operations` argument of
+[`imeta()`](https://irods.github.io/irods_client_library_rirods/reference/imeta.md)
+can also be a dataframe. Say, for example, that we have a standard set
+of metadata fields that we would like to add to the linear model:
+
+``` r
+
+lm_meta <- data.frame(
+  attribute = c("size", "size", "data_file", "model_type"),
+  value = c(as.character(nrow(fake_data)), 1, data_path, "linear regression"),
+  units = c("observations", "predictors", "", "")
+)
+lm_meta
+```
+
+We can then just add a column with the operation name and add it to our
+model data object:
+
+``` r
+
+lm_meta$operation <- "add"
+imeta(lm_path, operations = lm_meta)
+filter_ils("linear_model", ils("analysis", metadata=TRUE))
+```
+
+### Working with multiple items
+
+If we want to add metadata to several items, however, we need to run one
+[`imeta()`](https://irods.github.io/irods_client_library_rirods/reference/imeta.md)
+call per item, or loop over them with a function such as
+`purrr:::pmap()`:
+
+``` r
+
+file_md <- data.frame(
+  path = c(data_path, lm_path),
+  type = c("dataframe", "lm"),
+  responsible = c("abby", "bob")
+)
+pwalk(file_md, function(path, type, responsible) {
+  imeta(path, operations = list(
+    list(
+      operation = "add",
+      attribute = "type",
+      value = type
+    ),
+    list(
+      operation = "add",
+      attribute = "responsible",
+      value = responsible
+    )
+  ))
+})
+```
+
+``` r
+
+ils(metadata=TRUE)
+ils("analysis", metadata=TRUE)
+```
+
+### Collections
+
+Adding metadata to a collection follows the same procedure, but we do
+need to specify the entity type. The reason we did not specify it for
+data objects is that it’s the default value.
+
+``` r
+
+imeta(
+  "analysis",
+  operations = list(
+    list(operation = "add", attribute = "dataset", value = data_path)
+  ))
+ils(metadata=TRUE)
+```
+
+## Querying
+
+We can query our collections and data objects based on their metadata
+with
+[`iquery()`](https://irods.github.io/irods_client_library_rirods/reference/iquery.md)
+and providing a GenQuery statement with the format
+`"SELECT COL1, COL2, COLN... (WHERE CONDITION)"`. In this statement,
+“COL 1, COL2, COLN…” are names of columns in a database, i.e. the
+properties we want to obtain, and the optional condition after “WHERE”
+provides a filter based on the metadata of collections and data objects.
+
+For example, the query below asks for the names of the parent collection
+and data objects of all the data objects that we have access to:
+
+``` r
+
+iquery("SELECT COLL_NAME, DATA_NAME")
+```
+
+The output is a dataframe with one row per result and one column per
+information piece we requested (in this case the name of the collection
+“COLL_NAME” and the name of the data object “DATA_NAME”). Note how the
+query goes through all the levels of our file system.
+
+The query below filters collections with a metadata attribute name
+(“META_COLL_ATTR_NAME”) beginning with “data” and retrieves the names of
+the collection and its data objects (“COLL_NAME” and “DATA_NAME”) as
+well as the value of said metadata item (“META_COLL_ATTR_VALUE”).
+
+``` r
+
+iquery("SELECT COLL_NAME, DATA_NAME, META_COLL_ATTR_VALUE WHERE META_COLL_ATTR_NAME LIKE 'data%'")
+```
+
+We could also retrieve other type of information such as the size of a
+data object or the creation/modification time of a collection, a data
+object or their metadata. For instance, the query below filters the data
+objects that have a metadata attribute “size” (“META_DATA_ATTR_NAME =
+‘size’”) and retrieves their actual size in bytes (“DATA_SIZE”) as well
+as the value and units of the metadata attribute (“META_DATA_ATTR_VALUE”
+and “META_DATA_ATTR_UNITS”).
+
+``` r
+
+iquery("SELECT DATA_NAME, DATA_SIZE, META_DATA_ATTR_VALUE, META_DATA_ATTR_UNITS WHERE META_DATA_ATTR_NAME = 'size'")
+```
+
+Columns ending in “SIZE” are parsed to numbers; in the same way, columns
+ending in “TIME” have the class “POSIXct”, i.e. as datetime objects. As
+an example, the query below retrieves parent collection’s name
+(“COLL_NAME”) and the name (“DATA_NAME”), creation time
+(“DATA_CREATE_TIME”) and size in bytes (“DATA_SIZE”) of all data objects
+whose parent collection name ends in “analysis” and that are less than
+8000 bytes in size.
+
+``` r
+
+iq <- iquery("SELECT COLL_NAME, DATA_NAME, DATA_CREATE_TIME, DATA_SIZE WHERE COLL_NAME LIKE '%analysis' AND DATA_SIZE < '8000'")
+iq
+class(iq$DATA_CREATE_TIME)
+class(iq$DATA_SIZE)
+```
+
+There are a number of columns that could be used for selection of
+filtering. The ones that you’ll probably find most useful are shown in
+the table below:
+
+A final tip is that if you request the name of the parent collection and
+of the data object themselves, you can concatenate them to obtain their
+logical paths:
+
+``` r
+
+iq$PATH <- file.path(iq$COLL_NAME, iq$DATA_NAME)
+iq
+```
+
+Now you are ready to describe all your data with iRODS metadata and find
+anything and everything with
+[`ils()`](https://irods.github.io/irods_client_library_rirods/reference/ils.md)
+and
+[`iquery()`](https://irods.github.io/irods_client_library_rirods/reference/iquery.md).
+
+[^1]: `filter_ils()` is a custom function to filter the output of
+    [`ils()`](https://irods.github.io/irods_client_library_rirods/reference/ils.md)
+    based on the path. The code can be found in
+    [`vignette("icommands")`](https://irods.github.io/irods_client_library_rirods/articles/icommands.md).
