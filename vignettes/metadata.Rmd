@@ -2,7 +2,9 @@
 title: "Use iRODS metadata"
 author: "Mariana Montes"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    mathjax: false
 vignette: >
   %\VignetteIndexEntry{Use iRODS metadata}
   %\VignetteEngine{knitr::rmarkdown}

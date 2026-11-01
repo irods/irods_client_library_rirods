@@ -2,7 +2,9 @@
 title: "rirods vs iCommands"
 author: "Mariana Montes"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    mathjax: false
 vignette: >
   %\VignetteIndexEntry{rirods vs iCommands}
   %\VignetteEngine{knitr::rmarkdown}
