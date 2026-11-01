@@ -2,9 +2,8 @@
 title: "Developing rirods"
 output: 
   rmarkdown::html_vignette:
-    md_extensions: [ 
-      "-autolink_bare_uris" 
-    ]
+    md_extensions: ["-autolink_bare_uris"]
+    mathjax: false
 vignette: >
   %\VignetteIndexEntry{Developing rirods}
   %\VignetteEngine{knitr::rmarkdown}

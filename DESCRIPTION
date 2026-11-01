@@ -41,7 +41,7 @@ Suggests:
     knitr,
     purrr,
     readr,
-    rmarkdown,
+    rmarkdown (>= 2.32),
     spelling
 VignetteBuilder: 
     knitr

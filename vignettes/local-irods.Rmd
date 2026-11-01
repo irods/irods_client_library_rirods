@@ -2,7 +2,9 @@
 title: "Accessing data locally and in iRODS"
 author: "Mariana Montes"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    mathjax: false
 vignette: >
   %\VignetteIndexEntry{Accessing data locally and in iRODS}
   %\VignetteEngine{knitr::rmarkdown}
