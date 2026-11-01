@@ -1,3 +1,9 @@
+# rirods 0.3.1
+
+## Minor changes
+
+* Update build machinery for CRAN
+
 # rirods 0.3.0
 
 ## Minor changes
