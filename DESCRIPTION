@@ -1,6 +1,6 @@
 Package: rirods
 Title: R Client for 'iRODS'
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(
     person("iRODS Consortium", email = "support@irods.org", role = c("cre", "cph")),
     person("Martin", "Schobben", email = "schobbenmartin@gmail.com", role = "aut",
