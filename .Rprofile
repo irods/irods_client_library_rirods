@@ -17,5 +17,7 @@ Sys.setenv(DEV_ZONE_PATH_IRODS = "AEGApbh1J6Gk0v16t51Wf4YzZBc7LMEFtKthhmw")
 Sys.setenv(DEV_USER = "szYLD6oOfZ73SEh9zgOlGVNU97TzWA")
 Sys.setenv(DEV_PASS = "szYLD6oOfZ73SEh9zgOlGVNU97TzWA")
 
-# only use core irods-demo functionality
-system("cd dev && make")
+# prepare the development demo only when explicitly requested
+if (identical(Sys.getenv("RIRODS_PREPARE_DEV_DEMO"), "true")) {
+  system("cd dev && make")
+}

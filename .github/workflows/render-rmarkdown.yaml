@@ -53,6 +53,7 @@ jobs:
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore(repos = c(CRAN = "https://cloud.r-project.org"))
           if (!requireNamespace("readr", quietly = TRUE)) install.packages("readr")
+          if (!requireNamespace("rmarkdown", quietly = TRUE) || packageVersion("rmarkdown") < "2.32") install.packages("rmarkdown")
 
       - name: Build rirods
         shell: Rscript {0}
