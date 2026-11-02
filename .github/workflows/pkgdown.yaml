@@ -60,15 +60,19 @@ jobs:
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore(repos = c(CRAN = "https://cloud.r-project.org"))
           if (!requireNamespace("pkgdown", quietly = TRUE)) install.packages("pkgdown")
-          if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
           if (!requireNamespace("knitr", quietly = TRUE)) install.packages("knitr")
           if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown")
           if (!requireNamespace("httptest2", quietly = TRUE)) install.packages("httptest2")
           if (!requireNamespace("purrr", quietly = TRUE)) install.packages("purrr")
           if (!requireNamespace("kableExtra", quietly = TRUE)) install.packages("kableExtra")
-          devtools::load_all(".")
+          pkgload::load_all(".")
           source("pkgdown/pre-reference.R")
-          devtools::install()
+          status <- system2(
+            file.path(R.home("bin"), "R"),
+            c("CMD", "INSTALL", paste0("--library=", shQuote(.libPaths()[1])),
+              shQuote(normalizePath(".")))
+          )
+          stopifnot(status == 0L)
           Sys.setenv(R_USER_CONFIG_DIR = tempdir())
 
       - name: Build site
