@@ -1,9 +1,7 @@
 ---
 output: 
   github_document:
-    md_extensions: [ 
-      "-autolink_bare_uris" 
-    ]
+    md_extensions: ["-autolink_bare_uris"]
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
