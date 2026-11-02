@@ -3,7 +3,7 @@
 Use SQL-like expressions to query data objects and collections based on
 different properties. Read more about queries by looking at the
 iCommands equivalent `iquest` in the [iRODS
-Docs](https://docs.irods.org/master/icommands/user/#iquest).
+Docs](https://docs.irods.org/5.0.2/icommands/user/#iquest).
 
 ## Usage
 

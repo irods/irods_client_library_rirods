@@ -33,8 +33,8 @@ on the command line.
 If you use WSL, you can start RStudio Server with
 `sudo rstudio-server start` and run it from your browser
 (`http://localhost:8787`). [The Posit
-site](https://posit.co/download/rstudio-server/) has installation
-instructions for R and RStudio Server in Linux.
+site](https://docs.posit.co/ide/user/#rstudio-server-oss-downloads) has
+installation instructions for R and RStudio Server in Linux.
 
 Then, in your script or console, load
 [rirods](https://github.com/irods/irods_client_library_rirods) and run
@@ -83,8 +83,7 @@ If instead of installing
 [`install.packages()`](https://rdrr.io/r/utils/install.packages.html)
 you want to use a development version, you need to make sure you have
 the appropriate submodules to run the demo. Instead of installing with
-[`devtools::install_github()`](https://devtools.r-lib.org/reference/install-deprecated.html),
-clone the
+`devtools::install_github()`, clone the
 [repository](https://github.com/irods/irods_client_library_rirods) (or a
 fork thereof) and update all submodules:
 
@@ -96,8 +95,7 @@ cd inst/irods_demo # update the sub-submodule
 git submodule update --init irods_client_zone_management_tool
 ```
 
-Only then, from R, install the package with
-[`devtools::install()`](https://devtools.r-lib.org/reference/install.html)
+Only then, from R, install the package with `devtools::install()`
 (either from the project of the package or providing the path to the
 package).
 

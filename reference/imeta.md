@@ -5,7 +5,7 @@ consisting of an attribute name, an attribute value and an optional
 unit. This function allows to chain several operations ('add' or
 'remove') linked to specific AVUs. Read more about metadata by looking
 at the iCommands equivalent `imeta` in the [iRODS
-Docs](https://docs.irods.org/master/icommands/metadata/).
+Docs](https://docs.irods.org/5.0.2/icommands/metadata/).
 
 ## Usage
 

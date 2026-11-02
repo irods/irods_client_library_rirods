@@ -56,16 +56,14 @@ This will result in the demonstration HTTP API running at
 <http://localhost:9001/irods-http-api/0.2.0> (or later version). No
 further configuration in R is needed for development (except for
 removing possible mock files). For example, to run the unit tests
-against this local server use:
-[`devtools::test()`](https://devtools.r-lib.org/reference/test.html).
+against this local server use: `devtools::test()`.
 
 For miscellaneous development tasks one can, furthermore, use:
-[`usethis::local_project`](https://usethis.r-lib.org/reference/proj_utils.html).
-This test fixture uses an alternative directory as the working directory
-thereby preventing cluttering of the package source files (defaults to a
-temporary directory). The working directory can be restored to the
-package directory by restarting the R session (possibly with
-`CTRL + SHIFT + F10`) or by running
+`usethis::local_project`. This test fixture uses an alternative
+directory as the working directory thereby preventing cluttering of the
+package source files (defaults to a temporary directory). The working
+directory can be restored to the package directory by restarting the R
+session (possibly with `CTRL + SHIFT + F10`) or by running
 [`withr::deferred_run()`](https://withr.r-lib.org/reference/defer.html).
 
 ### Remote server
@@ -106,9 +104,8 @@ httr2::secret_make_key()
 
 2.  Store the package development key as an environmental variable at
     the user level. For convenience one can use
-    [`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html)
-    which opens the `.Renviron` file. Enter your key by replacing
-    `<key>` as follows:
+    `usethis::edit_r_environ()` which opens the `.Renviron` file. Enter
+    your key by replacing `<key>` as follows:
 
 &nbsp;
 

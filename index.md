@@ -76,7 +76,6 @@ foo <- data.frame(x = c(1, 8, 9), y = c("x", "y", "z"))
 
 # check where we are in the iRODS namespace
 ipwd()
-#> [1] "/tempZone/home/alice"
 
 # store data in iRODS
 isaveRDS(foo, "foo.rds")
@@ -97,12 +96,6 @@ imeta(
 
 # check if file is stored with associated metadata
 ils(metadata = TRUE)
-#> 
-#> ==========
-#> iRODS Zone
-#> ==========
-#>                  logical_path attribute value units
-#>  /tempZone/home/alice/foo.rds       foo   bar   baz
 ```
 
 For more on using metadata, check out
@@ -117,10 +110,6 @@ current R session, she would use
 ``` R
 # retrieve in native R format
 ireadRDS("foo.rds")
-#>   x y
-#> 1 1 x
-#> 2 8 y
-#> 3 9 z
 ```
 
 ### Other file formats
@@ -141,13 +130,6 @@ iput("foo.csv", "foo.csv")
 
 # check whether it is stored
 ils()
-#> 
-#> ==========
-#> iRODS Zone
-#> ==========
-#>                  logical_path
-#>  /tempZone/home/alice/foo.csv
-#>  /tempZone/home/alice/foo.rds
 ```
 
 Later on somebody else might want to download this file again and store
@@ -157,20 +139,6 @@ it locally:
 # retrieve it again later
 iget("foo.csv", "foo.csv")
 read_csv("foo.csv")
-#> Rows: 3 Columns: 2
-#> ── Column specification ────────────────────────────────────────────────────────
-#> Delimiter: ","
-#> chr (1): y
-#> dbl (1): x
-#> 
-#> ℹ Use `spec()` to retrieve the full column specification for this data.
-#> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-#> # A tibble: 3 × 2
-#>       x y    
-#>   <dbl> <chr>
-#> 1     1 x    
-#> 2     8 y    
-#> 3     9 z
 ```
 
 ### Query
@@ -182,15 +150,9 @@ future projects. Objects can be searched with General Queries and
 ``` R
 # look for objects in the home collection with a wildcard `%`
 iquery("SELECT COLL_NAME, DATA_NAME WHERE COLL_NAME LIKE '/tempZone/home/%'")
-#>              COLL_NAME DATA_NAME
-#> 1 /tempZone/home/alice   foo.csv
-#> 2 /tempZone/home/alice   foo.rds
 
 # or for data objects with a name that starts with "foo"
 iquery("SELECT COLL_NAME, DATA_NAME WHERE DATA_NAME LIKE 'foo%'")
-#>              COLL_NAME DATA_NAME
-#> 1 /tempZone/home/alice   foo.csv
-#> 2 /tempZone/home/alice   foo.rds
 ```
 
 For more on querying, check out
@@ -207,7 +169,6 @@ irm("foo.csv", force = TRUE)
 
 # check if objects are removed
 ils()
-#> This collection does not contain any objects or collections.
 
 # close the server
 stop_irods_demo()
