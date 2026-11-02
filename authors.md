@@ -19,7 +19,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/irods/irods_client_library_rirods/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/irods/irods_client_library_rirods/blob/v0.3.1/inst/CITATION)
 
 Schobben, M., Montes, M., (2024) R Client for iRODS, Version = 0.2.0,
 https://github.com/irods/irods_client_library_rirods
