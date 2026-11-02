@@ -14,12 +14,12 @@ jobs:
 
     steps:
       - name: Install rirods
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           path: rirods
 
       - name: Install irods_demo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           repository: irods/irods_demo
           path: irods_demo
@@ -43,7 +43,7 @@ jobs:
           sudo apt-get install -y libcurl4-openssl-dev
 
       - name: Cache packages
-        uses: actions/cache@v1
+        uses: actions/cache@v6
         with:
           path: ${{ env.RENV_PATHS_ROOT }}
           key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
