@@ -57,8 +57,12 @@ jobs:
       - name: Build rirods
         shell: Rscript {0}
         run: |
-          if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
-          devtools::install()
+          status <- system2(
+            file.path(R.home("bin"), "R"),
+            c("CMD", "INSTALL", paste0("--library=", shQuote(.libPaths()[1])),
+              shQuote(normalizePath(".")))
+          )
+          stopifnot(status == 0L)
 
       - name: Render Rmarkdown files and Commit Results
         run: |
