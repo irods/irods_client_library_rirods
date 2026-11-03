@@ -48,7 +48,7 @@ if (startsWith(rirods_source, "/")) {
 library("rirods")
 
 # irods project in temp dir
-rirods::create_irods(host_name, "/tempZone/home")
+rirods::create_irods(host_name)
 rirods::iauth("rods", "rods")
 
 # range
