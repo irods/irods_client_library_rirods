@@ -2,11 +2,11 @@ Package: rirods
 Title: R Client for 'iRODS'
 Version: 0.3.1
 Authors@R: c(
-    person("iRODS Consortium", email = "support@irods.org", role = c("cre", "cph")),
+    person("iRODS Consortium", email = "support@irods.org", role = "cph"),
     person("Martin", "Schobben", email = "schobbenmartin@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0001-8560-0037")),
     person("Mariana", "Montes", role = "aut"),
-    person("Terrell", "Russell", role = "ctb"),
+    person("Terrell", "Russell", email = "rirods@irods.org", role = "cre"),
     person("Christine", "Staiger", role = "ctb"),
     person("Ton", "Smeele", role = "ctb"),
     person("Alan", "King", role = "ctb")
