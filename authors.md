@@ -2,13 +2,13 @@
 
 ## Authors
 
-- **iRODS Consortium**. Maintainer, copyright holder.
+- **iRODS Consortium**. Copyright holder.
 
 - **Martin Schobben**. Author. [](https://orcid.org/0000-0001-8560-0037)
 
 - **Mariana Montes**. Author.
 
-- **Terrell Russell**. Contributor.
+- **Terrell Russell**. Maintainer.
 
 - **Christine Staiger**. Contributor.
 
@@ -19,7 +19,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/irods/irods_client_library_rirods/blob/v0.3.1/inst/CITATION)
+[`inst/CITATION`](https://github.com/irods/irods_client_library_rirods/blob/main/inst/CITATION)
 
 Schobben, M., Montes, M., (2024) R Client for iRODS, Version = 0.2.0,
 https://github.com/irods/irods_client_library_rirods

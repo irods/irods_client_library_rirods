@@ -2,6 +2,8 @@
 
 ## rirods 0.3.1
 
+CRAN release: 2026-11-10
+
 ### Minor changes
 
 - Update build machinery for CRAN
